@@ -2,3 +2,12 @@
 /src/Util/obj
 /test/Util.Tests/obj
 /.vs
+obj/
+bin/
+BenchmarkDotNet.Artifacts/
+/output
+/template/CodeSmith/CodeGenerator/02-Result
+/sample/Util.Samples.Webs/wwwroot/lib
+/sample/Util.Samples.Webs/node_modules
+/sample/Util.Samples.Webs/wwwroot/dist
+/sample/Util.Samples.Webs/wwwroot/test

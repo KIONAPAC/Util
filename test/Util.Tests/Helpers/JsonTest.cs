@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System;
+using System.Linq;
+using System.Text;
 using Newtonsoft.Json;
 using Util.Helpers;
 using Util.Tests.Samples;
@@ -46,7 +48,9 @@ namespace Util.Tests.Helpers {
             result.Append( "\"Age\":1," );
             result.Append( "\"isShow\":true" );
             result.Append( "}" );
-            Assert.Equal( result.ToString(), Json.ToJson( JsonTestSample.Create() ) );
+            var actualData = JsonTestSample.Create();
+            actualData.Date = DateTime.Parse(actualData.Date).ToString("yyyy/M/d 0:00:00");
+            Assert.Equal( result.ToString(), Json.ToJson(actualData) );
         }
 
         /// <summary>
@@ -63,7 +67,24 @@ namespace Util.Tests.Helpers {
             result.Append( "'Age':1," );
             result.Append( "'isShow':true" );
             result.Append( "}" );
-            Assert.Equal( result.ToString(), Json.ToJson( JsonTestSample.Create(),true ) );
+
+            var actualData = JsonTestSample.Create();
+            actualData.Date = DateTime.Parse(actualData.Date).ToString("yyyy/M/d 0:00:00");
+            Assert.Equal( result.ToString(), Json.ToJson(actualData, true ) );
+        }
+
+        /// <summary>
+        /// 测试转换实体为Json
+        /// </summary>
+        [Fact]
+        public void TestToJson_Entity() {
+            AggregateRootSample entity = new AggregateRootSample();
+            entity.Code = "a";
+            entity.IntSamples.Add( new IntAggregateRootSample{Name = "b"} );
+            var json = Util.Helpers.Json.ToJson( entity );
+            entity = Util.Helpers.Json.ToObject<AggregateRootSample>( json );
+            Assert.Equal( "a", entity.Code );
+            Assert.Equal( "b", entity.IntSamples.First().Name );
         }
 
         /// <summary>

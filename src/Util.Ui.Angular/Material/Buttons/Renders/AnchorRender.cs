@@ -1,0 +1,119 @@
+﻿using Util.Ui.Builders;
+using Util.Ui.Configs;
+using Util.Ui.Renders;
+using Util.Ui.Material.Enums;
+
+namespace Util.Ui.Material.Buttons.Renders {
+    /// <summary>
+    /// 链接渲染器
+    /// </summary>
+    public class AnchorRender : RenderBase {
+        /// <summary>
+        /// 配置
+        /// </summary>
+        private readonly IConfig _config;
+
+        /// <summary>
+        /// 初始化链接渲染器
+        /// </summary>
+        /// <param name="config">配置</param>
+        public AnchorRender( IConfig config ) : base( config ) {
+            _config = config;
+        }
+
+        /// <summary>
+        /// 获取标签生成器
+        /// </summary>
+        protected override TagBuilder GetTagBuilder() {
+            var builder = new AnchorBuilder();
+            Config( builder );
+            return builder;
+        }
+
+        /// <summary>
+        /// 配置
+        /// </summary>
+        protected void Config( TagBuilder builder ) {
+            ConfigId( builder );
+            ConfigText( builder );
+            ConfigStyle( builder );
+            ConfigColor( builder );
+            ConfigDisabled( builder );
+            ConfigTooltip( builder );
+            ConfigLink( builder );
+            ConfigEvents( builder );
+            ConfigContent( builder );
+        }
+
+        /// <summary>
+        /// 配置标识
+        /// </summary>
+        private void ConfigId( TagBuilder builder ) {
+            if( _config.Contains( UiConst.Id ) )
+                builder.AddAttribute( $"#{_config.GetValue( UiConst.Id )}", "", false );
+        }
+
+        /// <summary>
+        /// 配置文本
+        /// </summary>
+        private void ConfigText( TagBuilder builder ) {
+            if( _config.Contains( UiConst.Text ) )
+                builder.SetContent( _config.GetValue( UiConst.Text ) );
+        }
+
+        /// <summary>
+        /// 设置样式
+        /// </summary>
+        private void ConfigStyle( TagBuilder builder ) {
+            if( _config.Contains( UiConst.Styles ) ) {
+                builder.AddAttribute( _config.GetValue<ButtonStyle?>( UiConst.Styles )?.Description(), "", false );
+                return;
+            }
+            builder.AddAttribute( ButtonStyle.Raised.Description(), "", false );
+        }
+
+        /// <summary>
+        /// 配置颜色
+        /// </summary>
+        private void ConfigColor( TagBuilder builder ) {
+            builder.AddAttribute( UiConst.Color, _config.GetValue( UiConst.Color ).ToLower() );
+        }
+
+        /// <summary>
+        /// 配置禁用
+        /// </summary>
+        private void ConfigDisabled( TagBuilder builder ) {
+            builder.AddAttribute( "[disabled]", _config.GetBoolValue( UiConst.Disabled ) );
+        }
+
+        /// <summary>
+        /// 配置提示
+        /// </summary>
+        private void ConfigTooltip( TagBuilder builder ) {
+            builder.AddAttribute( "matTooltip", _config.GetValue( UiConst.Tooltip ) );
+        }
+
+        /// <summary>
+        /// 配置链接
+        /// </summary>
+        private void ConfigLink( TagBuilder builder ) {
+            builder.AddAttribute( "routerLink", _config.GetValue( UiConst.Link ) );
+        }
+
+        /// <summary>
+        /// 配置事件
+        /// </summary>
+        private void ConfigEvents( TagBuilder builder ) {
+            builder.AddAttribute( "(click)", _config.GetValue( UiConst.OnClick ) );
+        }
+
+        /// <summary>
+        /// 配置内容
+        /// </summary>
+        private void ConfigContent( TagBuilder builder ) {
+            if( _config.Contains( UiConst.Text ) )
+                return;
+            builder.SetContent( _config.Content );
+        }
+    }
+}

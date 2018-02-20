@@ -32,9 +32,12 @@ namespace Util.Tests.Helpers {
         /// 测试获取枚举实例 - 可空枚举
         ///</summary>
         [Theory]
+        [InlineData( null, null )]
+        [InlineData( "", null )]
+        [InlineData( " ", null )]
         [InlineData( "C", EnumSample.C )]
         [InlineData( "3", EnumSample.C )]
-        public void TestParse_Nullable( string memeber, EnumSample sample ) {
+        public void TestParse_Nullable( string memeber, EnumSample? sample ) {
             Assert.Equal( sample, Util.Helpers.Enum.Parse<EnumSample?>( memeber ) );
         }
 
@@ -135,37 +138,52 @@ namespace Util.Tests.Helpers {
         }
 
         /// <summary>
-        /// 测试获取描述项集合
+        /// 测试获取项集合
         /// </summary>
         [Fact]
         public void TestGetItems() {
             var items = Util.Helpers.Enum.GetItems<EnumSample>();
             Assert.Equal( 5, items.Count );
             Assert.Equal( "A", items[0].Text );
-            Assert.Equal( "1", items[0].Value );
+            Assert.Equal( 1, items[0].Value );
             Assert.Equal( "D4", items[3].Text );
-            Assert.Equal( "4", items[3].Value );
+            Assert.Equal( 4, items[3].Value );
             Assert.Equal( "E5", items[4].Text );
-            Assert.Equal( "5", items[4].Value );
+            Assert.Equal( 5, items[4].Value );
         }
 
         /// <summary>
-        /// 测试获取描述项集合 - 可空枚举
+        /// 测试获取项集合
+        /// </summary>
+        [Fact]
+        public void TestGetItems_Type() {
+            var items = Util.Helpers.Enum.GetItems(typeof( EnumSample ) );
+            Assert.Equal( 5, items.Count );
+            Assert.Equal( "A", items[0].Text );
+            Assert.Equal( 1, items[0].Value );
+            Assert.Equal( "D4", items[3].Text );
+            Assert.Equal( 4, items[3].Value );
+            Assert.Equal( "E5", items[4].Text );
+            Assert.Equal( 5, items[4].Value );
+        }
+
+        /// <summary>
+        /// 测试获取项集合 - 可空枚举
         /// </summary>
         [Fact]
         public void TestGetItems_Nullable() {
             var items = Util.Helpers.Enum.GetItems<EnumSample?>();
             Assert.Equal( 5, items.Count );
             Assert.Equal( "A", items[0].Text );
-            Assert.Equal( "1", items[0].Value );
+            Assert.Equal( 1, items[0].Value );
             Assert.Equal( "D4", items[3].Text );
-            Assert.Equal( "4", items[3].Value );
+            Assert.Equal( 4, items[3].Value );
             Assert.Equal( "E5", items[4].Text );
-            Assert.Equal( "5", items[4].Value );
+            Assert.Equal( 5, items[4].Value );
         }
 
         /// <summary>
-        /// 测试获取描述项集合 - 验证枚举类型
+        /// 测试获取项集合 - 验证枚举类型
         /// </summary>
         [Fact]
         public void TestGetItems_Validate() {

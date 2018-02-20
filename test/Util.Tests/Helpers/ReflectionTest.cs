@@ -40,7 +40,7 @@ namespace Util.Tests.Helpers {
         }
 
         /// <summary>
-        /// 测试获取显示名
+        /// 测试显示名
         /// </summary>
         [Fact]
         public void TestGetDisplayName() {
@@ -53,8 +53,9 @@ namespace Util.Tests.Helpers {
         /// </summary>
         [Fact]
         public void TestGetDescriptionOrDisplayName() {
-            Assert.Equal( "测试样例", Util.Helpers.Reflection.GetDescriptionOrDisplayName<Sample>() );
-            Assert.Equal( "测试样例2", Util.Helpers.Reflection.GetDescriptionOrDisplayName<Sample2>() );
+            Assert.Equal( "测试样例", Util.Helpers.Reflection.GetDisplayNameOrDescription<Sample>() );
+            Assert.Equal( "测试样例2", Util.Helpers.Reflection.GetDisplayNameOrDescription<Sample2>() );
+            Assert.Equal( "测试样例", Util.Helpers.Reflection.GetDisplayNameOrDescription<Sample>() );
         }
 
         /// <summary>
@@ -125,6 +126,18 @@ namespace Util.Tests.Helpers {
             Assert.True( Util.Helpers.Reflection.IsNumber( _sample.FloatValue.GetType().GetTypeInfo() ), "FloatValue GetType" );
             Assert.True( Util.Helpers.Reflection.IsNumber( _sample.GetType().GetMember( "FloatValue" )[0] ), "FloatValue" );
             Assert.True( Util.Helpers.Reflection.IsNumber( _sample.GetType().GetMember( "NullableFloatValue" )[0] ), "NullableFloatValue" );
+
+            Assert.True( Util.Helpers.Reflection.IsNumber( _sample.IntValue.GetType().GetTypeInfo() ), "IntValue GetType" );
+            Assert.True( Util.Helpers.Reflection.IsNumber( _sample.GetType().GetMember( "IntValue" )[0] ), "IntValue" );
+            Assert.True( Util.Helpers.Reflection.IsNumber( _sample.GetType().GetMember( "NullableIntValue" )[0] ), "NullableIntValue" );
+        }
+
+        /// <summary>
+        /// 测试是否泛型集合
+        /// </summary>
+        [Fact]
+        public void TestIsGenericCollection() {
+            Assert.True( Util.Helpers.Reflection.IsGenericCollection( _sample.StringList.GetType() ) );
         }
     }
 }

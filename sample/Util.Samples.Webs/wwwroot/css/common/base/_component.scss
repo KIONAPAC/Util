@@ -1,0 +1,28 @@
+﻿//mat表格复选框
+.mat-column-selectCheckbox {
+    max-width: 48px;
+    overflow: initial !important;
+}
+.mat-cell, .mat-header-cell {
+    overflow: initial !important;
+}
+//mat表格序号
+.mat-column-lineNumber {
+    max-width: 48px;
+    justify-content: flex-end;
+}
+//mat表格行滑过样式
+.mat-row-hover {
+    position: relative;
+    &:hover {
+        background: #f5f5f5;
+    }
+    &:active {
+        background: #eaeaea;
+    }
+}
+//菜单font-awesome图标
+.mat-menu-item .fa {
+    vertical-align: middle;
+    margin-right:16px;
+}

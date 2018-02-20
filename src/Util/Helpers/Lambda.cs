@@ -4,7 +4,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Util.Datas.Queries;
-using Util.Expressions;
 
 namespace Util.Helpers {
     /// <summary>
@@ -20,9 +19,7 @@ namespace Util.Helpers {
         /// <param name="expression">表达式,范例：t => t.Name</param>
         public static MemberInfo GetMember( Expression expression ) {
             var memberExpression = GetMemberExpression( expression );
-            if( memberExpression == null )
-                return null;
-            return memberExpression.Member;
+            return memberExpression?.Member;
         }
 
         /// <summary>
@@ -206,13 +203,14 @@ namespace Util.Helpers {
 
         #endregion
 
-        #region GetCriteriaCount(获取谓词条件的个数)
+        #region GetConditionCount(获取查询条件个数)
 
         /// <summary>
-        /// 获取谓词条件的个数
+        /// 获取查询条件个数
         /// </summary>
-        /// <param name="expression">谓词表达式,范例：t => t.Name == "A"</param>
-        public static int GetCriteriaCount( LambdaExpression expression ) {
+        /// <param name="expression">谓词表达式,范例1：t => t.Name == "A" ，结果1。
+        /// 范例2：t => t.Name == "A" &amp;&amp; t.Age =1 ，结果2。</param>
+        public static int GetConditionCount( LambdaExpression expression ) {
             if( expression == null )
                 return 0;
             var result = expression.ToString().Replace( "AndAlso", "|" ).Replace( "OrElse", "|" );

@@ -4,30 +4,36 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>    
     <AssemblyName>Util.Tests</AssemblyName>    
     <RootNamespace>Util.Tests</RootNamespace>    
-    <Description>Util.Tests</Description>    
-    <Authors>何镇汐</Authors>    
-    <Company>何镇汐</Company>
+    <Description />    
+    <Authors>何镇汐;dotnetcore</Authors>    
+    <Company>何镇汐;dotnetcore</Company>    
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\..\bin\test\</OutputPath>
+    <OutputPath>..\..\output\test</OutputPath>
     <DocumentationFile></DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\..\bin\test\</OutputPath>
+    <OutputPath>..\..\output\test</OutputPath>
     <DocumentationFile></DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0-preview-20170628-02" />
-    <PackageReference Include="NSubstitute" Version="2.0.3" />
+    <PackageReference Include="Castle.Core" Version="4.2.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.6.0-preview-20180109-01" />
+    <PackageReference Include="NSubstitute" Version="3.1.0" />
     <PackageReference Include="System.Reflection.Primitives" Version="4.3.0" />
-    <PackageReference Include="xunit" Version="2.3.0-beta3-build3705" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.3.0-beta3-build3705" />
+    <PackageReference Include="xunit" Version="2.3.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Util.Applications\06-Util.Applications.csproj" />
+    <ProjectReference Include="..\..\src\Util.Datas\05-Util.Datas.csproj" />
+    <ProjectReference Include="..\..\src\Util.Events\04-Util.Events.csproj" />
+    <ProjectReference Include="..\..\src\Util.Logs\03-Util.Logs.csproj" />
+    <ProjectReference Include="..\..\src\Util.Security\02-Util.Security.csproj" />
     <ProjectReference Include="..\..\src\Util\01-Util.csproj" />
   </ItemGroup>
 

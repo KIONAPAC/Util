@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 using Util.Validations;
 
@@ -9,7 +10,7 @@ namespace Util.Domains {
     /// <summary>
     /// 领域层顶级基类
     /// </summary>
-    public abstract class DomainBase<T> : INullObject, IDomainObject, ICompareChange<T> where T : IDomainObject {
+    public abstract class DomainBase<T> : IDomainObject, ICompareChange<T> where T : IDomainObject {
 
         #region 字段
 
@@ -39,7 +40,7 @@ namespace Util.Domains {
         /// </summary>
         protected DomainBase() {
             _rules = new List<IValidationRule>();
-            _handler = new ValidationHandler();
+            _handler = new ThrowHandler();
         }
 
         #endregion        
@@ -92,16 +93,17 @@ namespace Util.Domains {
         /// <summary>
         /// 验证
         /// </summary>
-        public virtual void Validate() {
-            var result = GetValidationResult();
-            HandleValidationResult( result );
+        public virtual ValidationResultCollection Validate() {
+            var result = GetValidationResults();
+            HandleValidationResults( result );
+            return result;
         }
 
         /// <summary>
         /// 获取验证结果
         /// </summary>
-        private ValidationResultCollection GetValidationResult() {
-            var result = ValidationFactory.Create().Validate( this );
+        private ValidationResultCollection GetValidationResults() {
+            var result = DataAnnotationValidation.Validate( this );
             Validate( result );
             foreach( var rule in _rules )
                 result.Add( rule.Validate() );
@@ -118,21 +120,10 @@ namespace Util.Domains {
         /// <summary>
         /// 处理验证结果
         /// </summary>
-        private void HandleValidationResult( ValidationResultCollection results ) {
+        private void HandleValidationResults( ValidationResultCollection results ) {
             if( results.IsValid )
                 return;
             _handler.Handle( results );
-        }
-
-        #endregion
-
-        #region IsNull(是否空对象)
-
-        /// <summary>
-        /// 是否空对象
-        /// </summary>
-        public virtual bool IsNull() {
-            return false;
         }
 
         #endregion
@@ -165,7 +156,7 @@ namespace Util.Domains {
         /// <param name="newValue">新值,范例：newEntity.Name</param>
         protected void AddChange<TProperty, TValue>( Expression<Func<T, TProperty>> expression, TValue newValue ) {
             var name = Util.Helpers.Lambda.GetName( expression );
-            var description = Util.Helpers.Reflection.GetDescriptionOrDisplayName( Util.Helpers.Lambda.GetMember( expression ) );
+            var description = Util.Helpers.Reflection.GetDisplayNameOrDescription( (PropertyInfo)Util.Helpers.Lambda.GetMember( expression ) );
             var value = Util.Helpers.Lambda.GetValue( expression );
             AddChange( name, description, Util.Helpers.Convert.To<TValue>( value ), newValue );
         }
