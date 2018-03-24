@@ -1,4 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="../../build/version.props" />
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Util.Datas</AssemblyName>
@@ -7,12 +8,9 @@
     <Product>Util.Datas</Product>
     <Description>Util.Datas是Util应用框架的数据访问类库。
 Util是一个.net core平台下的应用框架，旨在提升小型团队的开发输出能力，由常用公共操作类(工具类)、分层架构基类、Ui组件，第三方组件封装，第三方业务接口封装，配套代码生成模板，权限等组成。</Description>
-    <Version>0.1.9-preview</Version>
     <Authors>何镇汐</Authors>
     <Company>何镇汐</Company>
     <PackageIconUrl>https://avatars2.githubusercontent.com/u/19421630</PackageIconUrl>
-    <AssemblyVersion>0.1.9.0</AssemblyVersion>
-    <FileVersion>0.1.9.0</FileVersion>
     <Copyright>何镇汐</Copyright>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageLicenseUrl>https://github.com/dotnetcore/Util/blob/master/LICENSE.txt</PackageLicenseUrl>
@@ -39,9 +37,9 @@ Util是一个.net core平台下的应用框架，旨在提升小型团队的开�
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.1" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.0-preview1-final" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.0-preview1-final" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.1.0-preview1" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.0.1" />
     <PackageReference Include="System.Linq.Dynamic.Core" Version="1.0.8.2" />
   </ItemGroup>

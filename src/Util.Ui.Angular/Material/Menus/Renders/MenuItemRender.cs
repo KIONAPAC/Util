@@ -1,7 +1,5 @@
 ﻿using Util.Ui.Builders;
 using Util.Ui.Configs;
-using Util.Ui.Enums;
-using Util.Ui.Material.Commons.Configs;
 using Util.Ui.Material.Icons.Builders;
 using Util.Ui.Renders;
 
@@ -28,7 +26,7 @@ namespace Util.Ui.Material.Menus.Renders {
         /// </summary>
         protected override TagBuilder GetTagBuilder() {
             var builder = CreateBuilder();
-            builder.AddAttribute( "mat-menu-item", "", false );
+            builder.AddAttribute( "mat-menu-item" );
             Config( builder );
             return builder;
         }
@@ -56,10 +54,10 @@ namespace Util.Ui.Material.Menus.Renders {
         /// <summary>
         /// 配置内容
         /// </summary>
-        private void ConfigContent( TagBuilder builder ) {
+        protected override void ConfigContent( TagBuilder builder ) {
             ConfigMaterialIcon( builder );
             ConfigFontAwesomeIcon( builder );
-            ConfigText( builder );
+            ConfigLabel( builder );
         }
 
         /// <summary>
@@ -80,19 +78,18 @@ namespace Util.Ui.Material.Menus.Renders {
             if( _config.Contains( UiConst.FontAwesomeIcon ) == false )
                 return;
             var iconBuilder = new FontAwesomeIconBuilder();
-            iconBuilder.Class( IconSize.Large.Description() );
             iconBuilder.SetIcon( _config );
             builder.AppendContent( iconBuilder );
         }
 
         /// <summary>
-        /// 配置文本
+        /// 配置标签
         /// </summary>
-        private void ConfigText( TagBuilder builder ) {
-            if( _config.Contains( UiConst.Text ) == false )
+        private void ConfigLabel( TagBuilder builder ) {
+            if( _config.Contains( UiConst.Label ) == false )
                 return;
             var spanBuilder = new SpanBuilder();
-            spanBuilder.SetContent( _config.GetValue( UiConst.Text ) );
+            spanBuilder.SetContent( _config.GetValue( UiConst.Label ) );
             builder.AppendContent( spanBuilder );
         }
 

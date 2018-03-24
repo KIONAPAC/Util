@@ -27,8 +27,13 @@ namespace Util.Webs.Controllers {
         }
 
         /// <summary>
-        /// 获取单个实例,调用范例：GET URL(/api/customers/1)
+        /// 获取单个实例
         /// </summary>
+        /// <remarks> 
+        /// 调用范例: 
+        /// GET
+        /// /api/customer/1 
+        /// </remarks>
         /// <param name="id">标识</param>
         [HttpGet( "{id}" )]
         public virtual async Task<IActionResult> GetAsync( string id ) {
@@ -37,7 +42,7 @@ namespace Util.Webs.Controllers {
         }
 
         /// <summary>
-        /// 查询,调用范例：GET URL(/api/customers/query?name=a)
+        /// 查询,调用范例：GET /api/customer/query?name=a
         /// </summary>
         /// <param name="query">查询参数</param>
         [HttpGet( "Query" )]
@@ -47,7 +52,7 @@ namespace Util.Webs.Controllers {
         }
 
         /// <summary>
-        /// 分页查询,调用范例：GET URL(/api/customers?name=a)
+        /// 分页查询,调用范例：GET /api/customer?name=a
         /// </summary>
         /// <param name="query">查询参数</param>
         [HttpGet]

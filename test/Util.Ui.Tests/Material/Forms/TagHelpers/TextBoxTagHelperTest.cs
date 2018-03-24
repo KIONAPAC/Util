@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Razor.TagHelpers;
 using Util.Ui.Configs;
 using Util.Ui.Enums;
-using Util.Ui.Material.Commons.Configs;
+using Util.Ui.Material;
 using Util.Ui.Material.Enums;
 using Util.Ui.Material.Forms.TagHelpers;
 using Util.Ui.Tests.XUnitHelpers;
@@ -245,6 +245,17 @@ namespace Util.Ui.Tests.Material.Forms.TagHelpers {
             var attributes = new TagHelperAttributeList { { UiConst.Type, TextBoxType.Email } };
             var result = new String();
             result.Append( "<mat-textbox-wrapper type=\"email\"></mat-textbox-wrapper>" );
+            Assert.Equal( result.ToString(), GetResult( attributes ) );
+        }
+
+        /// <summary>
+        /// 测试设置为多行文本框
+        /// </summary>
+        [Fact]
+        public void TestType_Multiple() {
+            var attributes = new TagHelperAttributeList { { UiConst.Type, TextBoxType.Multiple } };
+            var result = new String();
+            result.Append( "<mat-textarea-wrapper type=\"text\"></mat-textarea-wrapper>" );
             Assert.Equal( result.ToString(), GetResult( attributes ) );
         }
 

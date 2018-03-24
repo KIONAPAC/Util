@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Razor.TagHelpers;
 using Util.Ui.Configs;
+using Util.Ui.Material;
 using Util.Ui.Material.Buttons.TagHelpers;
-using Util.Ui.Material.Commons.Configs;
 using Util.Ui.Material.Enums;
 using Util.Ui.Tests.XUnitHelpers;
 using Xunit;
@@ -143,6 +143,17 @@ namespace Util.Ui.Tests.Material.Buttons {
             var attributes = new TagHelperAttributeList { { MaterialConst.MenuId, "a" } };
             var result = new String();
             result.Append( "<button mat-raised-button=\"\" type=\"button\" [matMenuTriggerFor]=\"a\"></button>" );
+            Assert.Equal( result.ToString(), GetResult( attributes ) );
+        }
+
+        /// <summary>
+        /// 测试关闭弹出层
+        /// </summary>
+        [Fact]
+        public void TestCloseDialog() {
+            var attributes = new TagHelperAttributeList { { MaterialConst.CloseDialog, "a" } };
+            var result = new String();
+            result.Append( "<button mat-dialog-close=\"a\" mat-raised-button=\"\" type=\"button\"></button>" );
             Assert.Equal( result.ToString(), GetResult( attributes ) );
         }
     }

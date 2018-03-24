@@ -3,7 +3,9 @@ using Util.Ui.Components;
 using Util.Ui.Material.Buttons;
 using Util.Ui.Material.Forms;
 using Util.Ui.Material.Icons;
+using Util.Ui.Material.Lists;
 using Util.Ui.Material.Menus;
+using Util.Ui.Material.Tabs;
 using Util.Ui.Services;
 
 namespace Util.Ui.Extensions {
@@ -60,6 +62,14 @@ namespace Util.Ui.Extensions {
         }
 
         /// <summary>
+        /// 选择列表
+        /// </summary>
+        /// <param name="service">组件服务</param>
+        public static ISelectList SelectList<TModel>( this IUiService<TModel> service ) {
+            return new SelectList();
+        }
+
+        /// <summary>
         /// 文本框
         /// </summary>
         /// <param name="service">组件服务</param>
@@ -73,7 +83,7 @@ namespace Util.Ui.Extensions {
         /// <param name="service">组件服务</param>
         public static IForm Form<TModel>( this IUiService<TModel> service ) {
             if( !( service is IContext<TModel> context ) )
-                throw new NotImplementedException( "组件服务必须实现Util.Ui.Services.IContext" );
+                throw new NotSupportedException();
             return new Form( context.Helper.ViewContext.Writer );
         }
 
@@ -83,7 +93,7 @@ namespace Util.Ui.Extensions {
         /// <param name="service">组件服务</param>
         public static Material.Buttons.IButton Button<TModel>( this IUiService<TModel> service ) {
             if( !( service is IContext<TModel> context ) )
-                throw new NotImplementedException( "组件服务必须实现Util.Ui.Services.IContext" );
+                throw new NotSupportedException();
             return new Button( context.Helper.ViewContext.Writer );
         }
 
@@ -93,8 +103,28 @@ namespace Util.Ui.Extensions {
         /// <param name="service">组件服务</param>
         public static IMenu Menu<TModel>( this IUiService<TModel> service ) {
             if( !( service is IContext<TModel> context ) )
-                throw new NotImplementedException( "组件服务必须实现Util.Ui.Services.IContext" );
+                throw new NotSupportedException();
             return new Menu( context.Helper.ViewContext.Writer );
+        }
+
+        /// <summary>
+        /// 选项卡组
+        /// </summary>
+        /// <param name="service">组件服务</param>
+        public static ITabGroup Tabs<TModel>( this IUiService<TModel> service ) {
+            if( !( service is IContext<TModel> context ) )
+                throw new NotSupportedException();
+            return new TabGroup( context.Helper.ViewContext.Writer );
+        }
+
+        /// <summary>
+        /// 导航选项卡
+        /// </summary>
+        /// <param name="service">组件服务</param>
+        public static ITabNav NavTabs<TModel>( this IUiService<TModel> service ) {
+            if( !( service is IContext<TModel> context ) )
+                throw new NotSupportedException();
+            return new TabNav( context.Helper.ViewContext.Writer );
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Razor.TagHelpers;
 using Util.Ui.Configs;
 using Util.Ui.Enums;
-using Util.Ui.Material.Commons.Configs;
+using Util.Ui.Material;
 using Util.Ui.Material.Menus.TagHelpers;
 using Util.Ui.Tests.XUnitHelpers;
 using Xunit;
@@ -48,11 +48,11 @@ namespace Util.Ui.Tests.Material.Menus {
         }
 
         /// <summary>
-        /// 测试文本
+        /// 测试标签
         /// </summary>
         [Fact]
-        public void TestText() {
-            var attributes = new TagHelperAttributeList { { UiConst.Text, "a" } };
+        public void TestLabel() {
+            var attributes = new TagHelperAttributeList { { UiConst.Label, "a" } };
             var result = new String();
             result.Append( "<button mat-menu-item=\"\"><span>a</span></button>" );
             Assert.Equal( result.ToString(), GetResult( attributes ) );
@@ -76,7 +76,7 @@ namespace Util.Ui.Tests.Material.Menus {
         public void TestFontAwesomeIcon() {
             var attributes = new TagHelperAttributeList { { UiConst.FontAwesomeIcon, FontAwesomeIcon.Bus } };
             var result = new String();
-            result.Append( "<button mat-menu-item=\"\"><i class=\"fa fa-bus fa-lg\"></i></button>" );
+            result.Append( "<button mat-menu-item=\"\"><i class=\"fa fa-bus\"></i></button>" );
             Assert.Equal( result.ToString(), GetResult( attributes ) );
         }
 
@@ -96,7 +96,7 @@ namespace Util.Ui.Tests.Material.Menus {
         /// </summary>
         [Fact]
         public void TestLink() {
-            var attributes = new TagHelperAttributeList { { UiConst.Link, "a" }, { UiConst.Text, "b" }, { UiConst.MaterialIcon, MaterialIcon.Add } };
+            var attributes = new TagHelperAttributeList { { UiConst.Link, "a" }, { UiConst.Label, "b" }, { UiConst.MaterialIcon, MaterialIcon.Add } };
             var result = new String();
             result.Append( "<a mat-menu-item=\"\" routerLink=\"a\"><mat-icon>add</mat-icon><span>b</span></a>" );
             Assert.Equal( result.ToString(), GetResult( attributes ) );

@@ -1,7 +1,7 @@
-﻿using Util.Ui.Components;
+﻿using Util.Ui.Angular;
+using Util.Ui.Components;
 using Util.Ui.Components.Internal;
 using Util.Ui.Configs;
-using Util.Ui.Material.Commons.Configs;
 using Util.Ui.Material.Enums;
 using Util.Ui.Operations.Navigation;
 using Util.Ui.Operations.Styles;
@@ -38,6 +38,20 @@ namespace Util.Ui.Material.Extensions {
         }
 
         /// <summary>
+        /// 关闭弹出层
+        /// </summary>
+        /// <typeparam name="TComponent">组件类型</typeparam>
+        /// <param name="component">组件实例</param>
+        /// <param name="result">返回结果</param>
+        public static TComponent CloseDialog<TComponent>( this TComponent component,string result = "" ) where TComponent : IButton {
+            var option = component as IOptionConfig;
+            option?.Config<Config>( config => {
+                config.SetAttribute( MaterialConst.CloseDialog, result );
+            } );
+            return component;
+        }
+
+        /// <summary>
         /// 设置样式
         /// </summary>
         /// <typeparam name="TComponent">组件类型</typeparam>
@@ -63,6 +77,22 @@ namespace Util.Ui.Material.Extensions {
                 if( string.IsNullOrWhiteSpace( routerLink ) )
                     return;
                 config.SetAttribute( UiConst.Link, routerLink );
+            } );
+            return component;
+        }
+
+        /// <summary>
+        /// 设置路由链接地址,[routerLink]
+        /// </summary>
+        /// <typeparam name="TComponent">组件类型</typeparam>
+        /// <param name="component">组件实例</param>
+        /// <param name="routerLink">路由链接地址</param>
+        public static TComponent BindLink<TComponent>( this TComponent component, string routerLink ) where TComponent : ILink {
+            var option = component as IOptionConfig;
+            option?.Config<Config>( config => {
+                if( string.IsNullOrWhiteSpace( routerLink ) )
+                    return;
+                config.SetAttribute( AngularConst.BindLink, routerLink );
             } );
             return component;
         }

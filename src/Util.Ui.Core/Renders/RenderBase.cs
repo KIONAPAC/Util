@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Text.Encodings.Web;
+using Microsoft.AspNetCore.Razor.TagHelpers;
 using Util.Ui.Builders;
 using Util.Ui.Configs;
 
@@ -50,6 +51,8 @@ namespace Util.Ui.Renders {
         /// <param name="writer">流写入器</param>
         public virtual void RenderStartTag( TextWriter writer ) {
             Builder.RenderStartTag( writer );
+            if( Builder.HasInnerHtml )
+                Builder.RenderBody( writer );
         }
 
         /// <summary>
@@ -57,7 +60,6 @@ namespace Util.Ui.Renders {
         /// </summary>
         /// <param name="writer">流写入器</param>
         public virtual void RenderEndTag( TextWriter writer ) {
-            Builder.RenderBody( writer );
             Builder.RenderEndTag( writer );
         }
 
@@ -66,7 +68,27 @@ namespace Util.Ui.Renders {
         /// </summary>
         public override string ToString() {
             var validateMessage = _config.Validate();
-            return string.IsNullOrWhiteSpace( validateMessage ) ? Builder.ToString() : $"验证失败：{validateMessage}";
+            using( var writer = new StringWriter() ) {
+                WriteTo( writer, NullHtmlEncoder.Default );
+                return string.IsNullOrWhiteSpace( validateMessage ) ? writer.ToString() : $"验证失败：{validateMessage}";
+            }
+        }
+
+        /// <summary>
+        /// 配置标识
+        /// </summary>
+        protected virtual void ConfigId( TagBuilder builder ) {
+            if( _config.Contains( UiConst.Id ) )
+                builder.AddAttribute( $"#{_config.GetValue( UiConst.Id )}" );
+        }
+
+        /// <summary>
+        /// 配置内容
+        /// </summary>
+        protected virtual void ConfigContent( TagBuilder builder ) {
+            if( _config.Content == null || _config.Content.IsEmptyOrWhiteSpace )
+                return;
+            builder.AppendContent( _config.Content );
         }
     }
 }

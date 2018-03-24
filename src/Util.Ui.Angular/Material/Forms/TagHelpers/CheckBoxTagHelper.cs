@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 using Util.Ui.Configs;
 using Util.Ui.Material.Enums;
 using Util.Ui.Material.Forms.Renders;
+using Util.Ui.Material.Internal;
 using Util.Ui.Renders;
 using Util.Ui.TagHelpers;
 
@@ -12,10 +13,6 @@ namespace Util.Ui.Material.Forms.TagHelpers {
     /// </summary>
     [HtmlTargetElement( "util-checkbox" )]
     public class CheckBoxTagHelper : TagHelperBase {
-        /// <summary>
-        /// 标识，指向模板引用变量，而不是Id属性
-        /// </summary>
-        public string Id { get; set; }
         /// <summary>
         /// 控件的名称
         /// </summary>

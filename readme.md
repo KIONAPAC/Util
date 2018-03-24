@@ -189,6 +189,7 @@ Util应用框架面向的是*架构初学者*，但不是.net初学者。
     - [Sass](http://www.sass-lang.com) 
   - 组件库
     - [Angular Material](https://material.angular.io/)
+    - [Angular Flex-Layout](https://github.com/angular/flex-layout)
     - [PrimeNg](https://www.primefaces.org/primeng)
     - [Angular-Material-App](https://github.com/stbui/angular-material-app)
   - 脚本库
@@ -344,6 +345,7 @@ https://github.com/dotnetcore/util/
 > 包括.net core版本的跳跃式升级等，比如从.net core1.x升级到2.0。
 
 - 2017年7月21日，将.net core升级到2.0 Preview 2。
+- 2018年3月2日，将.net core升级到2.1 Preview 1。
 
 ## 更新计划
 
@@ -407,8 +409,18 @@ https://github.com/dotnetcore/util/
   - 滑动开关 - 基于Material slide-toggle组件 [已发布]
   - 单选框 - 基于Material 单选框组件 [已发布]
   - 菜单 - 基于Material Menu组件 [已发布]
+  - 选项卡 - 基于Material Tabs组件 [已发布]
+  - 导航侧边栏 - 基于Material SideNav组件 [已发布]
+  - 工具栏 - 基于Material Toolbar组件 [已发布]
+  - 卡片 - 基于Material Card组件 [已发布]
+  - 面板 - 基于Material Panel组件 [已发布]
+  - 网格 - 基于Material Grid List组件 [已发布]
+  - 列表 - 基于Material List组件 [已发布]
+  - 弹出层 - 基于Material Dialog组件 [已发布]
+  - 表格 - 基于Material Table组件 [已发布]
+  - 布局(栅格) - 基于Angular flex-layout组件 [已发布]
   - 文件上传 - 基于PrimeNg 文件上传组件 [待启动]
-  - 表格 [待启动]
+  
 - 权限 [待启动]
 - 公共业务基类
   - 地址 [已发布]
@@ -459,3 +471,12 @@ https://github.com/dotnetcore/util/
 - 2018年1月17日，更新了滑动开关组件(Util.Ui.Angular/Material/Forms)及单元测试。
 - 2018年1月18日，更新了单选框组件(Util.Ui.Angular/Material/Forms)及单元测试。
 - 2018年2月18日，更新了菜单组件(Util.Ui.Angular/Material/Menus)及单元测试。
+- 2018年2月22日，更新了选项卡组件(Util.Ui.Angular/Material/Tabs)及单元测试。
+- 2018年2月25日，更新了导航侧边栏组件(Util.Ui.Angular/Material/SideNavs)及工具栏组件(Util.Ui.Angular/Material/Toolbars)。
+- 2018年2月26日，更新了卡片组件(Util.Ui.Angular/Material/Cards)。
+- 2018年2月27日，更新了面板组件(Util.Ui.Angular/Material/Panels)。
+- 2018年3月1日，更新了网格组件(Util.Ui.Angular/Material/Grids)。
+- 2018年3月4日，更新了列表，导航列表，选择列表组件(Util.Ui.Angular/Material/Lists)。
+- 2018年3月7日，更新了弹出层组件(Util.Ui.Angular/Material/Dialogs)。
+- 2018年3月10日，更新了表格组件(Util.Ui.Angular/Material/Tables)。
+- 2018年3月13日，更新了布局组件(Util.Ui.Angular/FlexLayout)。

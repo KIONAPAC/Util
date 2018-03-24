@@ -134,8 +134,56 @@
 <%@ Register Name="ServiceClass"
              Template="Templates\Services\Service.cst"
              MergeProperties="False" %>
+<%@ Register Name="ApiControllerClass"
+             Template="Templates\Presentation\Controllers\ApiController.cst"
+             MergeProperties="False" %>
+<%@ Register Name="ControllerClass"
+             Template="Templates\Presentation\Controllers\Controller.cst"
+             MergeProperties="False" %>
+<%@ Register Name="IndexViewClass"
+             Template="Templates\Presentation\Views\IndexView.cst"
+             MergeProperties="False" %>
+<%@ Register Name="EditViewClass"
+             Template="Templates\Presentation\Views\EditView.cst"
+             MergeProperties="False" %>
+<%@ Register Name="DetailViewClass"
+             Template="Templates\Presentation\Views\DetailView.cst"
+             MergeProperties="False" %>
+<%@ Register Name="IndexComponentClass"
+             Template="Templates\Presentation\Typings\IndexComponent.cst"
+             MergeProperties="False" %>
+<%@ Register Name="EditComponentClass"
+             Template="Templates\Presentation\Typings\EditComponent.cst"
+             MergeProperties="False" %>
+<%@ Register Name="DetailComponentClass"
+             Template="Templates\Presentation\Typings\DetailComponent.cst"
+             MergeProperties="False" %>
+<%@ Register Name="ModuleClass"
+             Template="Templates\Presentation\Typings\Module.cst"
+             MergeProperties="False" %>
+<%@ Register Name="RoutingClass"
+             Template="Templates\Presentation\Typings\Routing.cst"
+             MergeProperties="False" %>
+<%@ Register Name="QueryModelClass"
+             Template="Templates\Presentation\Typings\Query.cst"
+             MergeProperties="False" %>
+<%@ Register Name="ViewModelClass"
+             Template="Templates\Presentation\Typings\ViewModel.cst"
+             MergeProperties="False" %>
 <%@ Register Name="ItemGroupClass"
              Template="Templates\Domains\ItemGroup.cst"
+             MergeProperties="False" %>
+<%@ Register Name="EntityTestClass"
+             Template="Templates\Tests\EntityTest.cst"
+             MergeProperties="False" %>
+<%@ Register Name="EntityTestDataClass"
+             Template="Templates\Tests\EntityTest.Data.cst"
+             MergeProperties="False" %>
+<%@ Register Name="DtoTestClass"
+             Template="Templates\Tests\DtoTest.cst"
+             MergeProperties="False" %>
+<%@ Register Name="ServiceTestClass"
+             Template="Templates\Tests\ServiceTest.cst"
              MergeProperties="False" %>
 <% Generate(); %>
 
@@ -169,6 +217,8 @@
         CreateIocConfig( context );
         //创建实体
         CreateEntity(context);
+        //创建工厂
+        CreateFactory(context);
         //创建仓储接口
         CreateIRepository(context);
         //创建仓储
@@ -193,40 +243,50 @@
         CreateSqlServerUnitOfWork(context);
         //创建Sql Server映射
         CreateSqlServerMapping(context);
+        //创建Dto
+        CreateDto( context );
+        //创建Dto扩展
+        CreateDtoExtension( context );
+        //创建查询参数
+        CreateQuery( context );
+        //创建应用服务接口
+        CreateIService( context );
+        //创建应用服务实现
+        CreateService( context );
+        //创建Api控制器
+        CreateApiController( context );
+        //创建控制器
+        CreateController( context );
+        //创建Index视图
+        CreateIndexView( context );
+        //创建Edit视图
+        CreateEditView( context );
+        //创建Detail视图
+        CreateDetailView( context );
+        //创建Index组件
+        CreateIndexComponent( context );
+        //创建Edit组件
+        CreateEditComponent( context );
+        //创建Detail组件
+        CreateDetailComponent( context );
+        //创建angular模块
+        CreateModule( context );
+        //创建angular路由
+        CreateRouting( context );
+        //创建angular查询参数
+        CreateQueryModel( context );
+        //创建angular视图模型
+        CreateViewModel( context );
+        //创建实体测试
+        CreateEntityTest( context );
+        //创建实体测试数据
+        CreateEntityTestData( context );
+        //创建Dto测试
+        CreateDtoTest( context );
+        //创建应用服务测试
+        CreateServiceTest( context );
         //创建项目嵌套设置
         CreateItemGroup(context);
-//        //创建MySql工作单元
-//        CreateMySqlUnitOfWork(context);
-//        //创建仓储基类
-//        CreateRepositoryBase(context);
-          //创建工厂
-          CreateFactory(context);         
-//        //创建映射
-//        CreateMapping(context);
-//        //创建MySql映射
-//        CreateMySqlMapping(context);
-          
-          //创建Dto
-          CreateDto( context );
-          //创建Dto扩展
-          CreateDtoExtension( context );
-          //创建查询参数
-          CreateQuery( context );
-          //创建应用服务接口
-          CreateIService( context );
-          //创建应用服务实现
-          CreateService( context );
-            
-//        //创建实体测试
-//        CreateEntityTest( context );
-//        //创建实体测试数据
-//        CreateEntityTestData( context );
-//        //创建Dto测试
-//        CreateDtoTest( context );
-//        //创建应用服务测试
-//        CreateServiceTest( context );   
-//        //创建控制器
-//        CreateController( context );
           
         //注册引用
         this.RegisterReference("System.Configuration");
@@ -346,7 +406,7 @@
             result.Namespace = GetNamespace(entity);
             result.UnitOfWork = GetUnitOfWork(entityContext);
             result.IUnitOfWorkNamespace = GetIUnitOfWorkNamespace(entityContext);
-            result.RenderToFile(GetPath(className, string.Format("Datas\\{0}\\Repositories",GetSchema(entity)) ), true);
+            result.RenderToFile(GetPath(className, string.Format("Datas\\Repositories\\{0}",GetSchema(entity)) ), true);
         }
     }
     
@@ -461,7 +521,7 @@
         string className = "I" + GetUnitOfWork(entityContext);
         context.UnitOfWork = className;
         context.Namespace = GetIUnitOfWorkNamespace(entityContext);
-        context.RenderToFile(GetPath(className,"Datas\\UnitOfWorks"), true);
+        context.RenderToFile(GetPath(className,"Datas"), true);
     }
     
     //创建Sql Server工作单元
@@ -475,7 +535,7 @@
         context.DbName = GetDbName( entityContext );
         context.Namespace = GetNamespace( entityContext.Entities.FirstOrDefault() );
         context.IUnitOfWorkNamespace = GetIUnitOfWorkNamespace(entityContext);
-        context.RenderToFile(GetPath(className,"Datas\\UnitOfWorks\\SqlServer"), true);
+        context.RenderToFile(GetPath(className,"Datas\\SqlServer"), true);
     }
     
     //创建Sql Server映射
@@ -488,7 +548,7 @@
             string className = string.Format( "{0}Map", entity.ClassName );
             result.Entity = entity;
             result.Namespace = GetNamespace(entity);
-            result.RenderToFile(GetPath(className,string.Format("Datas\\{0}\\Mappings\\SqlServer",GetSchema(entity)) ), true);
+            result.RenderToFile(GetPath(className,string.Format("Datas\\SqlServer\\Mappings\\{0}",GetSchema(entity)) ), true);
         }
     }
     
@@ -502,74 +562,6 @@
             result.RenderToFile(GetPath("ItemGroup","Domains\\" + GetSchema(entity),".txt"), true);
         }        
     }
-    
-//    //创建工作单元
-//    public void CreateUnitOfWork(EntityContext entityContext)
-//    {
-//        UnitOfWorkClass context = this.Create<UnitOfWorkClass>();
-//        this.CopyPropertiesTo(context);
-//        string className = GetUnitOfWork(entityContext);
-//        context.UnitOfWork = className;
-//        context.EntityContext = entityContext;
-//        context.DbName = GetDbName( entityContext );
-//        context.Namespace = GetNamespace( entityContext.Entities.FirstOrDefault() );
-//        context.IUnitOfWorkNamespace = GetIUnitOfWorkNamespace(entityContext);
-//        context.RenderToFile(GetPath(className,"Datas"), true);
-//    }
-//    
-//    //创建MySql工作单元
-//    public void CreateMySqlUnitOfWork(EntityContext entityContext)
-//    {
-//        MySqlUnitOfWorkClass context = this.Create<MySqlUnitOfWorkClass>();
-//        this.CopyPropertiesTo(context);
-//        string className = GetUnitOfWork(entityContext);
-//        context.UnitOfWork = className;
-//        context.EntityContext = entityContext;
-//        context.DbName = GetDbName( entityContext );
-//        context.Namespace = GetNamespace( entityContext.Entities.FirstOrDefault() );
-//        context.IUnitOfWorkNamespace = GetIUnitOfWorkNamespace(entityContext);
-//        context.RenderToFile(GetPath( "MySql" + className,"Datas\\MySql"), true);
-//    }
-//    
-//    //创建仓储基类
-//    public void CreateRepositoryBase(EntityContext entityContext)
-//    {
-//        RepositoryBaseClass context = this.Create<RepositoryBaseClass>();
-//        this.CopyPropertiesTo(context);
-//        string className = "RepositoryBase"; 
-//        context.UnitOfWork = GetUnitOfWork( entityContext );
-//        context.Namespace = GetNamespace( entityContext.Entities.FirstOrDefault() );
-//        context.IUnitOfWorkNamespace = GetIUnitOfWorkNamespace(entityContext);
-//        context.RenderToFile(GetPath(className,"Datas\\Repositories"), true);
-    //} 
-
-//    //创建映射
-//    public void CreateMapping(EntityContext entityContext)
-//    {
-//        MappingClass result = this.Create<MappingClass>();
-//        this.CopyPropertiesTo(result);
-//        foreach(Entity entity in entityContext.Entities)
-//        {
-//            string className = string.Format( "{0}Map", entity.ClassName );
-//            result.Entity = entity;
-//            result.Namespace = GetNamespace(entity);
-//            result.RenderToFile(GetPath(className,"Datas\\Mappings\\" + GetSchema(entity) ), true);
-//        }
-//    }
-//    
-//    //创建MySql映射
-//    public void CreateMySqlMapping(EntityContext entityContext)
-//    {
-//        MappingMySqlClass result = this.Create<MappingMySqlClass>();
-//        this.CopyPropertiesTo(result);
-//        foreach(Entity entity in entityContext.Entities)
-//        {
-//            string className = string.Format( "{0}Map", entity.ClassName );
-//            result.Entity = entity;
-//            result.Namespace = GetNamespace(entity);
-//            result.RenderToFile(GetPath(className,"Datas\\MySql\\Mappings\\" + GetSchema(entity) ), true);
-//        }
-//    }
     
     //创建Ioc配置
     public void CreateIocConfig(EntityContext entityContext)
@@ -607,7 +599,7 @@
             string className = string.Format( "Extensions.{0}Dto", entity.ClassName );
             result.Entity = entity;
             result.Namespace = GetNamespace(entity);
-            result.RenderToFile(GetPath(className,"Services\\Extensions\\" + GetSchema(entity)), true);
+            result.RenderToFile(GetPath(className,"Services\\Dtos\\" + GetSchema(entity)), true);
         }
     }
     
@@ -652,83 +644,248 @@
             result.Namespace = GetNamespace(entity);
             result.UnitOfWork = GetUnitOfWork(entityContext);
             result.IUnitOfWorkNamespace = GetIUnitOfWorkNamespace(entityContext);
-            result.RenderToFile(GetPath(className,"Services\\Core\\" + GetSchema(entity) ), true);
+            result.RenderToFile(GetPath(className,"Services\\Implements\\" + GetSchema(entity) ), true);
         }
     }
-
     
-//    //创建实体测试
-//    public void CreateEntityTest(EntityContext entityContext)
-//    {
-//        EntityTestClass result = this.Create<EntityTestClass>();
-//        this.CopyPropertiesTo(result);
-//        foreach(Entity entity in entityContext.Entities)
-//        {
-//            string className = string.Format( "{0}Test", entity.ClassName );
-//            result.Entity = entity;
-//            result.Namespace = GetNamespace(entity);
-//            result.RenderToFile(GetPath(className,"Tests\\UnitTests\\Models\\" + GetSchema(entity) ), true);
-//        }
-//    }
-//    
-//    //创建实体测试数据
-//    public void CreateEntityTestData(EntityContext entityContext)
-//    {
-//        EntityTestDataClass result = this.Create<EntityTestDataClass>();
-//        this.CopyPropertiesTo(result);
-//        foreach(Entity entity in entityContext.Entities)
-//        {
-//            string className = string.Format( "{0}Test.Data", entity.ClassName );
-//            result.Entity = entity;
-//            result.Namespace = GetNamespace(entity);
-//            result.RenderToFile(GetPath(className,"Tests\\UnitTests\\Models\\" + GetSchema(entity)), true);
-//        }
-//    }
-//    
-//    //创建Dto测试
-//    public void CreateDtoTest(EntityContext entityContext)
-//    {
-//        DtoTestClass result = this.Create<DtoTestClass>();
-//        this.CopyPropertiesTo(result);
-//        foreach(Entity entity in entityContext.Entities)
-//        {
-//            string className = string.Format( "{0}DtoTest", entity.ClassName );
-//            result.Entity = entity;
-//            result.Namespace = GetNamespace(entity);
-//            result.RenderToFile(GetPath(className,"Tests\\IntegrationTests\\Dtos\\" + GetSchema(entity)), true);
-//        }
-//    }
-//    
-//    //创建应用服务测试
-//    public void CreateServiceTest(EntityContext entityContext)
-//    {
-//        ServiceTestClass result = this.Create<ServiceTestClass>();
-//        this.CopyPropertiesTo(result);
-//        
-//        foreach(Entity entity in entityContext.Entities)
-//        {   
-//            string className = string.Format( "{0}ServiceTest",entity.ClassName );
-//            result.Entity = entity;
-//            result.Namespace = GetNamespace(entity);
-//            result.RenderToFile(GetPath(className,"Tests\\IntegrationTests\\Services\\" + GetSchema(entity)), true);
-//        }
-//    }
-//    
-//    //创建控制器
-//    public void CreateController(EntityContext entityContext)
-//    {
-//        ControllerClass result = this.Create<ControllerClass>();
-//        this.CopyPropertiesTo(result);
-//        
-//        foreach(Entity entity in entityContext.Entities)
-//        {
-//            string className = string.Format( "{0}Controller",entity.ClassName );
-//            result.Entity = entity;
-//            result.Namespace = GetNamespace(entity);
-//            result.Schema = GetSchema(entity);
-//            result.RenderToFile(GetPath(className,string.Format("Presentation\\Controllers\\{0}", GetSchema(entity) )), true);
-//        }
-//    }
+    //创建Api控制器
+    public void CreateApiController(EntityContext entityContext)
+    {
+        ApiControllerClass result = this.Create<ApiControllerClass>();
+        this.CopyPropertiesTo(result);
+        
+        foreach(Entity entity in entityContext.Entities)
+        {
+            string className = string.Format( "{0}Controller",entity.ClassName );
+            result.Entity = entity;
+            result.Namespace = GetNamespace(entity);
+            result.Schema = GetSchema(entity);
+            result.RenderToFile(GetPath(className,"Presentation\\Apis\\" + GetSchema(entity) ), true);
+        }
+    }
+    
+    //创建控制器
+    public void CreateController(EntityContext entityContext)
+    {
+        ControllerClass result = this.Create<ControllerClass>();
+        this.CopyPropertiesTo(result);
+        
+        foreach(Entity entity in entityContext.Entities)
+        {
+            string className = string.Format( "{0}Controller",entity.ClassName );
+            result.Entity = entity;
+            result.Namespace = GetNamespace(entity);
+            result.Schema = GetSchema(entity);
+            result.RenderToFile(GetPath(className,"Presentation\\Areas\\" + GetSchema(entity) + "\\Controllers" ), true);
+        }
+    }
+    
+    //创建Index视图
+    public void CreateIndexView(EntityContext entityContext)
+    {
+        IndexViewClass result = this.Create<IndexViewClass>();
+        this.CopyPropertiesTo(result);
+        
+        foreach(Entity entity in entityContext.Entities)
+        {
+            string className = "Index";
+            result.Entity = entity;
+            result.Namespace = GetSchema(entity).ToLower();
+            result.RenderToFile(GetPath(className,string.Format("Presentation\\Areas\\{0}\\Views\\{1}", GetSchema(entity),entity.ClassName ), "cshtml" ), true);
+        }
+    }
+    
+    //创建Edit视图
+    public void CreateEditView(EntityContext entityContext)
+    {
+        EditViewClass result = this.Create<EditViewClass>();
+        this.CopyPropertiesTo(result);
+        
+        foreach(Entity entity in entityContext.Entities)
+        {
+            string className = "Edit";
+            result.Entity = entity;
+            result.Namespace = GetSchema(entity).ToLower();
+            result.RenderToFile(GetPath(className,string.Format("Presentation\\Areas\\{0}\\Views\\{1}", GetSchema(entity),entity.ClassName ), "cshtml" ), true);
+        }
+    }
+    
+    //创建Detail视图
+    public void CreateDetailView(EntityContext entityContext)
+    {
+        DetailViewClass result = this.Create<DetailViewClass>();
+        this.CopyPropertiesTo(result);
+        
+        foreach(Entity entity in entityContext.Entities)
+        {
+            string className = "Detail";
+            result.Entity = entity;
+            result.Namespace = GetSchema(entity).ToLower();
+            result.RenderToFile(GetPath(className,string.Format("Presentation\\Areas\\{0}\\Views\\{1}", GetSchema(entity),entity.ClassName ), "cshtml" ), true);
+        }
+    }
+    
+    //创建Index组件
+    public void CreateIndexComponent(EntityContext entityContext)
+    {
+        IndexComponentClass result = this.Create<IndexComponentClass>();
+        this.CopyPropertiesTo(result);
+        
+        foreach(Entity entity in entityContext.Entities)
+        {
+            string className = string.Format("{0}-index.component",entity.ClassName.ToCamelCase());
+            result.Entity = entity;
+            result.Namespace = GetSchema(entity).ToLower();
+            result.RenderToFile(GetPath(className,string.Format("Presentation\\Typings\\app\\{0}\\{1}", GetSchema(entity).ToCamelCase(),entity.ClassName.ToCamelCase() ), "ts" ), true);
+        }
+    }
+    
+    //创建Edit组件
+    public void CreateEditComponent(EntityContext entityContext)
+    {
+        EditComponentClass result = this.Create<EditComponentClass>();
+        this.CopyPropertiesTo(result);
+        
+        foreach(Entity entity in entityContext.Entities)
+        {
+            string className = string.Format("{0}-edit.component",entity.ClassName.ToCamelCase());
+            result.Entity = entity;
+            result.Namespace = GetSchema(entity).ToLower();
+            result.RenderToFile(GetPath(className,string.Format("Presentation\\Typings\\app\\{0}\\{1}", GetSchema(entity).ToCamelCase(),entity.ClassName.ToCamelCase() ), "ts" ), true);
+        }
+    }
+    
+    //创建Detail组件
+    public void CreateDetailComponent(EntityContext entityContext)
+    {
+        DetailComponentClass result = this.Create<DetailComponentClass>();
+        this.CopyPropertiesTo(result);
+        
+        foreach(Entity entity in entityContext.Entities)
+        {
+            string className = string.Format("{0}-detail.component",entity.ClassName.ToCamelCase());
+            result.Entity = entity;
+            result.Namespace = GetSchema(entity).ToLower();
+            result.RenderToFile(GetPath(className,string.Format("Presentation\\Typings\\app\\{0}\\{1}", GetSchema(entity).ToCamelCase(),entity.ClassName.ToCamelCase() ), "ts" ), true);
+        }
+    }
+    
+    //创建angular模块
+    public void CreateModule(EntityContext entityContext)
+    {
+        ModuleClass result = this.Create<ModuleClass>();
+        this.CopyPropertiesTo(result);
+        
+        foreach(Entity entity in entityContext.Entities)
+        {
+            string className = string.Format("{0}.module",GetSchema(entity).ToSingular().ToCamelCase());
+            result.EntityContext = entityContext;
+            result.Entity = entity;
+            result.Namespace = GetSchema(entity).ToLower();
+            result.RenderToFile(GetPath(className,string.Format("Presentation\\Typings\\app\\{0}", GetSchema(entity).ToCamelCase() ), "ts" ), true);
+        }
+    }
+    
+    //创建angular路由
+    public void CreateRouting(EntityContext entityContext)
+    {
+        RoutingClass result = this.Create<RoutingClass>();
+        this.CopyPropertiesTo(result);
+        
+        foreach(Entity entity in entityContext.Entities)
+        {
+            string className = string.Format("{0}.routing.module",GetSchema(entity).ToSingular().ToCamelCase());
+            result.EntityContext = entityContext;
+            result.Entity = entity;
+            result.Namespace = GetSchema(entity).ToLower();            
+            result.RenderToFile(GetPath(className,string.Format("Presentation\\Typings\\app\\{0}", GetSchema(entity).ToCamelCase() ), "ts" ), true);
+        }
+    }
+    
+    //创建angular查询参数
+    public void CreateQueryModel(EntityContext entityContext)
+    {
+        QueryModelClass result = this.Create<QueryModelClass>();
+        this.CopyPropertiesTo(result);
+        foreach(Entity entity in entityContext.Entities)
+        {
+            string className = string.Format( "{0}-query", entity.ClassName.ToCamelCase() );
+            result.Entity = entity;
+            result.Namespace = GetNamespace(entity);
+            result.RenderToFile(GetPath(className,string.Format("Presentation\\Typings\\app\\{0}\\{1}", GetSchema(entity).ToCamelCase(),entity.ClassName.ToCamelCase() ), "ts" ), true);
+        }
+    }
+    
+    //创建angular视图模型
+    public void CreateViewModel(EntityContext entityContext)
+    {
+        ViewModelClass result = this.Create<ViewModelClass>();
+        this.CopyPropertiesTo(result);
+        foreach(Entity entity in entityContext.Entities)
+        {
+            string className = string.Format( "{0}-view-model", entity.ClassName.ToCamelCase() );
+            result.Entity = entity;
+            result.Namespace = GetNamespace(entity);
+            result.RenderToFile(GetPath(className,string.Format("Presentation\\Typings\\app\\{0}\\{1}", GetSchema(entity).ToCamelCase(),entity.ClassName.ToCamelCase() ), "ts" ), true);
+        }
+    }
+    
+    //创建实体测试
+    public void CreateEntityTest(EntityContext entityContext)
+    {
+        EntityTestClass result = this.Create<EntityTestClass>();
+        this.CopyPropertiesTo(result);
+        foreach(Entity entity in entityContext.Entities)
+        {
+            string className = string.Format( "{0}Test", entity.ClassName );
+            result.Entity = entity;
+            result.Namespace = GetNamespace(entity);
+            result.RenderToFile(GetPath(className,"Tests\\UnitTests\\Models\\" + GetSchema(entity) ), true);
+        }
+    }
+    
+    //创建实体测试数据
+    public void CreateEntityTestData(EntityContext entityContext)
+    {
+        EntityTestDataClass result = this.Create<EntityTestDataClass>();
+        this.CopyPropertiesTo(result);
+        foreach(Entity entity in entityContext.Entities)
+        {
+            string className = string.Format( "{0}Test.Data", entity.ClassName );
+            result.Entity = entity;
+            result.Namespace = GetNamespace(entity);
+            result.RenderToFile(GetPath(className,"Tests\\UnitTests\\Models\\" + GetSchema(entity)), true);
+        }
+    }
+    
+    //创建Dto测试
+    public void CreateDtoTest(EntityContext entityContext)
+    {
+        DtoTestClass result = this.Create<DtoTestClass>();
+        this.CopyPropertiesTo(result);
+        foreach(Entity entity in entityContext.Entities)
+        {
+            string className = string.Format( "{0}DtoTest", entity.ClassName );
+            result.Entity = entity;
+            result.Namespace = GetNamespace(entity);
+            result.RenderToFile(GetPath(className,"Tests\\IntegrationTests\\Dtos\\" + GetSchema(entity)), true);
+        }
+    }
+    
+    //创建应用服务测试
+    public void CreateServiceTest(EntityContext entityContext)
+    {
+        ServiceTestClass result = this.Create<ServiceTestClass>();
+        this.CopyPropertiesTo(result);
+        
+        foreach(Entity entity in entityContext.Entities)
+        {   
+            string className = string.Format( "{0}ServiceTest",entity.ClassName );
+            result.Entity = entity;
+            result.Namespace = GetNamespace(entity);
+            result.RenderToFile(GetPath(className,"Tests\\IntegrationTests\\Services\\" + GetSchema(entity)), true);
+        }
+    }
     
     private void OnSchemaItemProcessed(object sender, SchemaItemProcessedEventArgs e)
     {

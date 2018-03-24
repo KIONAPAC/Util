@@ -2,7 +2,7 @@
 //Copyright 2018 何镇汐
 //Licensed under the MIT license
 //================================================
-import { Component, Input, ViewChild, OnInit, ContentChild } from '@angular/core';
+import { Component, Input, Output, ViewChild, ContentChild, AfterContentInit, EventEmitter } from '@angular/core';
 import { MatTableDataSource, MatPaginator, MatPaginatorIntl, MatSort } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
 import { WebApi as webapi } from '../common/webapi';
@@ -11,15 +11,16 @@ import { PagerList } from '../core/pager-list';
 import { ViewModel } from '../core/view-model';
 import { QueryParameter } from '../core/query-parameter';
 import { MessageConfig as config } from '../config/message-config';
+import { DicService } from '../services/dic.service';
 
 /**
  * 创建分页本地化提示
  */
-function createMatPaginatorIntl() {
+export function createMatPaginatorIntl() {
     let result = new MatPaginatorIntl();
     result.itemsPerPageLabel = "每页";
-    result.nextPageLabel = "下一页";
-    result.previousPageLabel = "上一页";
+    result.nextPageLabel = "下页";
+    result.previousPageLabel = "上页";
     result.getRangeLabel = (page: number, pageSize: number, length: number) => {
         if (length == 0 || pageSize == 0) { return `0`; }
         length = Math.max(length, 0);
@@ -34,7 +35,7 @@ function createMatPaginatorIntl() {
  * Mat表格包装器
  */
 @Component({
-    selector: 'table-wrapper',
+    selector: 'mat-table-wrapper',
     providers: [{ provide: MatPaginatorIntl, useFactory: createMatPaginatorIntl }],
     template: `
         <div class="table-container mat-elevation-z8" [ngStyle]="getStyle()">
@@ -42,7 +43,7 @@ function createMatPaginatorIntl() {
                 <mat-spinner></mat-spinner>
             </div>
             <ng-content></ng-content>
-            <mat-paginator [length]="totalCount" [pageSizeOptions]="pageSizeItems"></mat-paginator>
+            <mat-paginator [length]="totalCount" [pageSize]="queryParam&&queryParam.pageSize" [pageSizeOptions]="pageSizeOptions"></mat-paginator>
         </div>
     `,
     styles: [`
@@ -76,21 +77,37 @@ function createMatPaginatorIntl() {
         }
     `]
 })
-export class TableWrapperComponent<T extends ViewModel> implements OnInit {
+export class TableWrapperComponent<T extends ViewModel> implements AfterContentInit {
     /**
      * 显示进度条
      */
-    private loading: boolean;
+    loading: boolean;
     /**
      * 总行数
      */
-    private totalCount = 0;
+    totalCount = 0;
+    /**
+     * 初始排序
+     */
+    initOrder: string;
     /**
      * 数据源
      */
     dataSource: MatTableDataSource<T>;
     /**
-     * 是否自动加载，默认在初始化时自动加载数据，设置成false则手工加载
+     * checkbox选中列表
+     */
+    checkedSelection: SelectionModel<T>;
+    /**
+     * 点击行选中列表
+     */
+    selectedSelection: SelectionModel<T>;
+    /**
+     * 键
+     */
+    @Input() key: string;
+    /**
+     * 初始化时是否自动加载数据，默认为true,设置成false则手工加载
      */
     @Input() autoLoad: boolean;
     /**
@@ -102,29 +119,33 @@ export class TableWrapperComponent<T extends ViewModel> implements OnInit {
      */
     @Input() minHeight: number;
     /**
-     * 最小宽度
-     */
-    @Input() minWidth: number;
-    /**
      * 宽度
      */
     @Input() width: number;
     /**
      * 分页长度列表
      */
-    @Input() pageSizeItems: number[];
+    @Input() pageSizeOptions: number[];
     /**
-    * 基地址，基于该地址构建请求和删除地址，范例：传入test,则请求地址为/api/test,删除地址为/api/test/delete
+    * 基地址，基于该地址构建加载地址和删除地址，范例：传入test,则加载地址为/api/test,删除地址为/api/test/delete
     */
     @Input() baseUrl: string;
     /**
-     * 请求地址，如果设置了基地址baseUrl，则可以省略该参数
+     * 数据加载地址，范例：/api/test
      */
     @Input() url: string;
+    /**
+     * 删除地址，注意：由于支持批量删除，所以采用Post提交，范例：/api/test/delete
+     */
+    @Input() deleteUrl: string;
     /**
      * 查询参数
      */
     @Input() queryParam: QueryParameter;
+    /**
+     * 查询参数还原事件
+     */
+    @Output() onQueryRestore = new EventEmitter<QueryParameter>();
     /**
      * 排序组件
      */
@@ -133,38 +154,37 @@ export class TableWrapperComponent<T extends ViewModel> implements OnInit {
      * 分页组件
      */
     @ViewChild(MatPaginator) paginator: MatPaginator;
-    /**
-     * 选中列表
-     */
-    selection = new SelectionModel<T>(true, []);
 
     /**
      * 初始化Mat表格包装器
      */
-    constructor() {
-        this.maxHeight = 500;
+    constructor(private dic: DicService<QueryParameter>) {
         this.minHeight = 300;
-        this.minWidth = 300;
-        this.pageSizeItems = [20, 50, 100, 200];
+        this.pageSizeOptions = [10, 20, 50, 100];
         this.dataSource = new MatTableDataSource<T>();
+        this.checkedSelection = new SelectionModel<T>(true, []);
+        this.selectedSelection = new SelectionModel<T>(false, []);
         this.loading = false;
         this.autoLoad = true;
+        this.queryParam = new QueryParameter();
     }
 
     /**
-     * 组件初始化
+     * 内容加载完成时进行初始化
      */
-    ngOnInit() {
+    ngAfterContentInit() {
         this.initPaginator();
         this.initSort();
+        this.restoreQueryParam();
         if (this.autoLoad)
-            this.init();
+            this.query();
     }
 
     /**
      * 初始化分页组件
      */
     private initPaginator() {
+        this.initPage();
         this.paginator.page.subscribe(() => {
             this.queryParam.page = this.paginator.pageIndex + 1;
             this.queryParam.pageSize = this.paginator.pageSize;
@@ -173,23 +193,50 @@ export class TableWrapperComponent<T extends ViewModel> implements OnInit {
     }
 
     /**
+     * 初始化分页参数
+     */
+    private initPage() {
+        this.queryParam.page = 1;
+        if (this.pageSizeOptions && this.pageSizeOptions.length > 0)
+            this.queryParam.pageSize = this.pageSizeOptions[0];
+    }
+
+    /**
     * 初始化排序组件
     */
     private initSort() {
-        this.sort.sortChange.subscribe(() => {
-            this.queryParam.order = `${this.sort.active} ${this.sort.direction}`;
+        if (!this.sort)
+            return;
+        this.setOrder();
+        this.sort.sortChange && this.sort.sortChange.subscribe(() => {
+            this.setOrder();
             this.query();
         });
     }
 
     /**
-     * 初始化
+     * 设置排序
      */
-    init() {
-        this.queryParam.page = 1;
-        if (this.pageSizeItems && this.pageSizeItems.length > 0)
-            this.queryParam.pageSize = this.pageSizeItems[0];
-        this.query();
+    private setOrder() {
+        if (!this.sort.active)
+            return;
+        let order = `${this.sort.active} ${this.sort.direction}`;
+        if (!this.initOrder)
+            this.initOrder = order;
+        this.queryParam.order = order;
+    }
+
+    /**
+     * 还原查询参数
+     */
+    private restoreQueryParam() {
+        if (!this.key)
+            return;
+        let query = this.dic.get(this.key);
+        if (!query)
+            return;
+        this.queryParam = query;
+        this.onQueryRestore.emit(query);
     }
 
     /**
@@ -201,6 +248,9 @@ export class TableWrapperComponent<T extends ViewModel> implements OnInit {
             console.log("表格url未设置");
             return;
         }
+        this.filterParam();
+        if (this.key)
+            this.dic.add(this.key, this.queryParam);
         webapi.get<PagerList<T>>(url).param(this.queryParam).handle({
             beforeHandler: () => { this.loading = true; return true; },
             handler: result => {
@@ -209,26 +259,38 @@ export class TableWrapperComponent<T extends ViewModel> implements OnInit {
                 this.dataSource.data = result.data;
                 this.paginator.pageIndex = result.page - 1;
                 this.totalCount = result.totalCount;
-                this.selection.clear();
+                this.checkedSelection.clear();
             },
             completeHandler: () => this.loading = false
         });
     }
 
     /**
-     * 刷新表格
+     * 过滤参数
      */
-    refresh() {
+    private filterParam() {
+        if (this.queryParam.keyword === null)
+            this.queryParam.keyword = "";
+    }
+
+    /**
+     * 刷新表格
+     * @param queryParam 查询参数
+     */
+    refresh(queryParam) {
+        this.queryParam = queryParam;
+        this.initPage();
+        this.queryParam.order = this.initOrder;
+        this.dic.remove(this.key);
         this.query();
     }
 
     /**
      * 获取样式
      */
-    private getStyle() {
+    getStyle() {
         return {
-            'max-height': `${this.maxHeight}px`,
-            'min-width': `${this.minWidth}px`,
+            'max-height': this.maxHeight ? `${this.maxHeight}px` : null,
             'width': this.width ? `${this.width}px` : null
         };
     }
@@ -238,47 +300,47 @@ export class TableWrapperComponent<T extends ViewModel> implements OnInit {
      */
     masterToggle() {
         if (this.isMasterChecked()) {
-            this.selection.clear();
+            this.checkedSelection.clear();
             return;
         }
-        this.dataSource.data.forEach(data => this.selection.select(data));
+        this.dataSource.data.forEach(data => this.checkedSelection.select(data));
     }
 
     /**
      * 表头主复选框的选中状态
      */
     isMasterChecked() {
-        return this.selection.hasValue() &&
-            this.isAllSelected() &&
-            this.selection.selected.length >= this.dataSource.data.length;
+        return this.checkedSelection.hasValue() &&
+            this.isAllChecked() &&
+            this.checkedSelection.selected.length >= this.dataSource.data.length;
     }
 
     /**
      * 是否所有行复选框被选中
      */
-    private isAllSelected() {
-        return this.dataSource.data.every(data => this.selection.isSelected(data));
+    private isAllChecked() {
+        return this.dataSource.data.every(data => this.checkedSelection.isSelected(data));
     }
 
     /**
      * 表头主复选框的确定状态
      */
     isMasterIndeterminate() {
-        return this.selection.hasValue() && (!this.isAllSelected() || !this.dataSource.data.length);
+        return this.checkedSelection.hasValue() && (!this.isAllChecked() || !this.dataSource.data.length);
     }
 
     /**
-     * 获取被选中实体列表
+     * 获取复选框被选中实体列表
      */
-    getSelected(): T[] {
-        return this.dataSource.data.filter(data => this.selection.isSelected(data));
+    getChecked(): T[] {
+        return this.dataSource.data.filter(data => this.checkedSelection.isSelected(data));
     }
 
     /**
-     * 获取被选中实体Id列表
+     * 获取复选框被选中实体Id列表
      */
-    getSelectedIds(): string {
-        return this.getSelected().map((value) => value.id).join(",");
+    getCheckedIds(): string {
+        return this.getChecked().map((value) => value.id).join(",");
     }
 
     /**
@@ -288,7 +350,7 @@ export class TableWrapperComponent<T extends ViewModel> implements OnInit {
      * @param deleteUrl 服务端删除Api地址，如果设置了基地址baseUrl，则可以省略该参数
      */
     delete(ids?: string, handler?: () => {}, deleteUrl?: string) {
-        ids = ids || this.getSelectedIds();
+        ids = ids || this.getCheckedIds();
         if (!ids) {
             message.warn(config.deleteNotSelected);
             return;
@@ -302,15 +364,19 @@ export class TableWrapperComponent<T extends ViewModel> implements OnInit {
      * 发送删除请求
      */
     private deleteRequest(ids?: string, handler?: () => {}, deleteUrl?: string) {
-        deleteUrl = deleteUrl || `/api/${this.baseUrl}/delete`;
+        deleteUrl = deleteUrl || this.deleteUrl || (this.baseUrl && `/api/${this.baseUrl}/delete`);
+        if (!deleteUrl) {
+            console.log("表格deleteUrl未设置");
+            return;
+        }
         webapi.post(deleteUrl, ids).handle({
             handler: () => {
                 if (handler) {
                     handler();
                     return;
                 }
-                message.success(config.deleteSuccessed);
-                this.refresh();
+                message.snack(config.deleteSuccessed);
+                this.query();
             }
         });
     }

@@ -1,0 +1,81 @@
+﻿<%@ Template Language="C#" TargetLanguage="C#" Debug="True" Encoding="UTF-8" %>
+
+<%@ Assembly Src="..\..\..\Common\Model.cs" %>
+<%@ Assembly Src="..\..\..\Common\Extensions.cs" %>
+
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="System.Linq" %>
+<%@ Import Namespace="System.Text" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+<%@ Import Namespace="SchemaMapper" %>
+
+<%@ Property Name="Entity" Type="SchemaMapper.Entity"  %>
+<%@ Property Name="Namespace" Type="System.String" %>
+<%-- Safe类名 --%>
+<% string SafeClassName = Entity.ClassName.ToSafeName(); %>
+<%-- 描述 --%>
+<% string Description = Entity.Description; %>
+<%-- 驼峰形式类名 --%>
+<% string CamelClassName = SafeClassName.ToCamelCase(); %>
+@model <%=SafeClassName%>Dto
+
+<style>
+    <% foreach(Property p in Entity.Properties) { %>
+    <% if( p.IsPrimaryKey.SafeValue() ) continue; %>
+    <% if( p.ColumnName.ToLower() == "creationtime" ) { %>
+    .mat-column-creationTime {
+        max-width: 100px;
+    }
+    <%continue; } %>    
+    <% if( Entity.IsHidden(p) ) continue; %>
+    <% if( p.DataType == DbType.Boolean ) { %>
+    .mat-column-<%= p.PropertyName.ToSafeName().ToCamelCase() %> {
+        max-width: 80px;
+    }
+    <%continue; } %>
+    .mat-column-<%= p.PropertyName.ToSafeName().ToCamelCase() %> {
+        max-width: 20%;
+    }
+    <% } %>
+    .mat-column-operation {
+        max-width: 120px;
+    }
+</style>
+
+<util-toolbar color="Primary">
+    <util-a styles="Icon" tooltip="添加<%=Description%>" link="create">
+        <util-icon font-awesome-icon="Plus"></util-icon>
+    </util-a>
+    <util-button styles="Icon" tooltip="批量删除" on-click="delete()">
+        <util-icon material-icon="Delete"></util-icon>        
+    </util-button>
+    <util-button styles="Icon" tooltip="刷新" on-click="refresh()">
+        <util-icon material-icon="Sync"></util-icon>
+    </util-button>
+</util-toolbar>
+
+<util-table id="table<%=SafeClassName%>" max-height="700" query-param="queryParam" on-query-restore="restoreQueryParam($event)" base-url="<%=CamelClassName%>" <% if( Entity.Properties.Any( t => t.ColumnName == "CreationTime" ) ) { %>sort="CreationTime" sort-direction="Desc"<% } %>>
+    <util-table-column type="Checkbox"></util-table-column>
+    <util-table-column type="LineNumber"></util-table-column>
+    <% foreach(Property p in Entity.Properties) { %>
+    <% if( p.IsPrimaryKey.SafeValue() ) continue; %>
+    <% if( p.ColumnName.ToLower() == "creationtime" ) { %>
+    <util-table-column for="<%= p.PropertyName.ToSafeName() %>" sort="true"></util-table-column>
+    <%continue; } %>
+    <% if( Entity.IsHidden(p) ) continue; %>
+    <util-table-column for="<%= p.PropertyName.ToSafeName() %>" sort="true"></util-table-column>
+    <% } %>
+    <util-table-column title="操作" column="operation">
+        <util-table-cell>
+            <util-a styles="Icon" tooltip="编辑" bind-link="['edit',row.id]">
+                <util-icon material-icon="Edit"></util-icon>
+            </util-a>
+            <util-button styles="Icon" tooltip="删除" on-click="delete(row.id)">
+                <util-icon material-icon="Delete"></util-icon>
+            </util-button>
+            <util-a styles="Icon" tooltip="查看详细" bind-link="['detail',row.id]">
+                <util-icon material-icon="Visibility"></util-icon>
+            </util-a>
+        </util-table-cell>
+    </util-table-column>
+</util-table>

@@ -34,6 +34,11 @@ namespace Util.Ui.Builders {
         public IHtmlContentBuilder InnerHtml => _tagBuilder.InnerHtml;
 
         /// <summary>
+        /// 是否包含Html内容
+        /// </summary>
+        public bool HasInnerHtml => _tagBuilder.HasInnerHtml;
+
+        /// <summary>
         /// 获取标签生成器
         /// </summary>
         public Microsoft.AspNetCore.Mvc.Rendering.TagBuilder GetTagBuilder() {
@@ -70,6 +75,23 @@ namespace Util.Ui.Builders {
             if( ignoreIfValueIsEmpty && string.IsNullOrWhiteSpace( value ) )
                 return this;
             Attribute( name, value );
+            return this;
+        }
+
+        /// <summary>
+        /// 添加属性
+        /// </summary>
+        /// <param name="name">属性名</param>
+        public TagBuilder AddAttribute( string name ) {
+            return Attribute( name, string.Empty ); ;
+        }
+
+        /// <summary>
+        /// 添加内容
+        /// </summary>
+        /// <param name="content">内容</param>
+        public TagBuilder AppendContent( string content ) {
+            _tagBuilder.InnerHtml.AppendHtml( content );
             return this;
         }
 

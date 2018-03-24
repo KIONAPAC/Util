@@ -1,7 +1,6 @@
 ﻿using Util.Ui.Builders;
 using Util.Ui.Configs;
 using Util.Ui.Enums;
-using Util.Ui.Material.Commons.Configs;
 using Util.Ui.Material.Enums;
 using Util.Ui.Renders;
 
@@ -37,14 +36,6 @@ namespace Util.Ui.Material.Forms.Renders {
             ConfigModel( builder );
             ConfigRequired( builder );
             ConfigEvents( builder );
-        }
-
-        /// <summary>
-        /// 配置标识
-        /// </summary>
-        private void ConfigId( TagBuilder builder ) {
-            if( _config.Contains( UiConst.Id ) )
-                builder.AddAttribute( $"#{_config.GetValue( UiConst.Id )}", "", false );
         }
 
         /// <summary>

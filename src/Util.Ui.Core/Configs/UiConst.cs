@@ -24,6 +24,10 @@
         /// </summary>
         public const string Color = "color";
         /// <summary>
+        /// 背景色
+        /// </summary>
+        public const string BackgroundColor = "background-color";
+        /// <summary>
         /// 类型
         /// </summary>
         public const string Type = "type";
@@ -71,6 +75,14 @@
         /// 提交事件
         /// </summary>
         public const string OnSubmit = "on-submit";
+        /// <summary>
+        /// 打开事件
+        /// </summary>
+        public const string OnOpen = "on-open";
+        /// <summary>
+        /// 关闭事件
+        /// </summary>
+        public const string OnClose = "on-close";
         /// <summary>
         /// 图标
         /// </summary>
@@ -160,6 +172,10 @@
         /// </summary>
         public const string Width = "width";
         /// <summary>
+        /// 高度
+        /// </summary>
+        public const string Height = "height";
+        /// <summary>
         /// 提示
         /// </summary>
         public const string Tooltip = "tooltip";
@@ -199,5 +215,165 @@
         /// 重叠
         /// </summary>
         public const string Overlap = "overlap";
+        /// <summary>
+        /// 拉伸
+        /// </summary>
+        public const string Stretch = "stretch";
+        /// <summary>
+        /// 选中索引
+        /// </summary>
+        public const string SelectedIndex = "selected-index";
+        /// <summary>
+        /// 延迟加载
+        /// </summary>
+        public const string LazyLoad = "lazy-load";
+        /// <summary>
+        /// 全屏
+        /// </summary>
+        public const string Fullscreen = "fullscreen";
+        /// <summary>
+        /// 打开
+        /// </summary>
+        public const string Opened = "opened";
+        /// <summary>
+        /// 模式
+        /// </summary>
+        public const string Mode = "mode";
+        /// <summary>
+        /// 自动调整大小
+        /// </summary>
+        public const string AutoSize = "auto-size";
+        /// <summary>
+        /// 对齐
+        /// </summary>
+        public const string Align = "align";
+        /// <summary>
+        /// 源路径
+        /// </summary>
+        public const string Src = "src";
+        /// <summary>
+        /// 展开
+        /// </summary>
+        public const string Expanded = "expanded";
+        /// <summary>
+        /// 列
+        /// </summary>
+        public const string Column = "column";
+        /// <summary>
+        /// 列
+        /// </summary>
+        public const string Columns = "columns";
+        /// <summary>
+        /// 行高
+        /// </summary>
+        public const string RowHeight = "row-height";
+        /// <summary>
+        /// 合并列
+        /// </summary>
+        public const string Colspan = "colspan";
+        /// <summary>
+        /// 合并行
+        /// </summary>
+        public const string Rowspan = "rowspan";
+        /// <summary>
+        /// 左边合并列
+        /// </summary>
+        public const string BeforeColspan = "before-colspan";
+        /// <summary>
+        /// 右边合并列
+        /// </summary>
+        public const string AfterColspan = "after-colspan";
+        /// <summary>
+        /// 紧凑
+        /// </summary>
+        public const string Dense = "dense";
+        /// <summary>
+        /// 值
+        /// </summary>
+        public const string Value = "value";
+        /// <summary>
+        /// 选中
+        /// </summary>
+        public const string Selected = "selected";
+        /// <summary>
+        /// 标题
+        /// </summary>
+        public const string Title = "title";
+        /// <summary>
+        /// 查询参数
+        /// </summary>
+        public const string QueryParam = "query-param";
+        /// <summary>
+        /// 基地址
+        /// </summary>
+        public const string BaseUrl = "base-url";
+        /// <summary>
+        /// 删除地址
+        /// </summary>
+        public const string DeleteUrl = "delete-url";
+        /// <summary>
+        /// 排序
+        /// </summary>
+        public const string Sort = "sort";
+        /// <summary>
+        /// 排序方向
+        /// </summary>
+        public const string SortDirection = "sort-direction";
+        /// <summary>
+        /// 最大高度
+        /// </summary>
+        public const string MaxHeight = "max-height";
+        /// <summary>
+        /// 最小高度
+        /// </summary>
+        public const string MinHeight = "min-height";
+        /// <summary>
+        /// 自动加载
+        /// </summary>
+        public const string AutoLoad = "auto-load";
+        /// <summary>
+        /// 分页长度列表
+        /// </summary>
+        public const string PageSizeOptions = "page-size-options";
+        /// <summary>
+        /// 方向
+        /// </summary>
+        public const string Direction = "direction";
+        /// <summary>
+        /// X轴水平对齐方式
+        /// </summary>
+        public const string XAlign = "x-align";
+        /// <summary>
+        /// Y轴垂直对齐方式
+        /// </summary>
+        public const string YAlign = "y-align";
+        /// <summary>
+        /// 间隙
+        /// </summary>
+        public const string Gap = "gap";
+        /// <summary>
+        /// 弹性
+        /// </summary>
+        public const string Flex = "flex";
+        /// <summary>
+        /// 排序
+        /// </summary>
+        public const string Order = "order";
+        /// <summary>
+        /// 偏移
+        /// </summary>
+        public const string Offset = "offset";
+        /// <summary>
+        /// 填充
+        /// </summary>
+        public const string Fill = "fill";
+        /// <summary>
+        /// 换行
+        /// </summary>
+        public const string Wrap = "wrap";
+        /// <summary>
+        /// 日期格式化
+        /// </summary>
+        public const string DateFormat = "date-format";
     }
 }

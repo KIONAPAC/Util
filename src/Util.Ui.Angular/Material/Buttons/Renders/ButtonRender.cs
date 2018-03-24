@@ -2,7 +2,6 @@
 using Util.Ui.Builders;
 using Util.Ui.Configs;
 using Util.Ui.Material.Buttons.Configs;
-using Util.Ui.Material.Commons.Configs;
 using Util.Ui.Renders;
 using Util.Ui.Material.Enums;
 using Util.Ui.Material.Extensions;
@@ -47,15 +46,8 @@ namespace Util.Ui.Material.Buttons.Renders {
             ConfigDisabled( builder );
             ConfigTooltip( builder );
             ConfigMenu( builder );
+            ConfigCloseDialog( builder );
             ConfigContent( builder );
-        }
-
-        /// <summary>
-        /// 配置标识
-        /// </summary>
-        private void ConfigId( TagBuilder builder ) {
-            if( _config.Contains( UiConst.Id ) )
-                builder.AddAttribute( $"#{_config.GetValue( UiConst.Id )}", "", false );
         }
 
         /// <summary>
@@ -78,10 +70,10 @@ namespace Util.Ui.Material.Buttons.Renders {
         /// </summary>
         private void ConfigStyle( TagBuilder builder ) {
             if( _config.Contains( UiConst.Styles ) ) {
-                builder.AddAttribute( _config.GetValue<ButtonStyle?>( UiConst.Styles )?.Description(), "", false );
+                builder.AddAttribute( _config.GetValue<ButtonStyle?>( UiConst.Styles )?.Description() );
                 return;
             }
-            builder.AddAttribute( ButtonStyle.Raised.Description(), "", false );
+            builder.AddAttribute( ButtonStyle.Raised.Description() );
         }
 
         /// <summary>
@@ -122,9 +114,17 @@ namespace Util.Ui.Material.Buttons.Renders {
         }
 
         /// <summary>
+        /// 配置关闭弹出层
+        /// </summary>
+        private void ConfigCloseDialog( TagBuilder builder ) {
+            if( _config.Contains( MaterialConst.CloseDialog ) )
+                builder.AddAttribute( "mat-dialog-close", _config.GetValue( MaterialConst.CloseDialog ),false );
+        }
+
+        /// <summary>
         /// 配置内容
         /// </summary>
-        private void ConfigContent( TagBuilder builder ) {
+        protected override void ConfigContent( TagBuilder builder ) {
             if( _config.Contains( UiConst.Text ) )
                 return;
             builder.AppendContent( _config.Content );

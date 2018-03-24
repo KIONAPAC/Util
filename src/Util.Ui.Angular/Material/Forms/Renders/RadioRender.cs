@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Util.Ui.Builders;
 using Util.Ui.Configs;
-using Util.Ui.Material.Commons.Configs;
 using Util.Ui.Material.Enums;
 using Util.Ui.Material.Forms.Builders;
 using Util.Ui.Material.Forms.Configs;
@@ -59,14 +58,6 @@ namespace Util.Ui.Material.Forms.Renders {
             ConfigEvents( builder );
             ConfigUrl( builder );
             ConfigDataSource( builder );
-        }
-
-        /// <summary>
-        /// 配置标识
-        /// </summary>
-        private void ConfigId( TagBuilder builder ) {
-            if( _config.Contains( UiConst.Id ) )
-                builder.AddAttribute( $"#{_config.GetValue( UiConst.Id )}", "", false );
         }
 
         /// <summary>

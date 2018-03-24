@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Razor.TagHelpers;
-using Util.Ui.Configs;
 using Util.Ui.Material.Buttons.Configs;
 using Util.Ui.Material.Buttons.Renders;
-using Util.Ui.Material.Commons.Configs;
 using Util.Ui.Material.Enums;
 using Util.Ui.Renders;
 using Util.Ui.TagHelpers;
@@ -13,10 +11,6 @@ namespace Util.Ui.Material.Buttons.TagHelpers {
     /// </summary>
     [HtmlTargetElement("util-button")]
     public class ButtonTagHelper : TagHelperBase {
-        /// <summary>
-        /// 标识，指向模板引用变量，而不是Id属性
-        /// </summary>
-        public string Id { get; set; }
         /// <summary>
         /// 文本
         /// </summary>
@@ -49,6 +43,10 @@ namespace Util.Ui.Material.Buttons.TagHelpers {
         /// 菜单标识
         /// </summary>
         public string MenuId { get; set; }
+        /// <summary>
+        /// 关闭弹出层，设置返回消息
+        /// </summary>
+        public string CloseDialog { get; set; }
 
         /// <summary>
         /// 获取渲染器
@@ -56,7 +54,7 @@ namespace Util.Ui.Material.Buttons.TagHelpers {
         /// <param name="context">上下文</param>
         protected override IRender GetRender( Context context ) {
             var config = new ButtonConfig( context );
-            if( config.Contains( MaterialConst.MenuId ) )
+            if( config.UseButtonRender() )
                 return new ButtonRender( config );
             return new ButtonWrapperRender( config );
         }

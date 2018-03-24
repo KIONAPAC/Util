@@ -44,7 +44,8 @@ namespace Util.Ui.Material.Forms.TagHelpers {
         /// </summary>
         /// <param name="context">上下文</param>
         protected override IRender GetRender( Context context ) {
-            return new TextBoxRender( new TextBoxConfig( context ) { IsTextArea = true } );
+            var config = new TextBoxConfig( context ) {IsTextArea = true};
+            return new TextBoxRender( config );
         }
     }
 }

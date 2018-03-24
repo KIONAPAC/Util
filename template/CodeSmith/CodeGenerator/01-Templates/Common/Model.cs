@@ -422,7 +422,7 @@ namespace SchemaMapper
         {
             if (string.IsNullOrWhiteSpace(TableSchema) || TableSchema.ToLower().Trim() == "dbo")
                 return string.Format("{0}.{1}{2}", baseNamespace, layer, GetCategory(category));
-            return string.Format("{0}.{1}.{2}{3}", baseNamespace, layer, TableSchema, GetCategory(category));
+            return string.Format("{0}.{1}.{2}{3}", baseNamespace, TableSchema, layer, GetCategory(category));
         }
 
         /// <summary>
@@ -448,7 +448,7 @@ namespace SchemaMapper
         }
 
         /// <summary>
-        /// 是否表单隐藏属性
+        /// 是否隐藏
         /// </summary>
         /// <param name="property">属性</param>
         public bool IsHidden(Property property) {
@@ -672,6 +672,8 @@ namespace SchemaMapper
         private void ValidateRequired(List<string> result)
         {
             if (IsRequired == false)
+                return;
+            if (DataType == DbType.Boolean)
                 return;
             result.Add(string.Format("[Required(ErrorMessage = \"{0}不能为空\")]", Description));
         }

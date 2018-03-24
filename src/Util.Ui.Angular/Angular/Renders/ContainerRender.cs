@@ -15,7 +15,7 @@ namespace Util.Ui.Angular.Renders {
         private readonly IConfig _config;
 
         /// <summary>
-        /// 初始化ng-container容器
+        /// 初始化ng-container容器渲染器
         /// </summary>
         /// <param name="config">配置</param>
         public ContainerRender( IConfig config ) : base( config ) {

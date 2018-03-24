@@ -12,10 +12,6 @@ namespace Util.Ui.Material.Buttons.TagHelpers {
     [HtmlTargetElement("util-a")]
     public class ATagHelper : TagHelperBase {
         /// <summary>
-        /// 标识，指向模板引用变量，而不是Id属性
-        /// </summary>
-        public string Id { get; set; }
-        /// <summary>
         /// 文本
         /// </summary>
         public string Text { get; set; }
@@ -36,9 +32,13 @@ namespace Util.Ui.Material.Buttons.TagHelpers {
         /// </summary>
         public string Tooltip { get; set; }
         /// <summary>
-        /// 路由链接地址
+        /// 路由链接地址字符串
         /// </summary>
         public string Link { get; set; }
+        /// <summary>
+        /// 路由链接地址表达式[routerLink]
+        /// </summary>
+        public string BindLink { get; set; }
         /// <summary>
         /// 单击事件处理函数,范例：handle()
         /// </summary>

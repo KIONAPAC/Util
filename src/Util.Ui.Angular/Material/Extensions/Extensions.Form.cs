@@ -2,7 +2,6 @@
 using Util.Ui.Components.Internal;
 using Util.Ui.Configs;
 using Util.Ui.Enums;
-using Util.Ui.Material.Commons.Configs;
 using Util.Ui.Material.Enums;
 using Util.Ui.Operations;
 using Util.Ui.Operations.Forms;
@@ -183,8 +182,22 @@ namespace Util.Ui.Material.Extensions {
         /// <typeparam name="TComponent">组件类型</typeparam>
         /// <param name="component">组件实例</param>
         /// <param name="text">文本</param>
+        public static TComponent Label<TComponent>( this TComponent component, string text ) where TComponent : ILabel {
+            var option = component as IOptionConfig;
+            option?.Config<Config>( config => {
+                config.SetAttribute( UiConst.Label, text );
+            } );
+            return component;
+        }
+
+        /// <summary>
+        /// 设置标签
+        /// </summary>
+        /// <typeparam name="TComponent">组件类型</typeparam>
+        /// <param name="component">组件实例</param>
+        /// <param name="text">文本</param>
         /// <param name="left">是否显示到左边</param>
-        public static TComponent Label<TComponent>( this TComponent component, string text, bool? left = null ) where TComponent : ILabel {
+        public static TComponent Label<TComponent>( this TComponent component, string text, bool? left ) where TComponent : ILabelPosition {
             var option = component as IOptionConfig;
             option?.Config<Config>( config => {
                 config.SetAttribute( UiConst.Label, text );
