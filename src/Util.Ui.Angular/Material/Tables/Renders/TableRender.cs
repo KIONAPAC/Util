@@ -1,14 +1,15 @@
-﻿using Util.Ui.Builders;
+﻿using Util.Ui.Angular.Renders;
+using Util.Ui.Builders;
 using Util.Ui.Configs;
+using Util.Ui.Extensions;
 using Util.Ui.Material.Tables.Builders;
 using Util.Ui.Material.Tables.Configs;
-using Util.Ui.Renders;
 
 namespace Util.Ui.Material.Tables.Renders {
     /// <summary>
     /// 表格渲染器
     /// </summary>
-    public class TableRender : RenderBase {
+    public class TableRender : AngularRenderBase {
         /// <summary>
         /// 配置
         /// </summary>
@@ -56,15 +57,14 @@ namespace Util.Ui.Material.Tables.Renders {
         /// </summary>
         protected override void ConfigId( TagBuilder builder ) {
             builder.AddAttribute( $"#{_config.Id}" );
-            builder.AddAttribute( "key", _config.Id );
+            builder.AddAttribute( "key", _config.GetValue( UiConst.Key ) );
         }
 
         /// <summary>
         /// 配置查询参数
         /// </summary>
         private void ConfigQueryParam( TagBuilder builder ) {
-            builder.AddAttribute( "[queryParam]", _config.GetValue( UiConst.QueryParam ) );
-            builder.AddAttribute( "(onQueryRestore)", _config.GetValue( MaterialConst.OnQueryRestore ) );
+            builder.AddAttribute( "[(queryParam)]", _config.GetValue( UiConst.QueryParam ) );
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace Util.Ui.Material.Tables.Renders {
                 return;
             if( value.StartsWith( "[" ) == false )
                 value = $"[{value}]";
-            builder.AddAttribute( "[pageSizeItems]", value );
+            builder.AddAttribute( "[pageSizeOptions]", value );
         }
 
         /// <summary>

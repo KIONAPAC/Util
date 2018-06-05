@@ -11,3 +11,8 @@ BenchmarkDotNet.Artifacts/
 /sample/Util.Samples.Webs/node_modules
 /sample/Util.Samples.Webs/wwwroot/dist
 /sample/Util.Samples.Webs/wwwroot/test
+/sample/Util.Samples.Webs/yarn.lock
+/sample/Util.Samples.Webs/.vs
+/sample/Util.Samples.Webs/wwwroot/upload
+/sample/Util.Samples.Webs/Typings/**/*.html
+/sample/Util.Samples.Webs/yarn-error.log

@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using Util.Ui.Angular.TagHelpers;
 using Util.Ui.Configs;
 using Util.Ui.Material.Enums;
 using Util.Ui.Material.Forms.Renders;
-using Util.Ui.Material.Internal;
 using Util.Ui.Renders;
 using Util.Ui.TagHelpers;
 
@@ -12,11 +12,15 @@ namespace Util.Ui.Material.Forms.TagHelpers {
     /// 滑动开关
     /// </summary>
     [HtmlTargetElement( "util-slide-toggle" )]
-    public class SlideToggleTagHelper : TagHelperBase {
+    public class SlideToggleTagHelper : AngularTagHelperBase {
         /// <summary>
         /// 控件的名称
         /// </summary>
         public string Name { get; set; }
+        /// <summary>
+        /// 控件的绑定名称 [name]
+        /// </summary>
+        public string BindName { get; set; }
         /// <summary>
         /// 标签文本
         /// </summary>
@@ -44,11 +48,19 @@ namespace Util.Ui.Material.Forms.TagHelpers {
         /// <summary>
         /// 必填项
         /// </summary>
-        public bool Required { get; set; }
+        public string Required { get; set; }
         /// <summary>
         /// 变更事件处理函数,范例：handle()
         /// </summary>
         public string OnChange { get; set; }
+        /// <summary>
+        /// 选中
+        /// </summary>
+        public string Checked { get; set; }
+        /// <summary>
+        /// 组件不添加到FormGroup，独立存在，这样也无法基于NgForm进行表单验证
+        /// </summary>
+        public bool Standalone { get; set; }
 
         /// <summary>
         /// 获取渲染器

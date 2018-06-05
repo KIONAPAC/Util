@@ -19,7 +19,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Util.Ui.Controllers;
 
-namespace <%= Namespace,Entity.TableSchema %>.Areas.<%= Schema %>.Controllers {
+namespace <%= Namespace %>.Areas.<%= Schema %>.Controllers {
     /// <summary>
     /// <%= Description %>控制器
     /// </summary>
@@ -28,21 +28,21 @@ namespace <%= Namespace,Entity.TableSchema %>.Areas.<%= Schema %>.Controllers {
         /// <summary>
         /// 首页
         /// </summary>
-        public virtual IActionResult Index() {
+        public IActionResult Index() {
             return View();
         }
         
         /// <summary>
-        /// 编辑页
+        /// 编辑
         /// </summary>
-        public virtual IActionResult Edit() {
+        public IActionResult Edit() {
             return View();
         }
         
         /// <summary>
-        /// 详细页
+        /// 详细
         /// </summary>
-        public virtual IActionResult Detail() {
+        public IActionResult Detail() {
             return View();
         }
     }

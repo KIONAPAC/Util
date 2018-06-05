@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Razor.TagHelpers;
+using Util.Ui.Angular.TagHelpers;
 using Util.Ui.Configs;
 using Util.Ui.Extensions;
 using Util.Ui.Material.Enums;
@@ -13,7 +14,11 @@ namespace Util.Ui.Material.Tables.TagHelpers {
     /// 表格
     /// </summary>
     [HtmlTargetElement( "util-table" )]
-    public class TableTagHelper : TagHelperBase {
+    public class TableTagHelper : AngularTagHelperBase {
+        /// <summary>
+        /// 用于还原查询参数的标识
+        /// </summary>
+        public string Key { get; set; }
         /// <summary>
         /// 基地址，基于该地址构建加载地址和删除地址，范例：传入test,则加载地址为/api/test,删除地址为/api/test/delete
         /// </summary>
@@ -30,10 +35,6 @@ namespace Util.Ui.Material.Tables.TagHelpers {
         /// 查询参数
         /// </summary>
         public string QueryParam { get; set; }
-        /// <summary>
-        /// 还原查询参数事件
-        /// </summary>
-        public string OnQueryRestore { get; set; }
         /// <summary>
         /// 排序列名
         /// </summary>

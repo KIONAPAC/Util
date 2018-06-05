@@ -1,13 +1,14 @@
-﻿using Util.Ui.Builders;
+﻿using Util.Ui.Angular.Renders;
+using Util.Ui.Builders;
 using Util.Ui.Configs;
+using Util.Ui.Extensions;
 using Util.Ui.Material.Icons.Builders;
-using Util.Ui.Renders;
 
 namespace Util.Ui.Material.Menus.Renders {
     /// <summary>
     /// 菜单项渲染器
     /// </summary>
-    public class MenuItemRender : RenderBase {
+    public class MenuItemRender : AngularRenderBase {
         /// <summary>
         /// 配置
         /// </summary>
@@ -111,7 +112,7 @@ namespace Util.Ui.Material.Menus.Renders {
         /// 配置链接
         /// </summary>
         private void ConfigLink( TagBuilder builder ) {
-            builder.AddAttribute( "routerLink", _config.GetValue( UiConst.Link ) );
+            builder.Link( _config );
         }
 
         /// <summary>

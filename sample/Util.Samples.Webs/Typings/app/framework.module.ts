@@ -6,15 +6,16 @@ import {
     MatButtonToggleModule,
      MatChipsModule,
      MatSliderModule, 
-     MatStepperModule
+    MatStepperModule
 } from '@angular/material';
+
 @NgModule({
     exports: [
         UtilModule,
         MatButtonToggleModule,
         MatChipsModule,
         MatSliderModule, 
-         MatStepperModule
+        MatStepperModule
     ]
 })
 export class FrameworkModule {

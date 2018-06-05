@@ -70,6 +70,17 @@ namespace Util.Ui.Tests.Material.Buttons {
         }
 
         /// <summary>
+        /// 测试绑定文本
+        /// </summary>
+        [Fact]
+        public void TestBindText() {
+            var attributes = new TagHelperAttributeList { { AngularConst.BindText, "a" } };
+            var result = new String();
+            result.Append( "<a mat-raised-button=\"\">{{a}}</a>" );
+            Assert.Equal( result.ToString(), GetResult( attributes ) );
+        }
+
+        /// <summary>
         /// 测试样式
         /// </summary>
         [Fact]
@@ -132,6 +143,17 @@ namespace Util.Ui.Tests.Material.Buttons {
             var attributes = new TagHelperAttributeList { { AngularConst.BindLink, "a" } };
             var result = new String();
             result.Append( "<a mat-raised-button=\"\" [routerLink]=\"a\"></a>" );
+            Assert.Equal( result.ToString(), GetResult( attributes ) );
+        }
+
+        /// <summary>
+        /// 测试查询参数
+        /// </summary>
+        [Fact]
+        public void TestQueryParams() {
+            var attributes = new TagHelperAttributeList { { UiConst.QueryParams, "a" } };
+            var result = new String();
+            result.Append( "<a mat-raised-button=\"\" [queryParams]=\"a\"></a>" );
             Assert.Equal( result.ToString(), GetResult( attributes ) );
         }
 

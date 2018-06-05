@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Razor.TagHelpers;
+using Util.Ui.Angular;
 using Util.Ui.Configs;
+using Util.Ui.Enums;
 using Util.Ui.Material;
 using Util.Ui.Material.Buttons.TagHelpers;
 using Util.Ui.Material.Enums;
@@ -70,6 +72,28 @@ namespace Util.Ui.Tests.Material.Buttons {
         }
 
         /// <summary>
+        /// 测试绑定文本
+        /// </summary>
+        [Fact]
+        public void TestBindText() {
+            var attributes = new TagHelperAttributeList { { AngularConst.BindText, "a" } };
+            var result = new String();
+            result.Append( "<mat-button-wrapper [text]=\"a\"></mat-button-wrapper>" );
+            Assert.Equal( result.ToString(), GetResult( attributes ) );
+        }
+
+        /// <summary>
+        /// 测试ngClass
+        /// </summary>
+        [Fact]
+        public void TestNgClass() {
+            var attributes = new TagHelperAttributeList { { AngularConst.NgClass, "a" } };
+            var result = new String();
+            result.Append( "<mat-button-wrapper [ngClass]=\"a\"></mat-button-wrapper>" );
+            Assert.Equal( result.ToString(), GetResult( attributes ) );
+        }
+
+        /// <summary>
         /// 测试类型
         /// </summary>
         [Fact]
@@ -136,6 +160,39 @@ namespace Util.Ui.Tests.Material.Buttons {
         }
 
         /// <summary>
+        /// 测试等待时显示的文本
+        /// </summary>
+        [Fact]
+        public void TestWaitingText() {
+            var attributes = new TagHelperAttributeList { { UiConst.WaitingText, "a" } };
+            var result = new String();
+            result.Append( "<mat-button-wrapper waitingText=\"a\"></mat-button-wrapper>" );
+            Assert.Equal( result.ToString(), GetResult( attributes ) );
+        }
+
+        /// <summary>
+        /// 测试判断
+        /// </summary>
+        [Fact]
+        public void TestIf() {
+            var attributes = new TagHelperAttributeList { { AngularConst.NgIf, "a" } };
+            var result = new String();
+            result.Append( "<mat-button-wrapper *ngIf=\"a\"></mat-button-wrapper>" );
+            Assert.Equal( result.ToString(), GetResult( attributes ) );
+        }
+
+        /// <summary>
+        /// 测试等待时显示的图标
+        /// </summary>
+        [Fact]
+        public void TestWaitingIcon() {
+            var attributes = new TagHelperAttributeList { { UiConst.WaitingIcon, MaterialIcon.Access_Alarm } };
+            var result = new String();
+            result.Append( "<mat-button-wrapper waitingMatIcon=\"access_alarm\"></mat-button-wrapper>" );
+            Assert.Equal( result.ToString(), GetResult( attributes ) );
+        }
+
+        /// <summary>
         /// 测试设置菜单标识
         /// </summary>
         [Fact]
@@ -154,6 +211,39 @@ namespace Util.Ui.Tests.Material.Buttons {
             var attributes = new TagHelperAttributeList { { MaterialConst.CloseDialog, "a" } };
             var result = new String();
             result.Append( "<button mat-dialog-close=\"a\" mat-raised-button=\"\" type=\"button\"></button>" );
+            Assert.Equal( result.ToString(), GetResult( attributes ) );
+        }
+
+        /// <summary>
+        /// 测试关闭弹出层,设置文本绑定属性
+        /// </summary>
+        [Fact]
+        public void TestCloseDialog_BindText() {
+            var attributes = new TagHelperAttributeList { { MaterialConst.CloseDialog, "a" },{ AngularConst.BindText ,"b"} };
+            var result = new String();
+            result.Append( "<button mat-dialog-close=\"a\" mat-raised-button=\"\" type=\"button\">{{b}}</button>" );
+            Assert.Equal( result.ToString(), GetResult( attributes ) );
+        }
+
+        /// <summary>
+        /// 测试ngClass
+        /// </summary>
+        [Fact]
+        public void TestNgClass_CloseDialog() {
+            var attributes = new TagHelperAttributeList { { MaterialConst.CloseDialog, "a" }, { AngularConst.NgClass, "a" } };
+            var result = new String();
+            result.Append( "<button mat-dialog-close=\"a\" mat-raised-button=\"\" type=\"button\" [ngClass]=\"a\"></button>" );
+            Assert.Equal( result.ToString(), GetResult( attributes ) );
+        }
+
+        /// <summary>
+        /// 测试单击事件
+        /// </summary>
+        [Fact]
+        public void TestNgClass_CloseDialog_Click() {
+            var attributes = new TagHelperAttributeList { { MaterialConst.CloseDialog, "a" }, { UiConst.OnClick, "a" } };
+            var result = new String();
+            result.Append( "<button (click)=\"a\" mat-dialog-close=\"a\" mat-raised-button=\"\" type=\"button\"></button>" );
             Assert.Equal( result.ToString(), GetResult( attributes ) );
         }
     }

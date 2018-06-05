@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Razor.TagHelpers;
+using Util.Ui.Angular.TagHelpers;
+using Util.Ui.Enums;
 using Util.Ui.Material.Buttons.Configs;
 using Util.Ui.Material.Buttons.Renders;
 using Util.Ui.Material.Enums;
@@ -10,11 +12,15 @@ namespace Util.Ui.Material.Buttons.TagHelpers {
     /// 按钮
     /// </summary>
     [HtmlTargetElement("util-button")]
-    public class ButtonTagHelper : TagHelperBase {
+    public class ButtonTagHelper : AngularTagHelperBase {
         /// <summary>
         /// 文本
         /// </summary>
         public string Text { get; set; }
+        /// <summary>
+        /// 文本属性绑定
+        /// </summary>
+        public string BindText { get; set; }
         /// <summary>
         /// 类型
         /// </summary>
@@ -47,6 +53,14 @@ namespace Util.Ui.Material.Buttons.TagHelpers {
         /// 关闭弹出层，设置返回消息
         /// </summary>
         public string CloseDialog { get; set; }
+        /// <summary>
+        /// 等待时显示的文本,默认值：loading...
+        /// </summary>
+        public string WaitingText { get; set; }
+        /// <summary>
+        /// 等待时显示的图标
+        /// </summary>
+        public MaterialIcon WaitingIcon { get; set; }
 
         /// <summary>
         /// 获取渲染器

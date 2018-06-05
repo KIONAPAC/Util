@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
@@ -7,7 +8,6 @@ using Util.Helpers;
 using Util.Ui.Attributes;
 using Util.Ui.Configs;
 using Util.Ui.Material.Forms.Configs;
-using Util.Ui.TagHelpers;
 
 namespace Util.Ui.Material.Internal {
     /// <summary>
@@ -65,12 +65,32 @@ namespace Util.Ui.Material.Internal {
         /// <summary>
         /// 获取模型绑定
         /// </summary>
+        /// <param name="expression">属性表达式</param>
+        /// <param name="member">成员</param>
+        public static string GetModel( ModelExpression expression, MemberInfo member ) {
+            Type modelType = expression.Metadata.ContainerType;
+            var propertyName = expression.Name;
+            return GetModel( GetModelName( modelType ), GetPropertyName( member, propertyName ) );
+        }
+
+        /// <summary>
+        /// 获取模型绑定
+        /// </summary>
         private static string GetModel( string modelName, string propertyName ) {
             modelName = Util.Helpers.String.FirstLowerCase( modelName );
-            propertyName = Util.Helpers.String.FirstLowerCase( propertyName );
+            propertyName = GetFirstLowerCasePropertyName( propertyName );
             if( string.IsNullOrWhiteSpace( modelName ) || string.IsNullOrWhiteSpace( propertyName ) )
                 return string.Empty;
             return $"{modelName}&&{modelName}.{propertyName}";
+        }
+
+        /// <summary>
+        /// 获取首字母小写的属性名
+        /// </summary>
+        private static string GetFirstLowerCasePropertyName( string propertyName ) {
+            if( string.IsNullOrWhiteSpace( propertyName ) )
+                return propertyName;
+            return propertyName.Split( '.' ).Select( Util.Helpers.String.FirstLowerCase ).ToList().Join( "", "." );
         }
 
         /// <summary>
@@ -87,7 +107,7 @@ namespace Util.Ui.Material.Internal {
         /// </summary>
         private static string GetPropertyName( MemberInfo member, string propertyName ) {
             var attribute = member.GetCustomAttribute<ModelAttribute>();
-            return attribute == null ? propertyName : attribute.Ignore ? string.Empty : attribute.Model; ;
+            return attribute == null ? propertyName : attribute.Ignore ? string.Empty : attribute.Model;
         }
 
         /// <summary>
@@ -126,7 +146,7 @@ namespace Util.Ui.Material.Internal {
         private static void InitDataType( TextBoxConfig config, DataTypeAttribute attribute ) {
             if( attribute == null )
                 return;
-            switch ( attribute.DataType ) {
+            switch( attribute.DataType ) {
                 case DataType.Date:
                 case DataType.DateTime:
                 case DataType.Time:

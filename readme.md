@@ -1,6 +1,6 @@
 # Util应用框架介绍
 
-[![Member project of .NET China Foundation](https://github.com/dotnetcore/Home/blob/master/icons/member-project-of-netchina.png)](https://github.com/dotnetcore)
+[![Member project of .NET Core Community](https://img.shields.io/badge/member%20project%20of-NCC-9e20c9.svg)](https://github.com/dotnetcore)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://mit-license.org/)
 
 Util是一个.net core平台下的应用框架，旨在提升小型团队的开发输出能力，由常用公共操作类(工具类)、分层架构基类、Ui组件，第三方组件封装，第三方业务接口封装，配套代码生成模板，权限等组成。
@@ -19,7 +19,7 @@ Util是一个.net core平台下的应用框架，旨在提升小型团队的开�
 
 几位好友（[AlexLEWIS](https://github.com/alexinea "刘怡") [Kiler](https://github.com/kiler398 "谢炀") [Lemon](https://github.com/liuhaoyang "刘浩杨") ）发起了.net core学习小组，并打算为国内.net core开源大业作出贡献，我果断加入了队伍进行学习，并决定对Util应用框架进行开源。
 
-经讨论，大家决定将各自的开源项目统一发布到 [.NET China Foundation](https://github.com/dotnetcore) 之下，以方便国内.net core开源项目的推广，同时也欢迎国内.net core开源项目作者的加入。
+经讨论，大家决定将各自的开源项目统一发布到 [.NET Core Community](https://github.com/dotnetcore) 之下，以方便国内.net core开源项目的推广，同时也欢迎国内.net core开源项目作者的加入。
 
 ## 技术框架与应用框架
 
@@ -29,7 +29,7 @@ Util是一个.net core平台下的应用框架，旨在提升小型团队的开�
 
 为了完成某项特定的技术需求，比如写日志，你可以使用原始API进行简单实现，并在多个地方复制粘贴进行调用。这很快会让你厌烦，除了冗余代码以外，你发现还需要经常扩展日志操作的功能，于是你想把日志操作封装成库来调用。
 
-等等，不要再重复造轮子了(为了学习目的造轮子，这绝对是值得肯定的，但确实准备拿来使用的，如果不是真有几把刷子，比如 [Lemon](https://github.com/liuhaoyang "刘浩杨") 同学，建议还是省省吧)，一些前辈已经做了这些基础工作，并且他们的工作已经在全球大范围的使用，非常成熟，并且持续维护。
+等等，不要再重复造轮子了(为了学习目的造轮子，这绝对是值得肯定的，但确实准备拿来使用的，如果不是真有几把刷子，建议还是省省吧)，一些前辈已经做了这些基础工作，并且他们的工作已经在全球大范围的使用，非常成熟，并且持续维护。
 
 这些能够解决特定技术问题的类库暂时统称为第三方技术框架,在项目上使用第三方技术框架是项目成功的必要保障。从此，你不再为如何实现某项技术问题而烦恼，也不需要为持续扩展的技术需求而疲于奔命，更多的精力被用在业务上，这才是你应该干的事。
 
@@ -134,17 +134,17 @@ Util应用框架面向的是*架构初学者*，但不是.net初学者。
   - Docker
 
 6. 开发平台
-  - .Net Core 2.0
+  - .Net Core 2.1 preview2
 
 7. 单元测试及模拟框架
   - XUnit
   - NSubstitute
 
 8. ORM
-  - EntityFrameworkCore 2.0
-  - Microsoft.EntityFrameworkCore.SqlServer 2.0.0
-  - Npgsql.EntityFrameworkCore.PostgreSQL 2.0.0
-  - Pomelo.EntityFrameworkCore.MySql 2.0.x
+  - EntityFrameworkCore
+  - Microsoft.EntityFrameworkCore.SqlServer
+  - Npgsql.EntityFrameworkCore.PostgreSQL
+  - Pomelo.EntityFrameworkCore.MySql
 
 9. Ioc框架
   - Autofac
@@ -184,30 +184,49 @@ Util应用框架面向的是*架构初学者*，但不是.net初学者。
   - 脚本语言
     - [TypeScript](https://www.tslang.cn)
   - 脚本框架
-    - [Angular 6](https://angular.cn/)
+    - [Angular 5](https://angular.cn/)
   - Css预处理器
     - [Sass](http://www.sass-lang.com) 
   - 组件库
     - [Angular Material](https://material.angular.io/)
     - [Angular Flex-Layout](https://github.com/angular/flex-layout)
     - [PrimeNg](https://www.primefaces.org/primeng)
+    - [Ngx-Admin](http://akveo.com/ngx-admin)
+    - [Vmware-Clarity](http://clarity.design)
+    - [阿里-Ng-Zorro](https://ng.ant.design)
+    - [Ng-Alain](http://ng-alain.com/)
+    - [饿了么-Element](https://element-angular.faas.ele.me/)
+    - [中兴-Jigsaw](https://github.com/rdkmaster/jigsaw)
     - [Angular-Material-App](https://github.com/stbui/angular-material-app)
+  - 编辑器
+    - [CKEditor](https://ckeditor.com/ckeditor-4/)
+    - [Ng2-CKEditor](https://github.com/chymz/ng2-ckeditor)    
+    - [TinyMce](https://www.tinymce.com/)
+    - [TinyMce-Angular](https://github.com/tinymce/tinymce-angular)
   - 脚本库
+    - [Lodash](https://lodash.com/)
     - [Moment](http://momentjs.cn/)
   - 图标
     - [Material Design Icon](https://material.io/icons/)
     - [Font Awesome Icon](http://fontawesome.io/)
+  - 图表
+    - [Echarts](http://echarts.baidu.com/examples/)
+    - [Echarts-Ng2](https://github.com/twp0217/echarts-ng2)
   - 打包
     - Webpack
   - 测试
     - Karma
     - Jasmine
 
-21. 代码生成器
+21. 权限
+    - [Asp Net Core Identity](https://docs.microsoft.com/zh-cn/aspnet/core/security/authentication/identity?tabs=visual-studio%2Caspnetcore2x)
+    - [Identity Server](https://identityserver4.readthedocs.io/en/release/)
+
+22. 代码生成器
   - CodeSmith 6.5
 
-22. 参考应用框架
-  - [ABP](https://github.com/aspnetboilerplate/aspnetboilerplate)
+23. 参考应用框架
+  - [ABP](http://aspnetboilerplate.com/)
   - [Nop](https://www.nopcommerce.com) 
     - Nop是一个开源商城，封装了大量实用的基础代码。
 
@@ -345,7 +364,6 @@ https://github.com/dotnetcore/util/
 > 包括.net core版本的跳跃式升级等，比如从.net core1.x升级到2.0。
 
 - 2017年7月21日，将.net core升级到2.0 Preview 2。
-- 2018年3月2日，将.net core升级到2.1 Preview 1。
 
 ## 更新计划
 
@@ -392,10 +410,12 @@ https://github.com/dotnetcore/util/
   - 工作单元服务 [已发布]
   - 工作单元拦截器 [已发布]
   - Crud服务 [已发布]
-  - 树型Crud服务 [待启动]
+  - 树型服务 [已发布]
   - 持久化对象Po基类 [已发布]
   - 持久化对象存储基类 [已发布]
   - 事件总线 [已发布]
+  - Crud控制器基类 [已发布]
+  - 树型控制器基类 [已发布]
 - UI组件 - 支持HtmlHelper和TagHelper两种方式
   - 组件基类  [已发布]
   - TagHelper基类  [已发布]
@@ -419,13 +439,20 @@ https://github.com/dotnetcore/util/
   - 弹出层 - 基于Material Dialog组件 [已发布]
   - 表格 - 基于Material Table组件 [已发布]
   - 布局(栅格) - 基于Angular flex-layout组件 [已发布]
+  - 树型表格 - 基于PrimeNg TreeTable组件改造 [已发布]
+  - 颜色选择器 - 基于PrimeNg ColorPicker组件 [已发布]
+  - 富文本框编辑器 - 基于CKEditor组件 [已发布]
   - 文件上传 - 基于PrimeNg 文件上传组件 [待启动]
   
-- 权限 [待启动]
+- 权限 [开发中]
+  - Identity集成 [开发中]
 - 公共业务基类
   - 地址 [已发布]
 - 支付操作
   - 支付宝条码支付 [已发布]
+  - 支付宝电脑网站支付 [已发布]
+  - 支付宝手机网站支付 [已发布]
+  - 支付宝回调 [已发布]
 
 ## 更新列表
 
@@ -480,3 +507,8 @@ https://github.com/dotnetcore/util/
 - 2018年3月7日，更新了弹出层组件(Util.Ui.Angular/Material/Dialogs)。
 - 2018年3月10日，更新了表格组件(Util.Ui.Angular/Material/Tables)。
 - 2018年3月13日，更新了布局组件(Util.Ui.Angular/FlexLayout)。
+- 2018年4月16日，更新了树型表格组件(Util.Ui.Angular/Prime/TreeTables)，树型控制器，树型服务。
+- 2018年4月20日，更新了颜色选择器组件(Util.Ui.Angular/Prime/ColorPickers)。
+- 2018年4月23日，更新了富文本框编辑器组件(Util.Ui.Angular/CkEditor)。
+- 2018年5月22日，更新了支付宝电脑网站支付和手机网站支付操作。
+- 2018年5月24日，更新了支付宝回调操作。

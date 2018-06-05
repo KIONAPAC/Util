@@ -11,7 +11,14 @@ namespace Util.Helpers {
         /// </summary>
         /// <typeparam name="T">类型</typeparam>
         public static Type GetType<T>() {
-            var type = typeof( T );
+            return GetType( typeof( T ) );
+        }
+
+        /// <summary>
+        /// 获取类型
+        /// </summary>
+        /// <param name="type">类型</param>
+        public static Type GetType( Type type ) {
             return Nullable.GetUnderlyingType( type ) ?? type;
         }
 
@@ -27,10 +34,23 @@ namespace Util.Helpers {
         public static string GetPhysicalPath( string relativePath ) {
             if( string.IsNullOrWhiteSpace( relativePath ) )
                 return string.Empty;
-            var rootPath = Web.WebRootPath;
+            var rootPath = Web.RootPath;
             if( string.IsNullOrWhiteSpace( rootPath ) )
                 return Path.GetFullPath( relativePath );
             return $"{Web.RootPath}\\{relativePath.Replace( "/", "\\" ).TrimStart( '\\' )}";
+        }
+
+        /// <summary>
+        /// 获取wwwroot路径
+        /// </summary>
+        /// <param name="relativePath">相对路径</param>
+        public static string GetWebRootPath( string relativePath ) {
+            if( string.IsNullOrWhiteSpace( relativePath ) )
+                return string.Empty;
+            var rootPath = Web.WebRootPath;
+            if( string.IsNullOrWhiteSpace( rootPath ) )
+                return Path.GetFullPath( relativePath );
+            return $"{Web.WebRootPath}\\{relativePath.Replace( "/", "\\" ).TrimStart( '\\' )}";
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Razor.TagHelpers;
+using Util.Ui.Angular.TagHelpers;
 using Util.Ui.Configs;
 using Util.Ui.Enums;
 using Util.Ui.Material.Enums;
@@ -11,15 +12,23 @@ namespace Util.Ui.Material.Lists.TagHelpers {
     /// 导航列表图标，该标签应放到 util-nav-list-item 中
     /// </summary>
     [HtmlTargetElement( "util-nav-list-icon",TagStructure = TagStructure.WithoutEndTag)]
-    public class NavListIconTagHelper : TagHelperBase {
+    public class NavListIconTagHelper : AngularTagHelperBase {
         /// <summary>
         /// Material图标
         /// </summary>
         public MaterialIcon MaterialIcon { get; set; }
         /// <summary>
+        /// Material图标绑定
+        /// </summary>
+        public string BindMaterialIcon { get; set; }
+        /// <summary>
         /// Font Awesome图标
         /// </summary>
         public FontAwesomeIcon FontAwesomeIcon { get; set; }
+        /// <summary>
+        /// Font Awesome图标绑定
+        /// </summary>
+        public string BindFontAwesomeIcon { get; set; }
         /// <summary>
         /// 图标大小
         /// </summary>

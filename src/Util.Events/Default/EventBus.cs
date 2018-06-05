@@ -1,6 +1,6 @@
-﻿using Util.Events.Handlers;
+﻿using System.Threading.Tasks;
+using Util.Events.Handlers;
 using Util.Events.Messages;
-using Util.Logs.Aspects;
 
 namespace Util.Events.Default {
     /// <summary>
@@ -32,29 +32,28 @@ namespace Util.Events.Default {
         /// </summary>
         /// <typeparam name="TEvent">事件类型</typeparam>
         /// <param name="event">事件</param>
-        [TraceLog]
-        public void Publish<TEvent>( TEvent @event ) where TEvent : IEvent {
-            SyncHandle( @event );
-            if( @event is IMessageEvent messageEvent )
-                AsyncHandle( messageEvent );
-        }
-
-        /// <summary>
-        /// 同步处理 - 在当前线程处理
-        /// </summary>
-        private void SyncHandle<TEvent>( TEvent @event ) where TEvent : IEvent {
+        public async Task PublishAsync<TEvent>( TEvent @event ) where TEvent : IEvent {
             var handlers = Manager.GetHandlers<TEvent>();
-            if( handlers == null )
+            if ( handlers == null ) {
+                await PublishMessageEvents( @event );
                 return;
-            foreach( var handler in handlers )
-                handler.Handle( @event );
+            }
+            foreach ( var handler in handlers ) {
+                if ( handler == null )
+                    continue;
+                await handler.HandleAsync( @event );
+            }
+            await PublishMessageEvents( @event );
         }
 
         /// <summary>
-        /// 异步处理 - 发送到消息中间件
+        /// 发布消息事件
         /// </summary>
-        private void AsyncHandle( IMessageEvent messageEvent ) {
-            MessageEventBus?.Publish( messageEvent );
+        private async Task PublishMessageEvents<TEvent>( TEvent @event ) {
+            if ( MessageEventBus == null )
+                return;
+            if( @event is IMessageEvent messageEvent )
+                await MessageEventBus.PublishAsync( messageEvent );
         }
     }
 }

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using Util.Helpers;
@@ -51,6 +53,10 @@ namespace Util.Webs.Clients {
         /// 执行失败的回调函数
         /// </summary>
         private Action<string, HttpStatusCode> _failStatusCodeAction;
+        /// <summary>
+        /// ssl证书验证委托
+        /// </summary>
+        private Func<HttpRequestMessage, X509Certificate2, X509Chain, SslPolicyErrors, bool> _serverCertificateCustomValidationCallback;
 
         /// <summary>
         /// 初始化Http请求
@@ -160,7 +166,7 @@ namespace Util.Webs.Clients {
         /// 添加参数字典
         /// </summary>
         /// <param name="parameters">参数字典</param>
-        public TRequest Data( IDictionary<string,string> parameters ) {
+        public TRequest Data( IDictionary<string, string> parameters ) {
             _params = parameters ?? throw new ArgumentNullException( nameof( parameters ) );
             return This();
         }
@@ -207,18 +213,12 @@ namespace Util.Webs.Clients {
             _failStatusCodeAction = action;
             return This();
         }
-
         /// <summary>
-        /// 获取结果
+        /// 忽略Ssl
         /// </summary>
-        public string Result() {
-            return Async.Run( async () => {
-                SendBefore();
-                var response = await SendAsync();
-                var result = await response.Content.ReadAsStringAsync();
-                SendAfter( result, response.StatusCode, GetContentType( response ) );
-                return result;
-            } );
+        public TRequest IgnoreSsl() {
+            _serverCertificateCustomValidationCallback = ( a, b, c, d ) => true;
+            return This();
         }
 
         /// <summary>
@@ -292,7 +292,8 @@ namespace Util.Webs.Clients {
         /// 创建请求客户端
         /// </summary>
         private HttpClient CreateHttpClient() {
-            return new HttpClient( new HttpClientHandler { CookieContainer = _cookieContainer } ) { Timeout = _timeout };
+            return new HttpClient( new HttpClientHandler { CookieContainer = _cookieContainer,
+                ServerCertificateCustomValidationCallback = _serverCertificateCustomValidationCallback } ) { Timeout = _timeout };
         }
 
         /// <summary>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web;
+using Util.Helpers;
 using Util.Parameters.Formats;
 
 namespace Util.Parameters {
@@ -50,6 +51,32 @@ namespace Util.Parameters {
         }
 
         /// <summary>
+        /// 从Request加载表单参数
+        /// </summary>
+        public void LoadForm() {
+            var form = Web.Request?.Form;
+            if( form == null )
+                return;
+            foreach ( var key in form.Keys ) {
+                if( form.ContainsKey( key ) )
+                    Add( key, form[key] );
+            }
+        }
+
+        /// <summary>
+        /// 从Request加载查询参数
+        /// </summary>
+        public void LoadQuery() {
+            var query = Web.Request?.Query;
+            if( query == null )
+                return;
+            foreach( var key in query.Keys ) {
+                if( query.ContainsKey( key ) )
+                    Add( key, query[key] );
+            }
+        }
+
+        /// <summary>
         /// 添加参数
         /// </summary>
         /// <param name="key">键</param>
@@ -57,6 +84,23 @@ namespace Util.Parameters {
         public UrlParameterBuilder Add( string key, object value ) {
             ParameterBuilder.Add( key, value );
             return this;
+        }
+
+        /// <summary>
+        /// 获取值
+        /// </summary>
+        /// <param name="name">参数名</param>
+        public string GetValue( string name ) {
+            return ParameterBuilder.GetValue( name );
+        }
+
+        /// <summary>
+        /// 索引器
+        /// </summary>
+        /// <param name="name">参数名</param>
+        public string this[string name] {
+            get => GetValue( name );
+            set => Add( name, value );
         }
 
         /// <summary>

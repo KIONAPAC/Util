@@ -75,6 +75,16 @@ namespace Util.Ui.Tests.Material.Forms {
         }
 
         /// <summary>
+        /// 测试添加绑定名称
+        /// </summary>
+        [Fact]
+        public void TestBindName() {
+            var result = new String();
+            result.Append( "<mat-select-wrapper [name]=\"a\"></mat-select-wrapper>" );
+            Assert.Equal( result.ToString(), GetResult( _component.BindName( "a" ) ) );
+        }
+
+        /// <summary>
         /// 测试禁用
         /// </summary>
         [Fact]
@@ -112,6 +122,16 @@ namespace Util.Ui.Tests.Material.Forms {
             var result = new String();
             result.Append( "<mat-select-wrapper placeholder=\"a\"></mat-select-wrapper>" );
             Assert.Equal( result.ToString(), GetResult( _component.Placeholder( "a" ) ) );
+        }
+
+        /// <summary>
+        /// 测试设置绑定占位提示
+        /// </summary>
+        [Fact]
+        public void TestBindPlaceholder() {
+            var result = new String();
+            result.Append( "<mat-select-wrapper [placeholder]=\"a\"></mat-select-wrapper>" );
+            Assert.Equal( result.ToString(), GetResult( _component.BindPlaceholder( "a" ) ) );
         }
 
         /// <summary>
@@ -302,6 +322,16 @@ namespace Util.Ui.Tests.Material.Forms {
             var result = new String();
             result.Append( "<mat-select-wrapper (onKeydown)=\"a\"></mat-select-wrapper>" );
             Assert.Equal( result.ToString(), GetResult( _component.OnKeydown( "a" ) ) );
+        }
+
+        /// <summary>
+        /// 测试独立
+        /// </summary>
+        [Fact]
+        public void TestStandalone() {
+            var result = new String();
+            result.Append( "<mat-select-wrapper [standalone]=\"true\"></mat-select-wrapper>" );
+            Assert.Equal( result.ToString(), GetResult( _component.Standalone() ) );
         }
 
         /// <summary>

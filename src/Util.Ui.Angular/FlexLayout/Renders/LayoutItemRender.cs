@@ -1,14 +1,14 @@
 ﻿using System.Linq;
+using Util.Ui.Angular.Renders;
 using Util.Ui.Builders;
 using Util.Ui.Configs;
 using Util.Ui.FlexLayout.Enums;
-using Util.Ui.Renders;
 
 namespace Util.Ui.FlexLayout.Renders {
     /// <summary>
     /// 浮动布局项渲染器
     /// </summary>
-    public class LayoutItemRender : RenderBase {
+    public class LayoutItemRender : AngularRenderBase {
         /// <summary>
         /// 配置
         /// </summary>

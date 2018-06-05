@@ -70,17 +70,12 @@ namespace <%= Entity.GetNamespace(Namespace,"Domain","Models") %> {
         <%}%>
         public <%= p.TypeName %> <%= p.PropertyName.ToSafeName() %> { get; set; }
         <% }%>
-        <% foreach(var r in Entity.Relationships) { %>
-        
-        <% if(r.ThisCardinality == Cardinality.Many) { %>
-        /// <summary>
-        /// <%= Entity.GetOtherDescription( r.OtherEntity ) %>列表
-        /// </summary>
-        public ICollection<<%= r.OtherEntity.ToSafeName() %>> <%= r.ThisPropertyName.ToSafeName() %> { get; set; }
-        <% } else { %>
+        <% foreach(var r in Entity.Relationships) { %>        
+        <% if(r.ThisCardinality != Cardinality.Many) { %>
         /// <summary>
         /// <%= Entity.GetOtherDescription( r.OtherEntity ) %>
         /// </summary>
+        [ForeignKey( "<%=Entity.GetOtherIdProperty( r.OtherEntity )%>" )]
         public <%= r.OtherEntity.ToSafeName() %> <%= r.ThisPropertyName.ToSafeName() %> { get; set; }
         <% } %>
         <% }%>
@@ -93,9 +88,9 @@ namespace <%= Entity.GetNamespace(Namespace,"Domain","Models") %> {
             <% if( p.ColumnName == "Version" && p.DataType == DbType.Binary ) continue;%>
             <% if( p.ColumnName == "IsDeleted" && p.DataType == DbType.Boolean ) continue;%>
             <% if( p.IsPrimaryKey.Value ){ %>
-            AddDescription( "<%=p.Description %>", Id );
+            AddDescription( t => t.Id );
             <% continue;} %>
-            AddDescription( "<%=p.Description %>", <%= p.PropertyName.ToSafeName() %><%= p.ShowDescription() %> );
+            AddDescription( t => t.<%= p.PropertyName.ToSafeName() %> );
             <% } %>
         }
         
@@ -107,9 +102,9 @@ namespace <%= Entity.GetNamespace(Namespace,"Domain","Models") %> {
             <% if( p.ColumnName == "Version" && p.DataType == DbType.Binary ) continue;%>
             <% if( p.ColumnName == "IsDeleted" && p.DataType == DbType.Boolean ) continue;%>
             <% if( p.IsPrimaryKey.Value ){ %>
-            AddChange( "Id", "<%=p.Description %>", Id, other.Id );            
+            AddChange( t => t.Id, other.Id );
             <%continue; } %>
-            AddChange( "<%=p.ColumnName %>", "<%=p.Description %>", <%= p.PropertyName.ToSafeName() %>, other.<%= p.PropertyName.ToSafeName() %> );
+            AddChange( t => t.<%= p.PropertyName.ToSafeName() %>, other.<%= p.PropertyName.ToSafeName() %> );
             <% } %>
         }
     }

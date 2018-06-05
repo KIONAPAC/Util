@@ -1,14 +1,15 @@
 ﻿using Util.Ui.Angular;
+using Util.Ui.Angular.Renders;
 using Util.Ui.Builders;
 using Util.Ui.Configs;
-using Util.Ui.Renders;
+using Util.Ui.Extensions;
 using Util.Ui.Material.Enums;
 
 namespace Util.Ui.Material.Buttons.Renders {
     /// <summary>
     /// 链接渲染器
     /// </summary>
-    public class AnchorRender : RenderBase {
+    public class AnchorRender : AngularRenderBase {
         /// <summary>
         /// 配置
         /// </summary>
@@ -52,6 +53,8 @@ namespace Util.Ui.Material.Buttons.Renders {
         private void ConfigText( TagBuilder builder ) {
             if( _config.Contains( UiConst.Text ) )
                 builder.SetContent( _config.GetValue( UiConst.Text ) );
+            if( _config.Contains( AngularConst.BindText ) )
+                builder.SetContent( $"{{{{{_config.GetValue( AngularConst.BindText )}}}}}" );
         }
 
         /// <summary>
@@ -90,8 +93,7 @@ namespace Util.Ui.Material.Buttons.Renders {
         /// 配置链接
         /// </summary>
         private void ConfigLink( TagBuilder builder ) {
-            builder.AddAttribute( "routerLink", _config.GetValue( UiConst.Link ) );
-            builder.AddAttribute( "[routerLink]", _config.GetValue( AngularConst.BindLink ) );
+            builder.Link( _config );
         }
 
         /// <summary>
@@ -105,7 +107,7 @@ namespace Util.Ui.Material.Buttons.Renders {
         /// 配置内容
         /// </summary>
         protected override void ConfigContent( TagBuilder builder ) {
-            if( _config.Contains( UiConst.Text ) )
+            if( _config.Contains( UiConst.Text ) || _config.Contains( AngularConst.BindText ) )
                 return;
             builder.SetContent( _config.Content );
         }

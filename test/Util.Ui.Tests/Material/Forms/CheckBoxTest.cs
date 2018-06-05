@@ -73,13 +73,33 @@ namespace Util.Ui.Tests.Material.Forms {
         }
 
         /// <summary>
+        /// 测试添加绑定名称
+        /// </summary>
+        [Fact]
+        public void TestBindName() {
+            var result = new String();
+            result.Append( "<mat-checkbox [name]=\"a\"></mat-checkbox>" );
+            Assert.Equal( result.ToString(), GetResult( _component.BindName( "a" ) ) );
+        }
+
+        /// <summary>
         /// 测试设置标签
         /// </summary>
         [Fact]
-        public void TestText() {
+        public void TestLabel() {
             var result = new String();
             result.Append( "<mat-checkbox>a</mat-checkbox>" );
             Assert.Equal( result.ToString(), GetResult( _component.Label( "a" ) ) );
+        }
+
+        /// <summary>
+        /// 测试设置标签绑定
+        /// </summary>
+        [Fact]
+        public void TestBindLabel() {
+            var result = new String();
+            result.Append( "<mat-checkbox>{{a}}</mat-checkbox>" );
+            Assert.Equal( result.ToString(), GetResult( _component.BindLabel( "a" ) ) );
         }
 
         /// <summary>
@@ -150,6 +170,16 @@ namespace Util.Ui.Tests.Material.Forms {
             var result = new String();
             result.Append( "<mat-checkbox (change)=\"a\"></mat-checkbox>" );
             Assert.Equal( result.ToString(), GetResult( _component.OnChange( "a" ) ) );
+        }
+
+        /// <summary>
+        /// 测试独立
+        /// </summary>
+        [Fact]
+        public void TestStandalone() {
+            var result = new String();
+            result.Append( "<mat-checkbox [ngModelOptions]=\"{standalone: true}\"></mat-checkbox>" );
+            Assert.Equal( result.ToString(), GetResult( _component.Standalone() ) );
         }
     }
 }

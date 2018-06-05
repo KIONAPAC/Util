@@ -18,7 +18,7 @@ export class Message {
      * @param title 标题
      */
     static success(message: string, title?: string): void {
-        var service = ioc.get(MessageService);
+        var service = ioc.injector.get(MessageService);
         service.add({ severity: 'success', summary: title || "成功", detail: message });
     }
 
@@ -28,7 +28,7 @@ export class Message {
      * @param title 标题
      */
     static info(message: string, title?: string): void {
-        var service = ioc.get(MessageService);
+        var service = ioc.injector.get(MessageService);
         service.add({ severity: 'info', summary: title || "信息", detail: message });
     }
 
@@ -38,7 +38,7 @@ export class Message {
      * @param title 标题
      */
     static warn(message: string, title?: string): void {
-        var service = ioc.get(MessageService);
+        var service = ioc.injector.get(MessageService);
         service.add({ severity: 'warn', summary: title || "警告", detail: message });
     }
 
@@ -48,7 +48,7 @@ export class Message {
      * @param title 标题
      */
     static error(message: string, title?: string): void {
-        var service = ioc.get(MessageService);
+        var service = ioc.injector.get(MessageService);
         service.add({ severity: 'error', summary: title || "错误", detail: message });
     }
 
@@ -101,9 +101,14 @@ export class Message {
             maxWidth: "40em",
             disableClose: true,
             data: {
-                content: message,
-                ok: ok,
-                cancel: cancel
+                content: message
+            },
+            afterClosed: result => {
+                if (result === "ok") {
+                    ok && ok();
+                    return;
+                }
+                cancel && cancel();
             }
         });
     }

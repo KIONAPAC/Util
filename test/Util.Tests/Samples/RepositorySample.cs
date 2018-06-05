@@ -4,7 +4,9 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using Util.Domains;
 using Util.Domains.Repositories;
 
@@ -25,6 +27,12 @@ namespace Util.Tests.Samples {
         /// </summary>
         [Required(ErrorMessage = "名称不能为空")]
         public string Name { get; set; }
+
+        /// <summary>
+        /// 忽略值
+        /// </summary>
+        [IgnoreMap]
+        public string IgnoreValue { get; set; }
     }
 
     /// <summary>
@@ -55,7 +63,7 @@ namespace Util.Tests.Samples {
         }
 
         public EntitySample Find( object id ) {
-            throw new NotImplementedException();
+            return new EntitySample();
         }
 
         public Task<EntitySample> FindAsync( object id ) {
@@ -78,6 +86,10 @@ namespace Util.Tests.Samples {
             throw new NotImplementedException();
         }
 
+        public Task<List<EntitySample>> FindByIdsAsync( IEnumerable<Guid> ids, CancellationToken cancellationToken = default( CancellationToken ) ) {
+            throw new NotImplementedException();
+        }
+
         public Task<List<EntitySample>> FindByIdsAsync( IEnumerable<Guid> ids ) {
             throw new NotImplementedException();
         }
@@ -90,7 +102,7 @@ namespace Util.Tests.Samples {
             throw new NotImplementedException();
         }
 
-        public Task<EntitySample> SingleAsync( Expression<Func<EntitySample, bool>> predicate ) {
+        public Task<EntitySample> SingleAsync( Expression<Func<EntitySample, bool>> predicate, CancellationToken cancellationToken = default( CancellationToken ) ) {
             throw new NotImplementedException();
         }
 
@@ -169,6 +181,14 @@ namespace Util.Tests.Samples {
             throw new NotImplementedException();
         }
 
+        public Task AddAsync( EntitySample entity, CancellationToken cancellationToken = default( CancellationToken ) ) {
+            throw new NotImplementedException();
+        }
+
+        public Task AddAsync( IEnumerable<EntitySample> entities, CancellationToken cancellationToken = default( CancellationToken ) ) {
+            throw new NotImplementedException();
+        }
+
         public Task AddAsync( EntitySample entity ) {
             throw new NotImplementedException();
         }
@@ -180,7 +200,15 @@ namespace Util.Tests.Samples {
         public void Update( EntitySample entity ) {
         }
 
+        public void Update( IEnumerable<EntitySample> entities ) {
+            throw new NotImplementedException();
+        }
+
         public Task UpdateAsync( EntitySample entity ) {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdateAsync( IEnumerable<EntitySample> entities ) {
             throw new NotImplementedException();
         }
 
@@ -188,11 +216,27 @@ namespace Util.Tests.Samples {
             throw new NotImplementedException();
         }
 
+        public Task RemoveAsync( Guid id, CancellationToken cancellationToken = default( CancellationToken ) ) {
+            throw new NotImplementedException();
+        }
+
         public Task RemoveAsync( Guid id ) {
             throw new NotImplementedException();
         }
 
+        public void Remove( object id ) {
+            throw new NotImplementedException();
+        }
+
         public void Remove( EntitySample entity ) {
+            throw new NotImplementedException();
+        }
+
+        public Task RemoveAsync( object id, CancellationToken cancellationToken = default( CancellationToken ) ) {
+            throw new NotImplementedException();
+        }
+
+        public Task RemoveAsync( EntitySample entity, CancellationToken cancellationToken = default( CancellationToken ) ) {
             throw new NotImplementedException();
         }
 
@@ -204,6 +248,10 @@ namespace Util.Tests.Samples {
             throw new NotImplementedException();
         }
 
+        public Task RemoveAsync( IEnumerable<Guid> ids, CancellationToken cancellationToken = default( CancellationToken ) ) {
+            throw new NotImplementedException();
+        }
+
         public Task RemoveAsync( IEnumerable<Guid> ids ) {
             throw new NotImplementedException();
         }
@@ -212,7 +260,55 @@ namespace Util.Tests.Samples {
             throw new NotImplementedException();
         }
 
+        public Task RemoveAsync( IEnumerable<EntitySample> entities, CancellationToken cancellationToken = default( CancellationToken ) ) {
+            throw new NotImplementedException();
+        }
+
         public Task RemoveAsync( IEnumerable<EntitySample> entities ) {
+            throw new NotImplementedException();
+        }
+
+        public Task<EntitySample> FindAsync( object id, CancellationToken cancellationToken = default( CancellationToken ) ) {
+            throw new NotImplementedException();
+        }
+
+        public EntitySample FindByIdNoTracking( Guid id ) {
+            throw new NotImplementedException();
+        }
+
+        public Task<EntitySample> FindByIdNoTrackingAsync( Guid id, CancellationToken cancellationToken = default( CancellationToken ) ) {
+            throw new NotImplementedException();
+        }
+
+        public List<EntitySample> FindByIdsNoTracking( params Guid[] ids ) {
+            throw new NotImplementedException();
+        }
+
+        public List<EntitySample> FindByIdsNoTracking( IEnumerable<Guid> ids ) {
+            throw new NotImplementedException();
+        }
+
+        public List<EntitySample> FindByIdsNoTracking( string ids ) {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<EntitySample>> FindByIdsNoTrackingAsync( params Guid[] ids ) {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<EntitySample>> FindByIdsNoTrackingAsync( IEnumerable<Guid> ids, CancellationToken cancellationToken = default( CancellationToken ) ) {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<EntitySample>> FindByIdsNoTrackingAsync( string ids ) {
+            throw new NotImplementedException();
+        }
+
+        public List<EntitySample> FindAllNoTracking( Expression<Func<EntitySample, bool>> predicate = null ) {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<EntitySample>> FindAllNoTrackingAsync( Expression<Func<EntitySample, bool>> predicate = null ) {
             throw new NotImplementedException();
         }
     }

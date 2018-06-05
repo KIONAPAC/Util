@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Razor.TagHelpers;
 using Util.Helpers;
+using Util.Ui.Angular;
 using Util.Ui.Configs;
 using Util.Ui.Enums;
 using Util.Ui.Material.Tabs.TagHelpers;
@@ -71,6 +72,17 @@ namespace Util.Ui.Tests.Material.Tabs {
         }
 
         /// <summary>
+        /// 测试路由链接
+        /// </summary>
+        [Fact]
+        public void TestBindLink() {
+            var attributes = new TagHelperAttributeList { { AngularConst.BindLink, "b" } };
+            var result = new String();
+            result.Append( "<a #m_id=\"routerLinkActive\" mat-tab-link=\"\" routerLinkActive=\"\" [active]=\"m_id.isActive\" [routerLink]=\"b\"></a>" );
+            Assert.Equal( result.ToString(), GetResult( attributes ) );
+        }
+
+        /// <summary>
         /// 测试添加标签
         /// </summary>
         [Fact]
@@ -122,6 +134,17 @@ namespace Util.Ui.Tests.Material.Tabs {
             var attributes = new TagHelperAttributeList { { UiConst.Disabled, "a" } };
             var result = new String();
             result.Append( "<a #m_id=\"routerLinkActive\" mat-tab-link=\"\" routerLinkActive=\"\" [active]=\"m_id.isActive\" [disabled]=\"a\"></a>" );
+            Assert.Equal( result.ToString(), GetResult( attributes ) );
+        }
+
+        /// <summary>
+        /// 测试ngIf
+        /// </summary>
+        [Fact]
+        public void TestIf() {
+            var attributes = new TagHelperAttributeList { { AngularConst.NgIf, "a" } };
+            var result = new String();
+            result.Append( "<a #m_id=\"routerLinkActive\" *ngIf=\"a\" mat-tab-link=\"\" routerLinkActive=\"\" [active]=\"m_id.isActive\"></a>" );
             Assert.Equal( result.ToString(), GetResult( attributes ) );
         }
     }

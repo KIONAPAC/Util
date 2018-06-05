@@ -1,17 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Util.Ui.Angular;
+using Util.Ui.Angular.Renders;
 using Util.Ui.Builders;
 using Util.Ui.Configs;
 using Util.Ui.Material.Enums;
 using Util.Ui.Material.Forms.Builders;
 using Util.Ui.Material.Forms.Configs;
 using Util.Ui.Material.Forms.Resolvers;
-using Util.Ui.Renders;
 
 namespace Util.Ui.Material.Forms.Renders {
     /// <summary>
     /// 单选框渲染器
     /// </summary>
-    public class RadioRender : RenderBase {
+    public class RadioRender : AngularRenderBase {
         /// <summary>
         /// 配置
         /// </summary>
@@ -58,6 +59,7 @@ namespace Util.Ui.Material.Forms.Renders {
             ConfigEvents( builder );
             ConfigUrl( builder );
             ConfigDataSource( builder );
+            ConfigStandalone( builder );
         }
 
         /// <summary>
@@ -65,6 +67,7 @@ namespace Util.Ui.Material.Forms.Renders {
         /// </summary>
         private void ConfigName( TagBuilder builder ) {
             builder.AddAttribute( UiConst.Name, _config.GetValue( UiConst.Name ) );
+            builder.AddAttribute( "[name]", _config.GetValue( AngularConst.BindName ) );
         }
 
         /// <summary>
@@ -74,6 +77,7 @@ namespace Util.Ui.Material.Forms.Renders {
             builder.AddAttribute( "[vertical]", _config.GetBoolValue( UiConst.Vertical ) );
             builder.AddAttribute( "[showLabel]", _config.GetBoolValue( MaterialConst.ShowLabel ) );
             builder.AddAttribute( "label", _config.GetValue( UiConst.Label ) );
+            builder.AddAttribute( "[label]", _config.GetValue( AngularConst.BindLabel ) );
             builder.AddAttribute( "labelPosition", _config.GetValue<XPosition?>( UiConst.Position )?.Description() );
         }
 
@@ -127,6 +131,13 @@ namespace Util.Ui.Material.Forms.Renders {
             if( _config.Items.Count == 0 )
                 return;
             _config.SetAttribute( UiConst.DataSource, Util.Helpers.Json.ToJson( _config.Items, true ) );
+        }
+
+        /// <summary>
+        /// 配置独立
+        /// </summary>
+        private void ConfigStandalone( TagBuilder builder ) {
+            builder.AddAttribute( "[standalone]", _config.GetBoolValue( UiConst.Standalone ) );
         }
     }
 }

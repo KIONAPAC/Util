@@ -84,9 +84,10 @@ namespace Util.Webs.Clients {
         /// <param name="action">执行失败的回调函数,第一个参数为响应结果，第二个参数为状态码</param>
         TRequest OnFail( Action<string, HttpStatusCode> action );
         /// <summary>
-        /// 获取结果
+        /// 忽略Ssl
         /// </summary>
-        string Result();
+        /// <returns></returns>
+        TRequest IgnoreSsl();
         /// <summary>
         /// 获取结果
         /// </summary>

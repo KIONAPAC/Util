@@ -1,17 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Util.Ui.Angular.TagHelpers;
 using Util.Ui.Enums;
 using Util.Ui.Material.Enums;
-using Util.Ui.TagHelpers;
 
 namespace Util.Ui.Material.Forms.TagHelpers {
     /// <summary>
     /// 表单控件
     /// </summary>
-    public abstract class FormControlTagHelperBase : TagHelperBase {
+    public abstract class FormControlTagHelperBase : AngularTagHelperBase {
         /// <summary>
-        /// 控件的名称
+        /// 控件名称
         /// </summary>
         public string Name { get; set; }
+        /// <summary>
+        /// 控件的绑定名称 [name]
+        /// </summary>
+        public string BindName { get; set; }
         /// <summary>
         /// 禁用
         /// </summary>
@@ -20,6 +24,10 @@ namespace Util.Ui.Material.Forms.TagHelpers {
         /// 占位提示符
         /// </summary>
         public string Placeholder { get; set; }
+        /// <summary>
+        /// 占位提示符绑定
+        /// </summary>
+        public string BindPlaceholder { get; set; }
         /// <summary>
         /// 占位符浮动类型
         /// </summary>
@@ -63,7 +71,7 @@ namespace Util.Ui.Material.Forms.TagHelpers {
         /// <summary>
         /// 必填项
         /// </summary>
-        public bool Required { get; set; }
+        public string Required { get; set; }
         /// <summary>
         /// 必填项错误消息
         /// </summary>
@@ -88,5 +96,9 @@ namespace Util.Ui.Material.Forms.TagHelpers {
         /// 键盘按下事件处理函数,范例：handle()
         /// </summary>
         public string OnKeydown { get; set; }
+        /// <summary>
+        /// 组件不添加到FormGroup，独立存在，这样也无法基于NgForm进行表单验证
+        /// </summary>
+        public bool Standalone { get; set; }
     }
 }

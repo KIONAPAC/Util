@@ -1,17 +1,19 @@
 ﻿using System.IO;
 using System.Text.Encodings.Web;
+using Util.Ui.Angular;
 using Util.Ui.Angular.Builders;
+using Util.Ui.Angular.Renders;
 using Util.Ui.Builders;
 using Util.Ui.Configs;
+using Util.Ui.Enums;
 using Util.Ui.Material.Buttons.Builders;
-using Util.Ui.Renders;
 using Util.Ui.Material.Enums;
 
 namespace Util.Ui.Material.Buttons.Renders {
     /// <summary>
     /// 按钮包装器渲染器
     /// </summary>
-    public class ButtonWrapperRender : RenderBase {
+    public class ButtonWrapperRender : AngularRenderBase {
         /// <summary>
         /// 配置
         /// </summary>
@@ -37,12 +39,12 @@ namespace Util.Ui.Material.Buttons.Renders {
         /// <param name="encoder">编码</param>
         public override void WriteTo( TextWriter writer, HtmlEncoder encoder ) {
             if ( _config.Contains( UiConst.Text ) || _config.Content == null || _config.Content.IsEmptyOrWhiteSpace ) {
-                Builder.WriteTo( writer, encoder );
+                base.WriteTo( writer, encoder );
                 return;
             }
             _templateBuilder.SetContent( _config.Content );
             Builder.SetContent( _templateBuilder );
-            Builder.WriteTo( writer, encoder );
+            base.WriteTo( writer, encoder );
         }
 
         /// <summary>
@@ -50,6 +52,7 @@ namespace Util.Ui.Material.Buttons.Renders {
         /// </summary>
         /// <param name="writer">流写入器</param>
         public override void RenderStartTag( TextWriter writer ) {
+            InitBuilder( Builder );
             Builder.SetContent( _templateBuilder );
             Builder.RenderStartTag( writer );
             _templateBuilder.RenderStartTag( writer );
@@ -85,6 +88,7 @@ namespace Util.Ui.Material.Buttons.Renders {
             ConfigDisabled( builder );
             ConfigTooltip( builder );
             ConfigEvents( builder );
+            ConfigWaiting( builder );
         }
 
         /// <summary>
@@ -92,6 +96,7 @@ namespace Util.Ui.Material.Buttons.Renders {
         /// </summary>
         private void ConfigText( TagBuilder builder ) {
             builder.AddAttribute( UiConst.Text, _config.GetValue( UiConst.Text ) );
+            builder.AddAttribute( "[text]", _config.GetValue( AngularConst.BindText ) );
         }
 
         /// <summary>
@@ -134,6 +139,14 @@ namespace Util.Ui.Material.Buttons.Renders {
         /// </summary>
         private void ConfigEvents( TagBuilder builder ) {
             builder.AddAttribute( "(onClick)", _config.GetValue( UiConst.OnClick ) );
+        }
+
+        /// <summary>
+        /// 配置等待状态
+        /// </summary>
+        private void ConfigWaiting( TagBuilder builder ) {
+            builder.AddAttribute( "waitingText", _config.GetValue( UiConst.WaitingText ) );
+            builder.AddAttribute( "waitingMatIcon", _config.GetValue<MaterialIcon?>( UiConst.WaitingIcon )?.Description() );
         }
     }
 }

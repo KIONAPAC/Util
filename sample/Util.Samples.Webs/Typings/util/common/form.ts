@@ -4,12 +4,12 @@
 //================================================
 import { NgForm } from '@angular/forms';
 import { FailResult } from '../core/result';
-import { ViewModel } from '../core/view-model';
 import { HttpMethod } from '../angular/http-helper';
 import { WebApi } from './webapi';
 import { RouterHelper } from '../angular/router-helper';
 import { Message } from './message';
 import { MessageConfig } from '../config/message-config';
+import { Dialog } from './dialog';
 
 /**
  * 表单操作
@@ -20,15 +20,8 @@ export class Form {
      * @param options 表单提交参数
      */
     submit(options: IFormSubmitOption): void {
-        this.initSubmit(options);
-        if (!this.validateSubmit(options)) {
-            options["fnComplete"]();
+        if (!this.validateSubmit(options))
             return;
-        }
-        if (!this.submitBefore(options)) {
-            options["fnComplete"]();
-            return;
-        }
         if (!options.confirm) {
             this.submitForm(options);
             return;
@@ -37,21 +30,8 @@ export class Form {
             title: options.confirmTitle,
             message: options.confirm,
             ok: () => this.submitForm(options),
-            cancel: options["fnComplete"]
+            cancel: options.completeHandler
         });
-    }
-
-    /**
-     * 提交表单初始化
-     */
-    private initSubmit(options: IFormSubmitOption) {
-        if (!options)
-            return;
-        options["fnComplete"] = () => {
-            if (options.form)
-                (options.form as { submitted: boolean }).submitted = false;
-            options.completeHandler && options.completeHandler();
-        };
     }
 
     /**
@@ -59,15 +39,13 @@ export class Form {
      */
     private validateSubmit(options: IFormSubmitOption) {
         if (!options) {
-            Message.error("表单参数[options: FormSubmitOptions]未设置");
+            Message.error("表单参数 options: FormSubmitOptions 未设置");
             return false;
         }
+        if (options.form && !options.form.valid)
+            return false;
         if (!options.url) {
             Message.error("表单url未设置");
-            return false;
-        }
-        if (!options.form) {
-            Message.error("表单ngForm未设置");
             return false;
         }
         if (!options.data) {
@@ -78,28 +56,34 @@ export class Form {
     }
 
     /**
-     * 提交前操作
-     */
-    private submitBefore(options: IFormSubmitOption) {
-        if (!options.beforeHandler)
-            return true;
-        return options.beforeHandler();
-    }
-
-    /**
      * 提交表单
      */
     private submitForm(options: IFormSubmitOption) {
-        if (!options.httpMethod) {
-            options.httpMethod = options.data.id ? HttpMethod.Put : HttpMethod.Post;
-        }
-        WebApi.send(options.url, options.httpMethod, options.data).header(options.header).handle({
-            handler: result => {
-                this.submitHandler(options, result);
-            },
-            failHandler: options.failHandler,
-            completeHandler: options["fnComplete"]
-        });
+        this.initHttpMethod(options);
+        WebApi.send(options.url, options.httpMethod, options.data)
+            .header(options.header)
+            .button(options.button)
+            .loading(options.loading || false)
+            .handle({
+                beforeHandler: () => {
+                    return options.beforeHandler && options.beforeHandler(options.data);
+                },
+                handler: result => {
+                    this.submitHandler(options, result);
+                },
+                failHandler: options.failHandler,
+                completeHandler: options.completeHandler
+            });
+    }
+
+    /**
+     * 初始化Http方法
+     * @param options
+     */
+    private initHttpMethod(options: IFormSubmitOption) {
+        if (options.httpMethod)
+            return;
+        options.httpMethod = options.data.id ? HttpMethod.Put : HttpMethod.Post;
     }
 
     /**
@@ -108,11 +92,11 @@ export class Form {
     private submitHandler(options: IFormSubmitOption, result) {
         options.handler && options.handler(result);
         if (options.showMessage !== false)
-            Message.snack(MessageConfig.successed);
-        if (options.reset)
-            options.form.resetForm();
+            Message.snack(options.message || MessageConfig.successed);
         if (options.back)
             RouterHelper.back();
+        if (options.closeDialog)
+            Dialog.close();
     }
 }
 
@@ -121,17 +105,13 @@ export class Form {
  */
 export interface IFormSubmitOption {
     /**
-     * 表单
-     */
-    form: NgForm;
-    /**
-     * 请求地址
+     * 服务端地址
      */
     url: string;
     /**
-     * 提交数据
+     * 数据
      */
-    data: ViewModel;
+    data;
     /**
      * Http头
      */
@@ -149,27 +129,41 @@ export interface IFormSubmitOption {
      */
     confirmTitle?: string;
     /**
+     * 表单
+     */
+    form?: NgForm;
+    /**
+     * 按钮实例，在请求期间禁用该按钮
+     */
+    button?,
+    /**
+     * 请求时显示进度条，默认为false
+     */
+    loading?: boolean,
+    /**
      * 提交成功后是否显示成功提示，默认为true
      */
     showMessage?: boolean;
+    /**
+     * 提交成功后显示的提示消息，默认为"操作成功"
+     */
+    message?: string;
     /**
      * 提交成功后是否返回上一个视图，默认为false
      */
     back?: boolean;
     /**
-     * 提交成功后是否关闭弹出层，当在弹出层中编辑时使用，默认为false
+     * 提交成功后关闭弹出层，当在弹出层中编辑时使用，默认为false
      */
     closeDialog?: boolean;
     /**
-     * 提交成功后是否重置表单，默认为false
-     */
-    reset?: boolean;
-    /**
      * 提交前处理函数，返回false则取消提交
+     * @param data 数据
      */
-    beforeHandler?: () => boolean;
+    beforeHandler?: (data) => boolean;
     /**
      * 提交成功处理函数
+     * @param result 结果
      */
     handler?: (result) => void;
     /**

@@ -1,4 +1,5 @@
 ﻿<%@ Template Language="C#" TargetLanguage="C#" Debug="True" Encoding="UTF-8" %>
+<%@ Register Name="TreeIndexComponent" Template="Trees/TreeIndexComponent.cst" MergeProperties="False" ExcludeProperties="" %>
 
 <%@ Assembly Src="..\..\..\Common\Model.cs" %>
 <%@ Assembly Src="..\..\..\Common\Extensions.cs" %>
@@ -17,20 +18,30 @@
 <% string Description = Entity.Description; %>
 <%-- 驼峰形式类名 --%>
 <% string CamelClassName = SafeClassName.ToCamelCase(); %>
+<%-- 如果是树型实体，则调用子模板 --%>
+<%
+if( Entity.IsTreeEntity() ){
+    CodeTemplate template =new TreeIndexComponent();
+    template.SetProperty("Namespace",Namespace);
+    template.SetProperty("Entity",Entity);
+    template.Render(this.Response);
+    return;
+}
+%>
 import { Component, Injector } from '@angular/core';
-import { CrudIndexComponentBase } from '../../../util';
-import { <%=SafeClassName%>Query } from './<%=CamelClassName%>-query';
-import { <%=SafeClassName%>ViewModel } from './<%=CamelClassName%>-view-model';
 import { env } from '../../env';
+import { TableQueryComponentBase } from '../../../util';
+import { <%=SafeClassName%>Query } from './model/<%=CamelClassName%>-query';
+import { <%=SafeClassName%>ViewModel } from './model/<%=CamelClassName%>-view-model';
 
 /**
  * <%=Description%>首页
  */
 @Component({
     selector: '<%=CamelClassName%>-index',
-    templateUrl: env.prod ? './<%=CamelClassName%>-index.component.html' : '/view/<%=Namespace.ToCamelCase()%>/<%=CamelClassName%>'
+    templateUrl: env.prod() ? './html/<%=CamelClassName%>-index.component.html' : '/view/<%=Namespace.ToCamelCase()%>/<%=CamelClassName%>'
 })
-export class <%=SafeClassName%>IndexComponent extends CrudIndexComponentBase<<%=SafeClassName%>ViewModel, <%=SafeClassName%>Query>  {
+export class <%=SafeClassName%>IndexComponent extends TableQueryComponentBase<<%=SafeClassName%>ViewModel, <%=SafeClassName%>Query>  {
     /**
      * 初始化<%=Description%>首页
      * @param injector 注入器

@@ -1,14 +1,15 @@
-﻿using Util.Ui.Builders;
+﻿using Util.Ui.Angular;
+using Util.Ui.Angular.Renders;
+using Util.Ui.Builders;
 using Util.Ui.Configs;
 using Util.Ui.Enums;
 using Util.Ui.Material.Enums;
-using Util.Ui.Renders;
 
 namespace Util.Ui.Material.Forms.Renders {
     /// <summary>
     /// 表单控件渲染器
     /// </summary>
-    public abstract class FormControlRenderBase : RenderBase {
+    public abstract class FormControlRenderBase : AngularRenderBase {
         /// <summary>
         /// 配置
         /// </summary>
@@ -43,6 +44,7 @@ namespace Util.Ui.Material.Forms.Renders {
         /// </summary>
         private void ConfigName( TagBuilder builder ) {
             builder.AddAttribute( UiConst.Name, _config.GetValue( UiConst.Name ) );
+            builder.AddAttribute( "[name]", _config.GetValue( AngularConst.BindName ) );
         }
 
         /// <summary>
@@ -57,6 +59,7 @@ namespace Util.Ui.Material.Forms.Renders {
         /// </summary>
         private void ConfigPlaceholder( TagBuilder builder ) {
             builder.AddAttribute( UiConst.Placeholder, _config.GetValue( UiConst.Placeholder ) );
+            builder.AddAttribute( $"[{UiConst.Placeholder}]", _config.GetValue( AngularConst.BindPlaceholder ) );
             builder.AddAttribute( "floatPlaceholder", _config.GetValue<FloatType?>( MaterialConst.FloatPlaceholder )?.Description() );
         }
 

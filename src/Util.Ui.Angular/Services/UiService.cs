@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Linq.Expressions;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Util.Ui.CkEditor;
+using Util.Ui.CkEditor.Models;
 using Util.Ui.Components;
 using Util.Ui.Material.Forms.Models;
+using Util.Ui.Prime.ColorPickers.Models;
 
 namespace Util.Ui.Services {
     /// <summary>
@@ -60,6 +63,24 @@ namespace Util.Ui.Services {
         /// <param name="expression">属性表达式</param>
         public ITextBox TextBox<TProperty>( Expression<Func<TModel, TProperty>> expression ) {
             return new ModelTextBox<TModel, TProperty>( expression );
+        }
+
+        /// <summary>
+        /// 颜色选择器
+        /// </summary>
+        /// <typeparam name="TProperty">属性类型</typeparam>
+        /// <param name="expression">属性表达式</param>
+        public IColorPicker ColorPicker<TProperty>( Expression<Func<TModel, TProperty>> expression ) {
+            return new ModelColorPicker<TModel, TProperty>( expression );
+        }
+
+        /// <summary>
+        /// 富文本框编辑器
+        /// </summary>
+        /// <typeparam name="TProperty">属性类型</typeparam>
+        /// <param name="expression">属性表达式</param>
+        public IEditor Editor<TProperty>( Expression<Func<TModel, TProperty>> expression ) {
+            return new ModelEditor<TModel, TProperty>( expression );
         }
     }
 }

@@ -2,7 +2,7 @@
 //Copyright 2018 何镇汐
 //Licensed under the MIT license
 //================================================
-import { Component, Input, Output, EventEmitter, Host, Optional, ContentChild, TemplateRef} from '@angular/core';
+import { Component, Input, Output, EventEmitter, Host, Optional, ContentChild, TemplateRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MessageConfig } from '../config/message-config';
 
@@ -11,32 +11,57 @@ import { MessageConfig } from '../config/message-config';
  */
 @Component({
     selector: 'mat-button-wrapper',
-    template:`
+    template: `
         <ng-container [ngSwitch]="style">
             <button *ngSwitchCase="'mat-button'" mat-button [type]="type" [disabled]="isDisabled()"
                     [color]="color" [matTooltip]="tooltip" (click)="click($event)" >
-                {{getText()}}
-                <ng-container [ngTemplateOutlet]="template"></ng-container>
+                <ng-container *ngIf="!isWaiting">
+                    {{getText()}}
+                    <ng-container [ngTemplateOutlet]="template"></ng-container>
+                </ng-container>
+                <ng-container *ngIf="isWaiting">
+                    <mat-icon class="fa-spin">{{waitingMatIcon}}</mat-icon>&nbsp;&nbsp;{{waitingText}}
+                </ng-container>
             </button>            
             <button *ngSwitchCase="'mat-icon-button'" mat-icon-button [type]="type" [disabled]="isDisabled()"
                     [color]="color" [matTooltip]="tooltip" (click)="click($event)">
-                {{getText()}}
-                <ng-container [ngTemplateOutlet]="template"></ng-container>
+                <ng-container *ngIf="!isWaiting">
+                    {{getText()}}
+                    <ng-container [ngTemplateOutlet]="template"></ng-container>
+                </ng-container>
+                <ng-container *ngIf="isWaiting">
+                    <mat-icon class="fa-spin">{{waitingMatIcon}}</mat-icon>
+                </ng-container>
             </button>
             <button *ngSwitchCase="'mat-fab'" mat-fab [type]="type" [disabled]="isDisabled()"
                     [color]="color" [matTooltip]="tooltip" (click)="click($event)">
-                {{getText()}}
-                <ng-container [ngTemplateOutlet]="template"></ng-container>
+                <ng-container *ngIf="!isWaiting">
+                    {{getText()}}
+                    <ng-container [ngTemplateOutlet]="template"></ng-container>
+                </ng-container>
+                <ng-container *ngIf="isWaiting">
+                    <mat-icon class="fa-spin">{{waitingMatIcon}}</mat-icon>
+                </ng-container>
             </button>
             <button *ngSwitchCase="'mat-mini-fab'" mat-mini-fab [type]="type" [disabled]="isDisabled()"
                     [color]="color" [matTooltip]="tooltip" (click)="click($event)">
-                {{getText()}}
-                <ng-container [ngTemplateOutlet]="template"></ng-container>
+                <ng-container *ngIf="!isWaiting">
+                    {{getText()}}
+                    <ng-container [ngTemplateOutlet]="template"></ng-container>
+                </ng-container>
+                <ng-container *ngIf="isWaiting">
+                    <mat-icon class="fa-spin">{{waitingMatIcon}}</mat-icon>
+                </ng-container>
             </button>
             <button *ngSwitchDefault mat-raised-button [type]="type" [disabled]="isDisabled()"
                     [color]="color" [matTooltip]="tooltip" (click)="click($event)">
-                {{getText()}}
-                <ng-container [ngTemplateOutlet]="template"></ng-container>
+                <ng-container *ngIf="!isWaiting">
+                    {{getText()}}
+                    <ng-container [ngTemplateOutlet]="template"></ng-container>
+                </ng-container>
+                <ng-container *ngIf="isWaiting">
+                    <mat-icon class="fa-spin">{{waitingMatIcon}}</mat-icon>&nbsp;&nbsp;{{waitingText}}
+                </ng-container>
             </button>
         </ng-container>
     `
@@ -61,7 +86,19 @@ export class ButtonWrapperComponent {
     /**
      * 禁用
      */
-    @Input() disabled: boolean;
+    @Input() disabled: string;
+    /**
+     * 等待
+     */
+    isWaiting: boolean;
+    /**
+     * 等待时显示的文本
+     */
+    @Input() waitingText: string;
+    /**
+     * 等待时显示的Material图标
+     */
+    @Input() waitingMatIcon: string;
     /**
      * 提示
      */
@@ -81,6 +118,8 @@ export class ButtonWrapperComponent {
      */
     constructor(@Optional() @Host() private form: NgForm) {
         this.type = "button";
+        this.waitingText = MessageConfig.loading;
+        this.waitingMatIcon = "donut_large";
     }
 
     /**
@@ -89,7 +128,7 @@ export class ButtonWrapperComponent {
     private isDisabled() {
         if (this.disabled !== undefined)
             return this.disabled;
-        return this.type === 'submit' && this.form && (!this.form.valid || this.form.submitted);
+        return this.type === 'submit' && this.form && !this.form.valid;
     }
 
     /**
@@ -112,5 +151,21 @@ export class ButtonWrapperComponent {
      */
     private click(event) {
         this.onClick.emit(event);
+    }
+
+    /**
+     * 启用
+     */
+    enable() {
+        this.disabled = undefined;
+        this.isWaiting = false;
+    }
+
+    /**
+     * 禁用
+     */
+    disable() {
+        this.disabled = "true";
+        this.isWaiting = true;
     }
 }

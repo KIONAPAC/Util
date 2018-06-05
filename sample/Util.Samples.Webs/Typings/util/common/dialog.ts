@@ -2,7 +2,7 @@
 //Copyright 2018 何镇汐
 //Licensed under the MIT license
 //================================================
-import { MatDialog, DialogPosition } from '@angular/material';
+import { MatDialog, DialogPosition, MAT_DIALOG_DATA } from '@angular/material';
 import { IocHelper as ioc } from '../angular/ioc-helper';
 import { isNumber, toNumber } from './helper';
 import { DialogWrapperComponent } from '../material/dialog-wrapper.component';
@@ -37,6 +37,8 @@ export class Dialog {
         Dialog.initPosition(options);
         options.width = Dialog.getUnitValue(options.width);
         options.height = Dialog.getUnitValue(options.height);
+        if (!options.autoFocus)
+            options.autoFocus = false;
     }
 
     /**
@@ -105,8 +107,8 @@ export class Dialog {
      * @param result 返回结果
      * @param id 弹出层标识
      */
-    static close<TResult>(result?: TResult,id?: string);
-    static close<TResult>(result?: TResult,id?: string) {
+    static close<TResult>(result?: TResult, id?: string);
+    static close<TResult>(result?: TResult, id?: string) {
         let dialog = ioc.get(MatDialog);
         let dialogRef;
         if (id)
@@ -118,6 +120,17 @@ export class Dialog {
         }
         dialogRef && dialogRef.close(result);
     }
+
+    /**
+     * 获取数据，注意：必须在OnInit之后的事件调用，不能在构造函数中调用，可能获取不到值
+     */
+    static getData<T>() {
+        try {
+            return ioc.get<T>(MAT_DIALOG_DATA);
+        } catch (e) {
+            return <T>{};
+        }
+    }
 }
 
 /**
@@ -125,7 +138,7 @@ export class Dialog {
  */
 export interface IDialogOption {
     /**
-     * 弹出层组件，该组件应添加到根模块 NgModule 装饰器的 entryComponents 配置节，默认使用 DialogWrapperComponent，
+     * 弹出层组件，该组件应添加到模块 NgModule 装饰器的 entryComponents 配置节，默认使用 DialogWrapperComponent，
      */
     dialogComponent?,
     /**
@@ -137,7 +150,7 @@ export interface IDialogOption {
      */
     title?: string,
     /**
-     * 自定义数据，使用 MAT_DIALOG_DATA 标记注入到弹出层组件构造函数中，范例：@Inject(MAT_DIALOG_DATA) private data
+     * 数据
      */
     data?,
     /**
@@ -153,7 +166,7 @@ export interface IDialogOption {
      */
     disableClose?: boolean,
     /**
-     * 是否自动将焦点放在控件上,默认true
+     * 是否自动将焦点放在控件上,默认false
      */
     autoFocus?: boolean,
     /**
@@ -217,5 +230,5 @@ export interface IDialogOption {
     /**
      * 点击遮罩背景操作
      */
-    backdropClick?: (event:MouseEvent) => void,
+    backdropClick?: (event: MouseEvent) => void;
 }

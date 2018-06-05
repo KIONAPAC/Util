@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Razor.TagHelpers;
+using Util.Ui.Angular;
 using Util.Ui.Configs;
 using Util.Ui.FlexLayout.Enums;
 using Util.Ui.FlexLayout.TagHelpers;
@@ -131,6 +132,28 @@ namespace Util.Ui.Tests.FlexLayout {
             var attributes = new TagHelperAttributeList { { UiConst.Flex, "a" } };
             var result = new String();
             result.Append( "<div fxLayout=\"row\"><div fxFlex=\"a\"></div></div>" );
+            Assert.Equal( result.ToString(), GetResult( attributes ) );
+        }
+
+        /// <summary>
+        /// 测试换行
+        /// </summary>
+        [Fact]
+        public void TestWrap() {
+            var attributes = new TagHelperAttributeList { { UiConst.Wrap, true } };
+            var result = new String();
+            result.Append( "<div fxLayout=\"row wrap\"></div>" );
+            Assert.Equal( result.ToString(), GetResult( attributes ) );
+        }
+
+        /// <summary>
+        /// 测试If
+        /// </summary>
+        [Fact]
+        public void TestIf() {
+            var attributes = new TagHelperAttributeList { { AngularConst.NgIf, "a" } };
+            var result = new String();
+            result.Append( "<div *ngIf=\"a\" fxLayout=\"row\"></div>" );
             Assert.Equal( result.ToString(), GetResult( attributes ) );
         }
     }

@@ -14,6 +14,10 @@ namespace Util.Ui.TagHelpers {
         /// 标识
         /// </summary>
         public string Id { get; set; }
+        /// <summary>
+        /// 是否写跟踪日志
+        /// </summary>
+        public bool WriteLog { get; set; }
 
         /// <summary>
         /// 渲染
@@ -48,12 +52,14 @@ namespace Util.Ui.TagHelpers {
         /// <param name="context">上下文</param>
         /// <param name="render">渲染器</param>
         protected virtual void ProcessAfter( Context context, IRender render ) {
+            if( WriteLog )
+                WriteTraceLog( render, "渲染TagHelper组件" );
         }
 
         /// <summary>
         /// 写日志
         /// </summary>
-        protected void WriteLog( IRender render,string caption ) {
+        protected void WriteTraceLog( IRender render,string caption ) {
             var log = GetLog();
             if( log.IsTraceEnabled == false )
                 return;

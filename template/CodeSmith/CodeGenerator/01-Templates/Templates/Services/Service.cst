@@ -1,4 +1,5 @@
 ﻿<%@ Template Language="C#" TargetLanguage="C#" Debug="True" Encoding="UTF-8" %>
+<%@ Register Name="TreeService" Template="Trees/TreeService.cst" MergeProperties="False" ExcludeProperties="" %>
 
 <%@ Assembly Src="..\..\Common\Model.cs" %>
 <%@ Assembly Src="..\..\Common\Extensions.cs" %>
@@ -17,6 +18,18 @@
 <% string SafeClassName = Entity.ClassName.ToSafeName(); %>
 <%-- 描述 --%>
 <% string Description = Entity.Description; %>
+<%-- 如果是树型实体，则调用子模板 --%>
+<%
+if( Entity.IsTreeEntity() ){
+    CodeTemplate template = new TreeService();
+    template.SetProperty("Namespace",Namespace);
+    template.SetProperty("UnitOfWork",UnitOfWork);
+    template.SetProperty("Entity",Entity);
+    template.SetProperty("IUnitOfWorkNamespace",IUnitOfWorkNamespace);
+    template.Render(this.Response);
+    return;
+}
+%>
 using Util;
 using Util.Maps;
 using Util.Domains.Repositories;
@@ -50,25 +63,9 @@ namespace <%= string.Format("{0}.Service.Implements.{1}",Namespace,Entity.TableS
         public I<%= SafeClassName %>Repository <%= SafeClassName %>Repository { get; set; }
         
         /// <summary>
-        /// 转换为数据传输对象
-        /// </summary>
-        /// <param name="entity">实体</param>
-        protected override <%= SafeClassName %>Dto ToDto( <%= SafeClassName %> entity ) {
-            return entity.MapTo<<%= SafeClassName %>Dto>();
-        }
-
-        /// <summary>
-        /// 转换为实体
-        /// </summary>
-        /// <param name="dto">数据传输对象</param>
-        protected override <%= SafeClassName %> ToEntity( <%= SafeClassName %>Dto dto ) {
-            return dto.MapTo( new <%= SafeClassName %>( dto.Id<%=Entity.GetToEntityConvert() %> ) );
-        }
-        
-        /// <summary>
         /// 创建查询对象
         /// </summary>
-        /// <param name="param"><%= Description %>查询实体</param>
+        /// <param name="param">查询参数</param>
         protected override IQueryBase<<%= SafeClassName %>> CreateQuery( <%= SafeClassName %>Query param ) {
             return new Query<<%= SafeClassName %><%= Entity.GetKeyTypeNoContainsGuid() %>>( param );
         }

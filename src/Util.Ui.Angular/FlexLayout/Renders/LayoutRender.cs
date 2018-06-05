@@ -1,15 +1,14 @@
 ﻿using System.Linq;
+using Util.Ui.Angular.Renders;
 using Util.Ui.Builders;
 using Util.Ui.Configs;
-using Util.Ui.Extensions;
 using Util.Ui.FlexLayout.Enums;
-using Util.Ui.Renders;
 
 namespace Util.Ui.FlexLayout.Renders {
     /// <summary>
     /// 浮动布局渲染器
     /// </summary>
-    public class LayoutRender : RenderBase {
+    public class LayoutRender : AngularRenderBase {
         /// <summary>
         /// 配置
         /// </summary>
@@ -36,9 +35,6 @@ namespace Util.Ui.FlexLayout.Renders {
         /// 配置
         /// </summary>
         protected void Config( TagBuilder builder ) {
-            builder.Style( _config );
-            builder.Class( _config );
-            builder.AddOutputAttributes( _config );
             ConfigId( builder );
             ConfigDirection( builder );
             ConfigAlign( builder );
@@ -51,8 +47,12 @@ namespace Util.Ui.FlexLayout.Renders {
         /// 配置方向
         /// </summary>
         private void ConfigDirection( TagBuilder builder ) {
+            if ( _config.GetValue<bool>( UiConst.Wrap ) ) {
+                builder.AddAttribute( "fxLayout", "row wrap" );
+                return;
+            }
             if( _config.AllAttributes.Any( t => t.Name.StartsWith( UiConst.Direction ) ) == false ) {
-                builder.AddAttribute( "fxLayout", LayoutDirection.Row.Description() );
+                builder.AddAttribute( "fxLayout", "row" );
                 return;
             }
             builder.AddAttribute( "fxLayout", _config.GetValue<LayoutDirection?>( UiConst.Direction )?.Description() );

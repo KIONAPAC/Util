@@ -15,7 +15,7 @@ import { MessageConfig } from '../config/message-config';
 @Component({
     selector: 'mat-select-wrapper',
     template: `
-        <mat-form-field [floatPlaceholder]="floatPlaceholder">
+        <mat-form-field [floatLabel]="floatPlaceholder">
             <mat-select #control="matSelect" #controlModel="ngModel" [name]="name" [ngModel]="model" (ngModelChange)="onModelChange($event)" 
                 (blur)="blur($event)" (focus)="focus($event)" (keyup)="keyup($event)" (keydown)="keydown($event)"
                 [placeholder]="placeholder" [disabled]="disabled" [multiple]="multiple" [required]="required">
@@ -60,7 +60,17 @@ export class SelectWrapperComponent extends FormControlWrapperBase implements On
     /**
      * 数据源
      */
-    @Input() dataSource: SelectItem[];
+    private data: SelectItem[];
+    /**
+     * 数据源
+     */
+    @Input() get dataSource(): SelectItem[] {
+        return this.data;
+    }
+    set dataSource(value: SelectItem[]) {
+        this.data = value;
+        this.loadData();
+    }
     /**
      * 请求地址
      */
@@ -85,7 +95,7 @@ export class SelectWrapperComponent extends FormControlWrapperBase implements On
     /**
      * 初始化Mat下拉列表包装器
      */
-    constructor( @Optional() @Host() form: NgForm ) {
+    constructor(@Optional() @Host() form: NgForm) {
         super(form);
         this.enableResetOption = true;
         this.resetOptionText = MessageConfig.resetOptionText;
@@ -115,6 +125,7 @@ export class SelectWrapperComponent extends FormControlWrapperBase implements On
             this.optionGroups = select.toGroups();
             return;
         }
+        this.isGroup = false;
         this.options = select.toOptions();
     }
 

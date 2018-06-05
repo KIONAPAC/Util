@@ -91,6 +91,39 @@ namespace Util.Ui.Tests.Material.Lists {
         }
 
         /// <summary>
+        /// 测试添加路由激活
+        /// </summary>
+        [Fact]
+        public void TestActive() {
+            var attributes = new TagHelperAttributeList { { UiConst.Active, "a" } };
+            var result = new String();
+            result.Append( "<a mat-list-item=\"\" routerLinkActive=\"a\"></a>" );
+            Assert.Equal( result.ToString(), GetResult( attributes ) );
+        }
+
+        /// <summary>
+        /// 测试添加路由激活绑定
+        /// </summary>
+        [Fact]
+        public void TestBindActive() {
+            var attributes = new TagHelperAttributeList { { AngularConst.BindActive, "a" } };
+            var result = new String();
+            result.Append( "<a mat-list-item=\"\" [routerLinkActive]=\"a\"></a>" );
+            Assert.Equal( result.ToString(), GetResult( attributes ) );
+        }
+
+        /// <summary>
+        /// 测试精确匹配
+        /// </summary>
+        [Fact]
+        public void TestExact() {
+            var attributes = new TagHelperAttributeList { { UiConst.Exact,true } };
+            var result = new String();
+            result.Append( "<a mat-list-item=\"\" [routerLinkActiveOptions]=\"{exact: true}\"></a>" );
+            Assert.Equal( result.ToString(), GetResult( attributes ) );
+        }
+
+        /// <summary>
         /// 测试添加Url
         /// </summary>
         [Fact]
@@ -98,6 +131,17 @@ namespace Util.Ui.Tests.Material.Lists {
             var attributes = new TagHelperAttributeList { { UiConst.Url, "a" } };
             var result = new String();
             result.Append( "<a href=\"a\" mat-list-item=\"\"></a>" );
+            Assert.Equal( result.ToString(), GetResult( attributes ) );
+        }
+
+        /// <summary>
+        /// 测试单击事件
+        /// </summary>
+        [Fact]
+        public void TestOnClick() {
+            var attributes = new TagHelperAttributeList { { UiConst.OnClick, "a" } };
+            var result = new String();
+            result.Append( "<a (click)=\"a\" mat-list-item=\"\"></a>" );
             Assert.Equal( result.ToString(), GetResult( attributes ) );
         }
     }

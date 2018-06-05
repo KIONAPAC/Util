@@ -9,10 +9,10 @@ using Microsoft.Extensions.Logging;
 using Util.Datas.Ef.Configs;
 using Util.Datas.UnitOfWorks;
 using Util.Domains.Auditing;
-using Util.Domains.Sessions;
 using Util.Exceptions;
 using Util.Datas.Ef.Logs;
 using Util.Logs;
+using Util.Sessions;
 
 namespace Util.Datas.Ef.Core {
     /// <summary>
@@ -31,7 +31,7 @@ namespace Util.Datas.Ef.Core {
             : base( options ) {
             manager?.Register( this );
             TraceId = Guid.NewGuid().ToString();
-            Session = Util.Domains.Sessions.Session.Null;
+            Session = Util.Security.Sessions.Session.Null;
         }
 
         #endregion
@@ -152,7 +152,7 @@ namespace Util.Datas.Ef.Core {
         /// 获取定义映射配置的程序集列表
         /// </summary>
         protected virtual Assembly[] GetAssemblies() {
-            return new[] { GetType().GetTypeInfo().Assembly };
+            return new[] { GetType().Assembly };
         }
 
         /// <summary>
@@ -160,7 +160,7 @@ namespace Util.Datas.Ef.Core {
         /// </summary>
         /// <param name="assembly">程序集</param>
         protected virtual IEnumerable<IMap> GetMapTypes( Assembly assembly ) {
-            return Util.Helpers.Reflection.GetTypesByInterface<IMap>( assembly );
+            return Util.Helpers.Reflection.GetInstancesByInterface<IMap>( assembly );
         }
 
         #endregion

@@ -14,7 +14,7 @@ import { toDate } from '../common/helper';
 @Component({
     selector: 'mat-datepicker-wrapper',
     template: `
-        <mat-form-field [floatPlaceholder]="floatPlaceholder" [style.width]="width?width+'px':null">
+        <mat-form-field [floatLabel]="floatPlaceholder" [style.width]="width?width+'px':null">
             <input  matInput [matDatepicker]="picker"  [name]="name" [style.cursor]="'pointer'"
                 [placeholder]="placeholder" [disabled]="disabled" [readonly]="readonly"
                 #control #controlModel="ngModel" [ngModel]="model" (ngModelChange)="onModelChange($event)"
@@ -25,7 +25,7 @@ import { toDate } from '../common/helper';
             <mat-hint *ngIf="startHint" align="start">{{startHint}}</mat-hint>
             <mat-hint *ngIf="endHint" align="end">{{endHint}}</mat-hint>
             <span *ngIf="prefixText" matPrefix>{{prefixText}}&nbsp;</span>
-            <button *ngIf="showClearButton&&model" matSuffix mat-button mat-icon-button  (click)="controlModel.reset()" [matTooltip]="clearButtonTooltip">
+            <button *ngIf="showClearButton&&model" matSuffix mat-button mat-icon-button  (click)="controlModel.reset()" [matTooltip]="clearButtonTooltip" tabindex="-100">
                 <mat-icon >close</mat-icon>
             </button>
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>

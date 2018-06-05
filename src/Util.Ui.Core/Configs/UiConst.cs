@@ -296,6 +296,10 @@
         /// </summary>
         public const string Selected = "selected";
         /// <summary>
+        /// 选中
+        /// </summary>
+        public const string Selection = "selection";
+        /// <summary>
         /// 标题
         /// </summary>
         public const string Title = "title";
@@ -303,6 +307,10 @@
         /// 查询参数
         /// </summary>
         public const string QueryParam = "query-param";
+        /// <summary>
+        /// 查询参数
+        /// </summary>
+        public const string QueryParams = "query-params";
         /// <summary>
         /// 基地址
         /// </summary>
@@ -375,5 +383,81 @@
         /// 日期格式化
         /// </summary>
         public const string DateFormat = "date-format";
+        /// <summary>
+        /// if
+        /// </summary>
+        public const string If = "if";
+        /// <summary>
+        /// 还原查询参数
+        /// </summary>
+        public const string OnQueryRestore = "on-query-restore";
+        /// <summary>
+        /// 复选框
+        /// </summary>
+        public const string Checkbox = "checkbox";
+        /// <summary>
+        /// 单选框
+        /// </summary>
+        public const string Radio = "radio";
+        /// <summary>
+        /// 选中
+        /// </summary>
+        public const string Checked = "checked";
+        /// <summary>
+        /// 选择模式
+        /// </summary>
+        public const string SelectionMode = "selection-mode";
+        /// <summary>
+        /// 等待文本
+        /// </summary>
+        public const string WaitingText = "waiting-text";
+        /// <summary>
+        /// 等待图标
+        /// </summary>
+        public const string WaitingIcon = "waiting-icon";
+        /// <summary>
+        /// 内联
+        /// </summary>
+        public const string Inline = "inline";
+        /// <summary>
+        /// 独立
+        /// </summary>
+        public const string Standalone = "standalone";
+        /// <summary>
+        /// 上传地址
+        /// </summary>
+        public const string UploadUrl = "upload-url";
+        /// <summary>
+        /// 标识
+        /// </summary>
+        public const string Key = "key";
+        /// <summary>
+        /// 加载事件
+        /// </summary>
+        public const string OnLoad = "on-load";
+        /// <summary>
+        /// 选中事件
+        /// </summary>
+        public const string OnCheck = "on-check";
+        /// <summary>
+        /// 单击行事件
+        /// </summary>
+        public const string OnClickRow = "on-click-row";
+        /// <summary>
+        /// 单击行时选中
+        /// </summary>
+        public const string CheckOnClickRow = "check-on-click-row";
+        /// <summary>
+        /// 激活
+        /// </summary>
+        public const string Active = "active";
+        /// <summary>
+        /// 禁用过滤
+        /// </summary>
+        public const string DisableFilter = "disable-filter";
+        /// <summary>
+        /// 精确匹配
+        /// </summary>
+        public const string Exact = "exact";
     }
 }

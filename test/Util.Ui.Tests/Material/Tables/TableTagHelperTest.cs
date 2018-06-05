@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Razor.TagHelpers;
 using Util.Helpers;
 using Util.Ui.Configs;
-using Util.Ui.Material;
 using Util.Ui.Material.Enums;
 using Util.Ui.Material.Tables.TagHelpers;
 using Util.Ui.Tests.XUnitHelpers;
@@ -45,7 +44,7 @@ namespace Util.Ui.Tests.Material.Tables {
         [Fact]
         public void TestDefault() {
             var result = new String();  
-            result.Append( "<mat-table-wrapper #m_id=\"\" key=\"m_id\">" );
+            result.Append( "<mat-table-wrapper #m_id=\"\">" );
             result.Append( "<mat-table matSort=\"\" matSortDisableClear=\"\" [dataSource]=\"m_id.dataSource\" " );
             result.Append( "[style.max-height]=\"m_id.maxHeight?m_id.maxHeight+'px':null\" " );
             result.Append( "[style.min-height]=\"m_id.minHeight?m_id.minHeight+'px':null\">" );
@@ -61,10 +60,26 @@ namespace Util.Ui.Tests.Material.Tables {
         public void TestId() {
             var attributes = new TagHelperAttributeList { { UiConst.Id, "a" } };
             var result = new String();
-            result.Append( "<mat-table-wrapper #a=\"\" key=\"a\">" );
+            result.Append( "<mat-table-wrapper #a=\"\">" );
             result.Append( "<mat-table matSort=\"\" matSortDisableClear=\"\" [dataSource]=\"a.dataSource\" " );
             result.Append( "[style.max-height]=\"a.maxHeight?a.maxHeight+'px':null\" " );
             result.Append( "[style.min-height]=\"a.minHeight?a.minHeight+'px':null\">" );
+            result.Append( "</mat-table>" );
+            result.Append( "</mat-table-wrapper>" );
+            Assert.Equal( result.ToString(), GetResult( attributes ) );
+        }
+
+        /// <summary>
+        /// 测试添加还原查询标识
+        /// </summary>
+        [Fact]
+        public void TestKey() {
+            var attributes = new TagHelperAttributeList { { UiConst.Key, "a" } };
+            var result = new String();
+            result.Append( "<mat-table-wrapper #m_id=\"\" key=\"a\">" );
+            result.Append( "<mat-table matSort=\"\" matSortDisableClear=\"\" [dataSource]=\"m_id.dataSource\" " );
+            result.Append( "[style.max-height]=\"m_id.maxHeight?m_id.maxHeight+'px':null\" " );
+            result.Append( "[style.min-height]=\"m_id.minHeight?m_id.minHeight+'px':null\">" );
             result.Append( "</mat-table>" );
             result.Append( "</mat-table-wrapper>" );
             Assert.Equal( result.ToString(), GetResult( attributes ) );
@@ -77,7 +92,7 @@ namespace Util.Ui.Tests.Material.Tables {
         public void TestQueryParam() {
             var attributes = new TagHelperAttributeList { { UiConst.QueryParam, "a" } };
             var result = new String();
-            result.Append( "<mat-table-wrapper #m_id=\"\" key=\"m_id\" [queryParam]=\"a\">" );
+            result.Append( "<mat-table-wrapper #m_id=\"\" [(queryParam)]=\"a\">" );
             result.Append( "<mat-table matSort=\"\" matSortDisableClear=\"\" [dataSource]=\"m_id.dataSource\" " );
             result.Append( "[style.max-height]=\"m_id.maxHeight?m_id.maxHeight+'px':null\" " );
             result.Append( "[style.min-height]=\"m_id.minHeight?m_id.minHeight+'px':null\">" );
@@ -93,7 +108,7 @@ namespace Util.Ui.Tests.Material.Tables {
         public void TestBaseUrl() {
             var attributes = new TagHelperAttributeList { { UiConst.BaseUrl, "a" } };
             var result = new String();
-            result.Append( "<mat-table-wrapper #m_id=\"\" baseUrl=\"a\" key=\"m_id\">" );
+            result.Append( "<mat-table-wrapper #m_id=\"\" baseUrl=\"a\">" );
             result.Append( "<mat-table matSort=\"\" matSortDisableClear=\"\" [dataSource]=\"m_id.dataSource\" " );
             result.Append( "[style.max-height]=\"m_id.maxHeight?m_id.maxHeight+'px':null\" " );
             result.Append( "[style.min-height]=\"m_id.minHeight?m_id.minHeight+'px':null\">" );
@@ -109,7 +124,7 @@ namespace Util.Ui.Tests.Material.Tables {
         public void TestUrl() {
             var attributes = new TagHelperAttributeList { { UiConst.Url, "a" } };
             var result = new String();
-            result.Append( "<mat-table-wrapper #m_id=\"\" key=\"m_id\" url=\"a\">" );
+            result.Append( "<mat-table-wrapper #m_id=\"\" url=\"a\">" );
             result.Append( "<mat-table matSort=\"\" matSortDisableClear=\"\" [dataSource]=\"m_id.dataSource\" " );
             result.Append( "[style.max-height]=\"m_id.maxHeight?m_id.maxHeight+'px':null\" " );
             result.Append( "[style.min-height]=\"m_id.minHeight?m_id.minHeight+'px':null\">" );
@@ -125,7 +140,7 @@ namespace Util.Ui.Tests.Material.Tables {
         public void TestDeleteUrl() {
             var attributes = new TagHelperAttributeList { { UiConst.DeleteUrl, "a" } };
             var result = new String();
-            result.Append( "<mat-table-wrapper #m_id=\"\" deleteUrl=\"a\" key=\"m_id\">" );
+            result.Append( "<mat-table-wrapper #m_id=\"\" deleteUrl=\"a\">" );
             result.Append( "<mat-table matSort=\"\" matSortDisableClear=\"\" [dataSource]=\"m_id.dataSource\" " );
             result.Append( "[style.max-height]=\"m_id.maxHeight?m_id.maxHeight+'px':null\" " );
             result.Append( "[style.min-height]=\"m_id.minHeight?m_id.minHeight+'px':null\">" );
@@ -141,7 +156,7 @@ namespace Util.Ui.Tests.Material.Tables {
         public void TestSort() {
             var attributes = new TagHelperAttributeList { { UiConst.Sort, "a" } };
             var result = new String();
-            result.Append( "<mat-table-wrapper #m_id=\"\" key=\"m_id\">" );
+            result.Append( "<mat-table-wrapper #m_id=\"\">" );
             result.Append( "<mat-table matSort=\"\" matSortActive=\"a\" matSortDisableClear=\"\" [dataSource]=\"m_id.dataSource\" " );
             result.Append( "[style.max-height]=\"m_id.maxHeight?m_id.maxHeight+'px':null\" " );
             result.Append( "[style.min-height]=\"m_id.minHeight?m_id.minHeight+'px':null\">" );
@@ -157,7 +172,7 @@ namespace Util.Ui.Tests.Material.Tables {
         public void TestSortDirection() {
             var attributes = new TagHelperAttributeList { { UiConst.SortDirection, SortDirection.Desc } };
             var result = new String();
-            result.Append( "<mat-table-wrapper #m_id=\"\" key=\"m_id\">" );
+            result.Append( "<mat-table-wrapper #m_id=\"\">" );
             result.Append( "<mat-table matSort=\"\" matSortDirection=\"desc\" matSortDisableClear=\"\" [dataSource]=\"m_id.dataSource\" " );
             result.Append( "[style.max-height]=\"m_id.maxHeight?m_id.maxHeight+'px':null\" " );
             result.Append( "[style.min-height]=\"m_id.minHeight?m_id.minHeight+'px':null\">" );
@@ -173,7 +188,7 @@ namespace Util.Ui.Tests.Material.Tables {
         public void TestMaxHeight() {
             var attributes = new TagHelperAttributeList { { UiConst.MaxHeight, 1 } };
             var result = new String();
-            result.Append( "<mat-table-wrapper #m_id=\"\" key=\"m_id\" maxHeight=\"1\">" );
+            result.Append( "<mat-table-wrapper #m_id=\"\" maxHeight=\"1\">" );
             result.Append( "<mat-table matSort=\"\" matSortDisableClear=\"\" [dataSource]=\"m_id.dataSource\" " );
             result.Append( "[style.max-height]=\"m_id.maxHeight?m_id.maxHeight+'px':null\" " );
             result.Append( "[style.min-height]=\"m_id.minHeight?m_id.minHeight+'px':null\">" );
@@ -189,7 +204,7 @@ namespace Util.Ui.Tests.Material.Tables {
         public void TestMinHeight() {
             var attributes = new TagHelperAttributeList { { UiConst.MinHeight, 1 } };
             var result = new String();
-            result.Append( "<mat-table-wrapper #m_id=\"\" key=\"m_id\" minHeight=\"1\">" );
+            result.Append( "<mat-table-wrapper #m_id=\"\" minHeight=\"1\">" );
             result.Append( "<mat-table matSort=\"\" matSortDisableClear=\"\" [dataSource]=\"m_id.dataSource\" " );
             result.Append( "[style.max-height]=\"m_id.maxHeight?m_id.maxHeight+'px':null\" " );
             result.Append( "[style.min-height]=\"m_id.minHeight?m_id.minHeight+'px':null\">" );
@@ -205,7 +220,7 @@ namespace Util.Ui.Tests.Material.Tables {
         public void TestWidth() {
             var attributes = new TagHelperAttributeList { { UiConst.Width, 1 } };
             var result = new String();
-            result.Append( "<mat-table-wrapper #m_id=\"\" key=\"m_id\" width=\"1\">" );
+            result.Append( "<mat-table-wrapper #m_id=\"\" width=\"1\">" );
             result.Append( "<mat-table matSort=\"\" matSortDisableClear=\"\" [dataSource]=\"m_id.dataSource\" " );
             result.Append( "[style.max-height]=\"m_id.maxHeight?m_id.maxHeight+'px':null\" " );
             result.Append( "[style.min-height]=\"m_id.minHeight?m_id.minHeight+'px':null\">" );
@@ -221,7 +236,7 @@ namespace Util.Ui.Tests.Material.Tables {
         public void TestAutoLoad() {
             var attributes = new TagHelperAttributeList { { UiConst.AutoLoad, false } };
             var result = new String();
-            result.Append( "<mat-table-wrapper #m_id=\"\" key=\"m_id\" [autoLoad]=\"false\">" );
+            result.Append( "<mat-table-wrapper #m_id=\"\" [autoLoad]=\"false\">" );
             result.Append( "<mat-table matSort=\"\" matSortDisableClear=\"\" [dataSource]=\"m_id.dataSource\" " );
             result.Append( "[style.max-height]=\"m_id.maxHeight?m_id.maxHeight+'px':null\" " );
             result.Append( "[style.min-height]=\"m_id.minHeight?m_id.minHeight+'px':null\">" );
@@ -237,7 +252,7 @@ namespace Util.Ui.Tests.Material.Tables {
         public void TestPageSizeOptions() {
             var attributes = new TagHelperAttributeList { { UiConst.PageSizeOptions, "1,2" } };
             var result = new String();
-            result.Append( "<mat-table-wrapper #m_id=\"\" key=\"m_id\" [pageSizeItems]=\"[1,2]\">" );
+            result.Append( "<mat-table-wrapper #m_id=\"\" [pageSizeOptions]=\"[1,2]\">" );
             result.Append( "<mat-table matSort=\"\" matSortDisableClear=\"\" [dataSource]=\"m_id.dataSource\" " );
             result.Append( "[style.max-height]=\"m_id.maxHeight?m_id.maxHeight+'px':null\" " );
             result.Append( "[style.min-height]=\"m_id.minHeight?m_id.minHeight+'px':null\">" );
@@ -253,23 +268,7 @@ namespace Util.Ui.Tests.Material.Tables {
         public void TestPageSizeOptions_2() {
             var attributes = new TagHelperAttributeList { { UiConst.PageSizeOptions, "[1,2]" } };
             var result = new String();
-            result.Append( "<mat-table-wrapper #m_id=\"\" key=\"m_id\" [pageSizeItems]=\"[1,2]\">" );
-            result.Append( "<mat-table matSort=\"\" matSortDisableClear=\"\" [dataSource]=\"m_id.dataSource\" " );
-            result.Append( "[style.max-height]=\"m_id.maxHeight?m_id.maxHeight+'px':null\" " );
-            result.Append( "[style.min-height]=\"m_id.minHeight?m_id.minHeight+'px':null\">" );
-            result.Append( "</mat-table>" );
-            result.Append( "</mat-table-wrapper>" );
-            Assert.Equal( result.ToString(), GetResult( attributes ) );
-        }
-
-        /// <summary>
-        /// 测试还原查询参数事件
-        /// </summary>
-        [Fact]
-        public void TestOnQueryRestore() {
-            var attributes = new TagHelperAttributeList { { MaterialConst.OnQueryRestore, "a" } };
-            var result = new String();
-            result.Append( "<mat-table-wrapper #m_id=\"\" (onQueryRestore)=\"a\" key=\"m_id\">" );
+            result.Append( "<mat-table-wrapper #m_id=\"\" [pageSizeOptions]=\"[1,2]\">" );
             result.Append( "<mat-table matSort=\"\" matSortDisableClear=\"\" [dataSource]=\"m_id.dataSource\" " );
             result.Append( "[style.max-height]=\"m_id.maxHeight?m_id.maxHeight+'px':null\" " );
             result.Append( "[style.min-height]=\"m_id.minHeight?m_id.minHeight+'px':null\">" );

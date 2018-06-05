@@ -2,18 +2,22 @@
 //Copyright 2018 何镇汐
 //Licensed under the MIT license
 //================================================
-import { Input, Output, EventEmitter, ViewChild, Optional, Host, AfterViewInit } from '@angular/core';
+import { Input, Output, EventEmitter, ViewChild, Optional, Host, AfterViewInit, OnDestroy } from '@angular/core';
 import { NgModel, NgForm } from '@angular/forms';
 import { MessageConfig } from '../../config/message-config';
 
 /**
  * 表单控件包装器
  */
-export class FormControlWrapperBase implements AfterViewInit{
+export class FormControlWrapperBase implements AfterViewInit, OnDestroy {
     /**
      * 名称
      */
     @Input() name: string;
+    /**
+     * 组件不添加到FormGroup，独立存在，这样也无法基于NgForm进行表单验证
+     */
+    @Input() standalone: boolean;
     /**
      * 禁用
      */
@@ -108,7 +112,32 @@ export class FormControlWrapperBase implements AfterViewInit{
      * 视图加载完成
      */
     ngAfterViewInit(): void {
+        this.addControl();
+    }
+
+    /**
+     * 将控件添加到FormGroup
+     */
+    private addControl() {
+        if (this.standalone)
+            return;
         this.form && this.form.addControl(this.controlModel);
+    }
+
+    /**
+     * 组件销毁
+     */
+    ngOnDestroy() {
+        this.removeControl();
+    }
+
+    /**
+     * 将控件移除FormGroup
+     */
+    private removeControl() {
+        if (this.standalone)
+            return;
+        this.form && this.form.removeControl(this.controlModel);
     }
 
     /**

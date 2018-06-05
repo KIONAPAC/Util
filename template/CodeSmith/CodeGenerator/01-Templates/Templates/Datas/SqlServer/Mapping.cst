@@ -20,7 +20,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using <%= Entity.GetNamespace(Namespace,"Domain","Models") %>;
 
-namespace <%= string.Format("{0}.Data.SqlServer.Mappings.{1}",Namespace,Entity.TableSchema) %> {
+namespace <%=Namespace%>.Data.Mappings.<%= Entity.TableSchema %>.SqlServer {
     /// <summary>
     /// <%= Description %>映射配置
     /// </summary>
@@ -38,25 +38,14 @@ namespace <%= string.Format("{0}.Data.SqlServer.Mappings.{1}",Namespace,Entity.T
         protected override void MapProperties( EntityTypeBuilder<<%= SafeClassName %>> builder ) {
             <%
             foreach(var p in Entity.Properties)
-            {                
+            {
                 Response.Write(PropertyExpression(p));
             }
             %>
-        }
-        
-        /// <summary>
-        /// 映射导航属性
-        /// </summary>
-        protected override void MapAssociations( EntityTypeBuilder<<%= SafeClassName %>> builder ) {
-            <%
-            foreach(var r in Entity.Relationships.Where(e => e.IsMapped))
-            {
-                if (r.IsManyToMany)
-                    Response.Write(ManyToManyExpression(r));
-                else
-                    Response.Write(RelationshipExpression(r));
-            }
-            %>
+            <%if(Entity.IsTreeEntity()){%>
+            builder.Property( t => t.Path ).HasColumnName( "Path" );
+            builder.Property( t => t.Level ).HasColumnName( "Level" );
+            <%}%>
         }
     }
 }
@@ -114,52 +103,52 @@ public string PropertyExpression(Property property)
 public string ManyToManyExpression(Relationship relationship)
 {
     StringBuilder sb = new StringBuilder();
-    sb.AppendLine("            //" + Entity.GetOtherDescription(relationship.OtherEntity ));
-    
-    sb.Append(' ', 3 * 4);
-    sb.Append("builder.HasMany(t => t.");
-    sb.Append(relationship.ThisPropertyName);
-    sb.Append(")");
-
-    sb.AppendLine();
-    sb.Append(' ', 4 * 4);
-    sb.Append(".WithMany(t => t.");
-    sb.Append(relationship.OtherPropertyName);
-    sb.Append(")");
-
-    sb.AppendLine();
-    sb.Append(' ', 4 * 4);
-    sb.Append(".Map(m =>");
-    sb.AppendLine();
-    sb.Append(' ', 4 * 4);
-    sb.Append("{");
-
-    sb.AppendLine();
-    sb.Append(' ', 5 * 4);
-    sb.Append("m.ToTable(\"");
-    sb.Append(relationship.JoinTable);
-    sb.Append("\", \"");
-    sb.Append(relationship.JoinSchema);
-    sb.Append("\");");
-
-    sb.AppendLine();
-    sb.Append(' ', 5 * 4);
-    sb.Append("m.MapLeftKey(");
-    sb.Append(relationship.JoinThisColumn.ToDelimitedString(", ", "\"{0}\""));
-    sb.Append(");");
-
-    sb.AppendLine();
-    sb.Append(' ', 5 * 4);
-    sb.Append("m.MapRightKey(");
-    sb.Append(relationship.JoinOtherColumn.ToDelimitedString(", ", "\"{0}\""));
-    sb.Append(");");
-
-    sb.AppendLine();
-    sb.Append(' ', 4 * 4);
-    sb.Append("})");
-
-    sb.Append(";");
-    sb.AppendLine();
+//    sb.AppendLine("            //" + Entity.GetOtherDescription(relationship.OtherEntity ));
+//    
+//    sb.Append(' ', 3 * 4);
+//    sb.Append("builder.HasMany(t => t.");
+//    sb.Append(relationship.ThisPropertyName);
+//    sb.Append(")");
+//
+//    sb.AppendLine();
+//    sb.Append(' ', 4 * 4);
+//    sb.Append(".WithMany(t => t.");
+//    sb.Append(relationship.OtherPropertyName);
+//    sb.Append(")");
+//
+//    sb.AppendLine();
+//    sb.Append(' ', 4 * 4);
+//    sb.Append(".Map(m =>");
+//    sb.AppendLine();
+//    sb.Append(' ', 4 * 4);
+//    sb.Append("{");
+//
+//    sb.AppendLine();
+//    sb.Append(' ', 5 * 4);
+//    sb.Append("m.ToTable(\"");
+//    sb.Append(relationship.JoinTable);
+//    sb.Append("\", \"");
+//    sb.Append(relationship.JoinSchema);
+//    sb.Append("\");");
+//
+//    sb.AppendLine();
+//    sb.Append(' ', 5 * 4);
+//    sb.Append("m.MapLeftKey(");
+//    sb.Append(relationship.JoinThisColumn.ToDelimitedString(", ", "\"{0}\""));
+//    sb.Append(");");
+//
+//    sb.AppendLine();
+//    sb.Append(' ', 5 * 4);
+//    sb.Append("m.MapRightKey(");
+//    sb.Append(relationship.JoinOtherColumn.ToDelimitedString(", ", "\"{0}\""));
+//    sb.Append(");");
+//
+//    sb.AppendLine();
+//    sb.Append(' ', 4 * 4);
+//    sb.Append("})");
+//
+//    sb.Append(";");
+//    sb.AppendLine();
 
     return sb.ToString();
 }

@@ -1,14 +1,15 @@
-﻿using Util.Ui.Builders;
+﻿using Util.Ui.Angular;
+using Util.Ui.Angular.Renders;
+using Util.Ui.Builders;
 using Util.Ui.Configs;
 using Util.Ui.Material.Icons.Builders;
 using Util.Ui.Material.Tabs.Builders;
-using Util.Ui.Renders;
 
 namespace Util.Ui.Material.Tabs.Renders {
     /// <summary>
     /// 链接选项卡渲染器
     /// </summary>
-    public class TabLinkRender : RenderBase {
+    public class TabLinkRender : AngularRenderBase {
         /// <summary>
         /// 配置
         /// </summary>
@@ -47,6 +48,7 @@ namespace Util.Ui.Material.Tabs.Renders {
         /// </summary>
         private void ConfigLink( TagBuilder builder ) {
             builder.AddAttribute( "routerLink", _config.GetValue( UiConst.Link ) );
+            builder.AddAttribute( "[routerLink]", _config.GetValue( AngularConst.BindLink ) );
         }
 
         /// <summary>

@@ -1,8 +1,10 @@
 ﻿using System.Linq;
+using Util.Ui.Angular;
+using Util.Ui.Angular.Renders;
 using Util.Ui.Builders;
 using Util.Ui.Configs;
+using Util.Ui.Extensions;
 using Util.Ui.Material.Buttons.Configs;
-using Util.Ui.Renders;
 using Util.Ui.Material.Enums;
 using Util.Ui.Material.Extensions;
 using Util.Ui.Material.Menus;
@@ -11,7 +13,7 @@ namespace Util.Ui.Material.Buttons.Renders {
     /// <summary>
     /// 按钮渲染器
     /// </summary>
-    public class ButtonRender : RenderBase {
+    public class ButtonRender : AngularRenderBase {
         /// <summary>
         /// 配置
         /// </summary>
@@ -48,6 +50,7 @@ namespace Util.Ui.Material.Buttons.Renders {
             ConfigMenu( builder );
             ConfigCloseDialog( builder );
             ConfigContent( builder );
+            ConfigEvents( builder );
         }
 
         /// <summary>
@@ -56,6 +59,8 @@ namespace Util.Ui.Material.Buttons.Renders {
         private void ConfigText( TagBuilder builder ) {
             if( _config.Contains( UiConst.Text ) )
                 builder.SetContent( _config.GetValue( UiConst.Text ) );
+            if( _config.Contains( AngularConst.BindText ) )
+                builder.SetContent( $"{{{{{_config.GetValue( AngularConst.BindText )}}}}}" );
         }
 
         /// <summary>
@@ -125,9 +130,16 @@ namespace Util.Ui.Material.Buttons.Renders {
         /// 配置内容
         /// </summary>
         protected override void ConfigContent( TagBuilder builder ) {
-            if( _config.Contains( UiConst.Text ) )
+            if( _config.Contains( UiConst.Text ) || _config.Contains( AngularConst.BindText ) )
                 return;
             builder.AppendContent( _config.Content );
+        }
+
+        /// <summary>
+        /// 配置事件
+        /// </summary>
+        private void ConfigEvents( TagBuilder builder ) {
+            builder.AddAttribute( "(click)", _config.GetValue( UiConst.OnClick ) );
         }
     }
 }
